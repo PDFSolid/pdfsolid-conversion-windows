@@ -1,135 +1,131 @@
 # PDFSolid Conversion SDK for Windows (.NET)
 
-A high-performance .NET library for extracting and transforming PDF content — text, images, tables, links, and annotations — into various file formats while preserving the original document layout.
+High-performance .NET SDK for converting PDF to Word, Excel, PowerPoint, HTML, Image, TXT, RTF, CSV, JSON, Markdown, Searchable PDF, and OFD with AI-powered OCR, layout analysis, and table recognition.
 
-## Supported Conversions
+## Features
 
-| Output Format | Extension |
-| ------------- | --------- |
-| Word | .docx |
-| Excel | .xlsx |
-| PowerPoint | .pptx |
-| HTML | .html |
-| CSV | .csv |
-| Image | .png, .jpg, .jpeg, .jpeg2000, .bmp, .tiff, .tga, .gif, .webp |
-| Plain Text | .txt |
-| Rich Text Format | .rtf |
-| Searchable PDF | .pdf |
-| OFD | .ofd |
-| Structured Data | .json |
-| Markdown | .md |
+- **PDF to Word** (.docx) — Flow and Box layout modes
+- **PDF to Excel** (.xlsx) — per-table, per-page, or per-document worksheet options
+- **PDF to PowerPoint** (.pptx)
+- **PDF to HTML** (.html) — single/multi-page with optional bookmark navigation
+- **PDF to CSV** (.csv)
+- **PDF to Image** (.png, .jpg, .jpeg, .jpeg2000, .bmp, .tiff, .tga, .gif, .webp) — color/grayscale/binary, configurable scaling
+- **PDF to Plain Text** (.txt) — optional table format preservation
+- **PDF to RTF** (.rtf)
+- **PDF to Searchable PDF** (.pdf) — OCR with transparent text layer
+- **PDF to OFD** (.ofd) — OCR, page background preservation, transparent text layer
+- **PDF to JSON** (.json) — structured data with table extraction
+- **PDF to Markdown** (.md)
 
-## AI-Powered Document Tools
+### AI-Powered Document Tools
 
-- **Optical Character Recognition (OCR)** — Recognize text from scanned documents and images.
-- **Layout Analysis** — AI-based document structure parsing (paragraphs, tables, figures, etc.).
-- **Table Recognition** — Reconstruct table structure including merged cells and borderless tables.
-- **Custom AI Engine** — Plug in your own OCR/Layout/Table model via callbacks (SDK v4.1.0+).
+- **OCR** — Optical Character Recognition for scanned documents and images
+- **Layout Analysis** — AI-based document structure parsing
+- **Table Recognition** — AI-based table structure reconstruction
+- **Custom AI Models** — plug in your own OCR, layout, or table engine via callbacks (SDK v1.1.0+)
 
 ## Requirements
 
-| Platform | System Requirements | IDE | Framework |
-| -------- | ------------------- | --- | --------- |
-| Windows | Windows 7, 8, 10, 11 (32/64-bit) | Visual Studio 2017+ | .NET Framework 4.6.1+ |
+| Platform | System Requirements | Development Environment |
+| -------- | ------------------- | ----------------------- |
+| Windows | Windows 7, 8, 10, 11 (32/64-bit) | Visual Studio 2017+, .NET Framework 4.6.1+ |
 
 ## Quick Start
 
-### 1. Initialize the SDK
+### 1. Get a License
+
+Contact [sales@pdfsolid.com](mailto:sales@pdfsolid.com) for a 30-day free trial or commercial license.
+
+### 2. Apply License and Initialize
 
 ```csharp
 using PDFSolid_Conversion.Common;
 using PDFSolid_Conversion.Conversion;
 
+ErrorCode result = LibraryManager.LicenseVerify("LICENSE_KEY");
+if (result != ErrorCode.e_ErrSuccess) {
+    return;
+}
 LibraryManager.Initialize("path/to/resource");
 ```
 
-### 2. Apply License
-
-```csharp
-ErrorCode result = LibraryManager.LicenseVerify("LICENSE_KEY");
-```
-
-### 3. Convert PDF to Word
+### 3. Convert
 
 ```csharp
 WordOptions wordOptions = new WordOptions();
-wordOptions.LayoutMode = PageLayoutMode.e_Flow;
-wordOptions.ContainImage = true;
-wordOptions.ContainAnnotation = true;
-
 ErrorCode error = CPDFConversion.StartPDFToWord("input.pdf", "", "output.docx", wordOptions);
 ```
 
-### 4. Convert PDF to Excel
-
-```csharp
-ExcelOptions excelOptions = new ExcelOptions();
-excelOptions.WorksheetOption = ExcelWorksheetOption.e_ForTable;
-
-ErrorCode error = CPDFConversion.StartPDFToExcel("input.pdf", "", "output.xlsx", excelOptions);
-```
-
-### 5. Convert PDF with OCR
-
-```csharp
-LibraryManager.SetDocumentAIModel("path/documentai.model", -1);
-
-WordOptions wordOptions = new WordOptions();
-wordOptions.EnableOCR = true;
-wordOptions.Languages = new List<OCRLanguage> { OCRLanguage.e_ENGLISH };
-
-ErrorCode error = CPDFConversion.StartPDFToWord("scanned.pdf", "", "output.docx", wordOptions);
-```
-
-### 6. Release Resources
+### Release Resources
 
 ```csharp
 LibraryManager.ReleaseDocumentAIModel();
 LibraryManager.Release();
 ```
 
-## Running the Demo
+## Conversion Examples
 
-1. Open `samples/PDFSolid_Conversion_Demo.sln` in Visual Studio.
-2. Click **Start** to build and run the WPF demo application.
-3. Select an input file, choose an output folder, pick a conversion type, and click **Convert**.
+### PDF to Excel
 
-## Package Structure
-
-```
-├── doc/           # API reference and developer guide
-├── lib/           # SDK dynamic libraries
-├── samples/       # Demo project (WPF)
-├── resource/      # DocumentAI model resources
-├── legal.txt      # Legal and copyright information
-└── release_notes.txt
+```csharp
+ExcelOptions excelOptions = new ExcelOptions();
+excelOptions.WorksheetOption = ExcelWorksheetOption.e_ForTable;
+ErrorCode error = CPDFConversion.StartPDFToExcel("input.pdf", "", "output.xlsx", excelOptions);
 ```
 
-## Key Conversion Options
+### PDF to Image
 
-| Option | Description | Applies To |
-| ------ | ----------- | ---------- |
-| `ContainImage` | Include images in output | Word, Excel, PPT, HTML, RTF, JSON, Markdown |
-| `ContainAnnotation` | Retain PDF annotations | Word, Excel, PPT, HTML, RTF, JSON, Markdown |
-| `LayoutMode` | Flow or Box layout | Word, HTML |
-| `EnableOCR` | Enable OCR for scanned documents | All text-based formats |
-| `EnableAiLayout` | Enable AI layout analysis | All text-based formats |
-| `EnableAiTableRecognition` | Enable AI table recognition | All text-based formats |
-| `PageRanges` | Select specific pages (e.g. "1-3,5,7-9") | All formats |
-| `OutputDocumentPerPage` | Output one file per PDF page | All formats |
-| `FontName` | Set preferred output font | Word, Excel, PPT, Searchable PDF, OFD |
-| `FormulaToImage` | Convert formulas to images | Word, Excel, PPT, RTF |
+```csharp
+ImageOptions imageOptions = new ImageOptions();
+imageOptions.ImageType = ImageType.e_PNG;
+imageOptions.ImageScaling = 2.0;
+ErrorCode error = CPDFConversion.StartPDFToImage("input.pdf", "", "output", imageOptions);
+```
+
+### PDF to Searchable PDF (OCR)
+
+```csharp
+LibraryManager.SetDocumentAIModel("path/model", -1);
+
+WordOptions wordOptions = new WordOptions();
+wordOptions.EnableOCR = true;
+wordOptions.Languages = new List<OCRLanguage> { OCRLanguage.e_ENGLISH };
+wordOptions.TransparentText = true;
+ErrorCode error = CPDFConversion.StartPDFToWord("scan.pdf", "", "output.docx", wordOptions);
+```
+
+### PDF to JSON with Table Extraction
+
+```csharp
+JsonOptions jsonOptions = new JsonOptions();
+jsonOptions.ContainTable = true;
+ErrorCode error = CPDFConversion.StartPDFToJson("input.pdf", "", "output.json", jsonOptions);
+```
+
+### Custom AI Engine (SDK v1.1.0+)
+
+```csharp
+ConvertCallback callback = new ConvertCallback();
+callback.OnOcr = (imagePath) => { /* your OCR */ return true; };
+callback.GetOcrResult = () => { return ocrJson; };
+callback.OnLayout = (imagePath) => { /* your layout */ return true; };
+callback.GetLayoutResult = () => { return layoutJson; };
+callback.OnTable = (imagePath) => { /* your table */ return true; };
+callback.GetTableResult = () => { return tableJson; };
+
+WordOptions wordOptions = new WordOptions();
+wordOptions.EnableOCR = true;
+wordOptions.EnableAiLayout = true;
+CPDFConversion.StartPDFToWord("input.pdf", "", "output.docx", wordOptions, callback);
+```
 
 ## Documentation
 
-- [Developer Guide](doc/developer_guide_dotnet.md) — Comprehensive guide covering all APIs and options.
-- [API Reference](doc/api_reference_dotnet.html) — Full API reference documentation.
+- [Developer Guide](doc/developer_guide_dotnet.md)
+- [API Reference](doc/api_reference_dotnet.html)
 
-## License
-
-PDFSolid Conversion SDK is a commercial SDK. A license is required for development and distribution. Contact [support@pdfsolid.com](mailto:support@pdfsolid.com) for licensing information.
-
-## Support
+## Contact
 
 - Website: [https://www.pdfsolid.com](https://www.pdfsolid.com/)
-- Email: [support@pdfsolid.com](mailto:support@pdfsolid.com)
+- Sales: [sales@pdfsolid.com](mailto:sales@pdfsolid.com)
+- Support: [support@pdfsolid.com](mailto:support@pdfsolid.com)
