@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
 
@@ -109,6 +109,7 @@ setting up logging and progress callbacks, retrieving version information, and c
       <h4><a class="xref" href="PDFSolid_Conversion.Common.MarkdownOptions.html">MarkdownOptions</a></h4>
       <section><p>PDF to Markdown conversion parameter object.</p>
 </section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.OCRResult.html">OCRResult</a></h4>
       <section><p>OCR recognition result.</p>
 </section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.OfdOptions.html">OfdOptions</a></h4>
@@ -123,6 +124,7 @@ setting up logging and progress callbacks, retrieving version information, and c
       <h4><a class="xref" href="PDFSolid_Conversion.Common.SearchablePdfOptions.html">SearchablePdfOptions</a></h4>
       <section><p>PDF to PDF conversion parameter object.</p>
 </section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.TableRecResult.html">TableRecResult</a></h4>
       <section><p>Table recognition result.</p>
 </section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.TxtOptions.html">TxtOptions</a></h4>
@@ -170,8 +172,29 @@ Delegates
       <h4><a class="xref" href="PDFSolid_Conversion.Common.OnCancel.html">OnCancel</a></h4>
       <section><p>The delegate for the LibraryManager object, called to determine whether a conversion operation should be canceled.</p>
 </section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.OnGetLayoutResult.html">OnGetLayoutResult</a></h4>
+      <section><p>The delegate for retrieving layout analysis result as a UTF-8 JSON string.
+The returned pointer must remain valid until the next call to this callback.</p>
+</section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.OnGetOCRResult.html">OnGetOCRResult</a></h4>
+      <section><p>The delegate for retrieving OCR result as a UTF-8 JSON string.
+The returned pointer must remain valid until the next call to this callback.</p>
+</section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.OnGetTableResult.html">OnGetTableResult</a></h4>
+      <section><p>The delegate for retrieving table recognition result as a UTF-8 JSON string.
+The returned pointer must remain valid until the next call to this callback.</p>
+</section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.OnLayout.html">OnLayout</a></h4>
+      <section><p>The delegate for external layout analysis on a temporary image file.</p>
+</section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.OnOCR.html">OnOCR</a></h4>
+      <section><p>The delegate for external OCR recognition on a temporary image file.</p>
+</section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.OnProgress.html">OnProgress</a></h4>
       <section><p>The delegate for the LibraryManager object,called when a conversion operation finishes working on a page in a document.</p>
+</section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.OnTable.html">OnTable</a></h4>
+      <section><p>The delegate for external table recognition on a temporary image file.</p>
 </section>
 
 

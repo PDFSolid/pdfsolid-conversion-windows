@@ -8,11 +8,13 @@ namespace PDFSolid_Conversion_Demo
   public partial class ConverterOptionsWindow : Window
   {
     private MainWindow parent;
+    private readonly bool isWordConversion;
 
     public ConverterOptionsWindow(MainWindow parent, string type)
     {
       InitializeComponent();
       this.parent = parent;
+      isWordConversion = type == "Word";
 
       ContainAnnotations.Click += (sender, args) =>
       {
@@ -72,6 +74,18 @@ namespace PDFSolid_Conversion_Demo
         OCROptions.IsEditable = (bool)EnableOCR.IsChecked;
       };
 
+      EnableDocumentOrientationClassification.Click += (sender, args) =>
+      {
+        if (EnableDocumentOrientationClassification.IsChecked != null)
+          this.parent.Options.EnableDocumentOrientationClassification = EnableDocumentOrientationClassification.IsChecked.Value;
+      };
+
+      EnableDocumentDewarp.Click += (sender, args) =>
+      {
+        if (EnableDocumentDewarp.IsChecked != null)
+          this.parent.Options.EnableDocumentDewarp = EnableDocumentDewarp.IsChecked.Value;
+      };
+
       TxtTableFormat.Click += (sender, args) =>
       {
         if (TxtTableFormat.IsChecked != null) this.parent.Options.TxtTableFormat = TxtTableFormat.IsChecked.Value;
@@ -90,18 +104,6 @@ namespace PDFSolid_Conversion_Demo
       ContainTables.Click += (sender, args) =>
       {
         if (ContainTables.IsChecked != null) this.parent.Options.ContainTables = ContainTables.IsChecked.Value;
-      };
-
-      UseWindowsOCR.Click += (sender, args) =>
-      {
-        if (UseWindowsOCR.IsChecked != null)
-        {
-          this.parent.Options.UseWindowsOCR = UseWindowsOCR.IsChecked.Value;
-          if (UseWindowsOCR.IsChecked.Value && IsEnableOCRPanel.Visibility == Visibility.Visible && EnableOCR.IsChecked != true)
-          {
-            EnableOCR.IsChecked = true;
-          }
-        }
       };
 
       ImageFormat.SelectionChanged += ImageFormatComboBox_SelectionChanged;
@@ -132,14 +134,13 @@ namespace PDFSolid_Conversion_Demo
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
           IsEnableOCRPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsEnableAiLayoutPanel.Visibility = Visibility.Visible;
           IsEnableAiTableRecognitionPanel.Visibility = Visibility.Visible;
           PageLayoutOptionsPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           FontNamePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
-          Height = 710;
+          Height = 680;
           break;
         case "Html":
           IsContainImagesPanel.Visibility = Visibility.Visible;
@@ -148,14 +149,13 @@ namespace PDFSolid_Conversion_Demo
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
           IsEnableOCRPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsEnableAiLayoutPanel.Visibility = Visibility.Visible;
           IsEnableAiTableRecognitionPanel.Visibility = Visibility.Visible;
           PageLayoutOptionsPanel.Visibility = Visibility.Visible;
           HtmlOptionsPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
-          Height = 710;
+          Height = 680;
           break;
         case "SearchablePDF":
           IsContainImagesPanel.Visibility = Visibility.Visible;
@@ -164,23 +164,23 @@ namespace PDFSolid_Conversion_Demo
           IsFormulaToImagePanel.Visibility = Visibility.Visible;
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
           OCRLanguage.IsEnabled = true;
+          SetDocumentPreprocessOptionsEnabled(true);
           ContainPageBackgroundImage.IsEnabled = true;
           TransparentText.IsEnabled = true;
-          Height = 480;
+          Height = 450;
           break;
         case "Ofd":
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
           OCRLanguage.IsEnabled = true;
+          SetDocumentPreprocessOptionsEnabled(true);
           TransparentText.IsEnabled = true;
-          Height = 380;
+          Height = 350;
           break;
         case "Ppt":
           IsContainImagesPanel.Visibility = Visibility.Visible;
@@ -190,13 +190,12 @@ namespace PDFSolid_Conversion_Demo
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
           IsEnableOCRPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsEnableAiLayoutPanel.Visibility = Visibility.Visible;
           IsEnableAiTableRecognitionPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           FontNamePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
-          Height = 560;
+          Height = 530;
           break;
         case "Rtf":
           IsContainImagesPanel.Visibility = Visibility.Visible;
@@ -205,12 +204,11 @@ namespace PDFSolid_Conversion_Demo
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
           IsEnableOCRPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsEnableAiLayoutPanel.Visibility = Visibility.Visible;
           IsEnableAiTableRecognitionPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
-          Height = 510;
+          Height = 480;
           break;
         case "Markdown":
           IsContainImagesPanel.Visibility = Visibility.Visible;
@@ -218,12 +216,11 @@ namespace PDFSolid_Conversion_Demo
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
           IsEnableOCRPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsEnableAiLayoutPanel.Visibility = Visibility.Visible;
           IsEnableAiTableRecognitionPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
-          Height = 510;
+          Height = 480;
           break;
         case "Excel":
           IsContainImagesPanel.Visibility = Visibility.Visible;
@@ -236,25 +233,23 @@ namespace PDFSolid_Conversion_Demo
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
           IsEnableOCRPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsEnableAiLayoutPanel.Visibility = Visibility.Visible;
           IsEnableAiTableRecognitionPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           FontNamePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
-          Height = 760;
+          Height = 730;
           break;
         case "Txt":
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
           IsEnableOCRPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsEnableAiLayoutPanel.Visibility = Visibility.Visible;
           IsEnableAiTableRecognitionPanel.Visibility = Visibility.Visible;
           IsTxtTableFormatPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
-          Height = 510;
+          Height = 480;
           break;
         case "Image":
           ImageRatioPanel.Visibility = Visibility.Visible;
@@ -268,7 +263,6 @@ namespace PDFSolid_Conversion_Demo
           OCRLanguagePanel.Visibility = Visibility.Visible;
           OCROptionsPanel.Visibility = Visibility.Visible;
           IsEnableOCRPanel.Visibility = Visibility.Visible;
-          IsUseWindowsOCRPanel.Visibility = Visibility.Visible;
           IsContainImagesPanel.Visibility = Visibility.Visible;
           IsContainAnnotationsPanel.Visibility = Visibility.Visible;
           IsEnableAiLayoutPanel.Visibility = Visibility.Visible;
@@ -276,9 +270,15 @@ namespace PDFSolid_Conversion_Demo
           IsContainTablesPanel.Visibility = Visibility.Visible;
           IsOutputDocumentPerPagePanel.Visibility = Visibility.Visible;
           PageRangesPanel.Visibility = Visibility.Visible;
-          Height = 510;
+          Height = 480;
           break;
       }
+    }
+
+    private void SetDocumentPreprocessOptionsEnabled(bool isEnabled)
+    {
+      EnableDocumentOrientationClassification.IsEnabled = isEnabled;
+      EnableDocumentDewarp.IsEnabled = isEnabled;
     }
 
     private void OCROptions_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -319,17 +319,18 @@ namespace PDFSolid_Conversion_Demo
       EnableAiLayout.IsChecked = parent.Options.EnableAiLayout;
       EnableAiTableRecognition.IsChecked = parent.Options.EnableAiTableRecognition;
       EnableOCR.IsChecked = parent.Options.EnableOCR;
+      EnableDocumentOrientationClassification.IsChecked = parent.Options.EnableDocumentOrientationClassification;
+      EnableDocumentDewarp.IsChecked = parent.Options.EnableDocumentDewarp;
       CsvFormat.IsChecked = parent.Options.CsvFormat;
       AllContent.IsChecked = parent.Options.AllContent;
       TxtTableFormat.IsChecked = parent.Options.TxtTableFormat;
       ImagePathEnhance.IsChecked = parent.Options.ImagePathEnhance;
       ContainTables.IsChecked = parent.Options.ContainTables;
       FormulaToImage.IsChecked = parent.Options.FormulaToImage;
-      UseWindowsOCR.IsChecked = parent.Options.UseWindowsOCR;
-      if (parent.Options.UseWindowsOCR && IsEnableOCRPanel.Visibility == Visibility.Visible && EnableOCR.IsChecked != true)
-      {
-        EnableOCR.IsChecked = true;
-      }
+      SetDocumentPreprocessOptionsEnabled(
+        IsEnableOCRPanel.Visibility == Visibility.Visible
+          ? EnableOCR.IsChecked == true
+          : IsEnableDocumentOrientationClassificationPanel.Visibility == Visibility.Visible);
 
       ImageFormat.SelectedIndex = (int)parent.Options.ImageFormat;
       ImageMode.SelectedIndex = (int)parent.Options.ImageMode;
@@ -397,12 +398,12 @@ namespace PDFSolid_Conversion_Demo
       parent.Options.EnableOCR = (bool)EnableOCR.IsChecked;
       OCRLanguage.IsEnabled = (bool)EnableOCR.IsChecked;
       OCROptions.IsEnabled = (bool)EnableOCR.IsChecked;
-      UseWindowsOCR.IsEnabled = (bool)EnableOCR.IsChecked;
       EnableAiLayout.IsEnabled = !parent.Options.EnableOCR;
       EnableAiTableRecognition.IsEnabled = !parent.Options.EnableOCR;
+      SetDocumentPreprocessOptionsEnabled((bool)EnableOCR.IsChecked);
       ContainPageBackgroundImage.IsEnabled = (bool)EnableOCR.IsChecked;
-      ContainPageBackgroundImage.IsChecked = (bool)EnableOCR.IsChecked;
-      parent.Options.ContainPageBackgroundImage = (bool)EnableOCR.IsChecked;
+      ContainPageBackgroundImage.IsChecked = !isWordConversion;
+      parent.Options.ContainPageBackgroundImage = !isWordConversion;
     }
 
     private void EnableOCR_Unchecked(object sender, RoutedEventArgs e)
@@ -410,9 +411,9 @@ namespace PDFSolid_Conversion_Demo
       parent.Options.EnableOCR = (bool)EnableOCR.IsChecked;
       OCRLanguage.IsEnabled = (bool)EnableOCR.IsChecked;
       OCROptions.IsEnabled = (bool)EnableOCR.IsChecked;
-      UseWindowsOCR.IsEnabled = (bool)EnableOCR.IsChecked;
       EnableAiLayout.IsEnabled = !parent.Options.EnableOCR;
       EnableAiTableRecognition.IsEnabled = !parent.Options.EnableOCR;
+      SetDocumentPreprocessOptionsEnabled((bool)EnableOCR.IsChecked);
       ContainPageBackgroundImage.IsEnabled = (bool)EnableOCR.IsChecked;
       ContainPageBackgroundImage.IsChecked = (bool)EnableOCR.IsChecked;
       parent.Options.ContainPageBackgroundImage = (bool)EnableOCR.IsChecked;

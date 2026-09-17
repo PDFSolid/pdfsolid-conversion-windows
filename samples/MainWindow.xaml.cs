@@ -32,6 +32,8 @@ namespace PDFSolid_Conversion_Demo
     public bool EnableAiLayout = true;
     public bool EnableAiTableRecognition = true;
     public bool EnableOCR = false;
+    public bool EnableDocumentOrientationClassification = false;
+    public bool EnableDocumentDewarp = false;
     public bool TxtTableFormat = true;
     public bool FormulaToImage = true;
     public bool ImagePathEnhance = false;
@@ -43,18 +45,24 @@ namespace PDFSolid_Conversion_Demo
     public ImageType ImageFormat = ImageType.JPG;
     public ImageColorMode ImageMode = ImageColorMode.Color;
     public OCROption OcrOption = OCROption.e_All;
-    public bool UseWindowsOCR = false;
     public string FontName = "";
     public string PageRanges = "";
   }
 
+  /// <summary>
+  /// Copyright © 2014-2026 PDF Technologies, Inc. All Rights Reserved.
+  ///
+  /// THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY INTERNATIONAL COPYRIGHT LAW
+/// AND MAY NOT BE RESOLD OR REDISTRIBUTED.USAGE IS BOUND TO THE PDFSolid LICENSE AGREEMENT.
+  /// UNAUTHORIZED REPRODUCTION OR DISTRIBUTION IS SUBJECT TO CIVIL AND CRIMINAL PENALTIES.
+  /// This notice may not be removed from this file.
+  ///
+  /// https://www.pdfsolid.com
+  /// </summary>
   public partial class MainWindow : Window
   {
     private OnProgress getPorgress = null;
     private OnCancel getCancel = null;
-    private OnOCR getOCR = null;
-    private OnGetOCRResult getOCRResult = null;
-    private WindowsOcrHelper ocrHelper = new WindowsOcrHelper();
     private ErrorCode err;
     private bool cancel = false;
     public ConvertOptions Options;
@@ -64,8 +72,6 @@ namespace PDFSolid_Conversion_Demo
       InitializeComponent();
       getPorgress = GetProgress;
       getCancel = GetCancel;
-      getOCR = GetOCR;
-      getOCRResult = GetOCRResultUtf8;
       Options = new ConvertOptions();
     }
 
@@ -82,40 +88,13 @@ namespace PDFSolid_Conversion_Demo
       });
     }
 
-    private bool GetOCR(string imagePath)
-    {
-      if (!ocrHelper.SetLanguage(WindowsOcrHelper.MapLanguageTag(Options.OCRLanguage)))
-      {
-        return false;
-      }
-      return ocrHelper.RunOcr(imagePath);
-    }
-
-    private string GetOCRResult()
-    {
-      return ocrHelper.GetOcrResult();
-    }
-
-    private IntPtr GetOCRResultUtf8()
-    {
-      return ocrHelper.GetOcrResultUtf8Ptr();
-    }
-
     private ConvertCallback BuildCallback()
     {
       ConvertCallback callback = new ConvertCallback();
       callback.progress = Marshal.GetFunctionPointerForDelegate(getPorgress);
       callback.cancel = Marshal.GetFunctionPointerForDelegate(getCancel);
-      if (Options.UseWindowsOCR)
-      {
-        callback.ocr = Marshal.GetFunctionPointerForDelegate(getOCR);
-        callback.get_ocr_result = Marshal.GetFunctionPointerForDelegate(getOCRResult);
-      }
-      else
-      {
-        callback.ocr = IntPtr.Zero;
-        callback.get_ocr_result = IntPtr.Zero;
-      }
+      callback.ocr = IntPtr.Zero;
+      callback.get_ocr_result = IntPtr.Zero;
       return callback;
     }
 
@@ -127,65 +106,157 @@ namespace PDFSolid_Conversion_Demo
 
     private bool ShouldEnableOCR()
     {
-      return Options.EnableOCR || Options.UseWindowsOCR;
+      return Options.EnableOCR;
     }
 
-    private void ShowErrorMessage(ErrorCode error)
+    private static string GetErrorMessage(ErrorCode error)
     {
-      string errorMessage = "";
-
       switch (error)
       {
-        case ErrorCode.e_ErrPDFPassword:
-          errorMessage = "Password required or incorrect password.";
-          break;
-
-        case ErrorCode.e_ErrLicensePermissionDeny:
-          errorMessage = "The license doesn't allow the permission.";
-          break;
-
-        case ErrorCode.e_ErrOutOfMemory:
-          errorMessage = "Malloc failure.";
-          break;
-
-        case ErrorCode.e_ErrFile:
-          errorMessage = "File not found or could not be opened.";
-          break;
-
-        case ErrorCode.e_ErrPDFFormat:
-          errorMessage = "File not in PDF format or corrupted.";
-          break;
-
-        case ErrorCode.e_ErrPDFSecurity:
-          errorMessage = "Unsupported security scheme.";
-          break;
-
-        case ErrorCode.e_ErrPDFPage:
-          errorMessage = "Page not found or content error.";
-          break;
+        case ErrorCode.e_ErrSuccess:
+          return "No error occurred.";
 
         case ErrorCode.e_ErrCancel:
-          errorMessage = "Conversion task Canceled.";
-          break;
+          return "The conversion was canceled.";
+
+        case ErrorCode.e_ErrFile:
+          return "The input file could not be found or opened.";
+
+        case ErrorCode.e_ErrPDFPassword:
+          return "The PDF requires a password, or the supplied password is incorrect.";
+
+        case ErrorCode.e_ErrPDFPage:
+          return "A PDF page could not be loaded because it is missing or contains invalid content.";
+
+        case ErrorCode.e_ErrPDFFormat:
+          return "The input is not a valid PDF file, or the file is corrupted.";
+
+        case ErrorCode.e_ErrPDFSecurity:
+          return "The PDF uses an unsupported security scheme.";
+
+        case ErrorCode.e_ErrOutOfMemory:
+          return "The SDK could not allocate enough memory to complete the operation.";
+
+        case ErrorCode.e_ErrIO:
+          return "A system input/output error occurred while reading or writing data.";
+
+        case ErrorCode.e_ErrCompress:
+          return "The SDK failed to compress the output folder.";
+
+        case ErrorCode.e_ErrLicenseInvalid:
+          return "The license is invalid.";
+
+        case ErrorCode.e_ErrLicenseExpire:
+          return "The license has expired.";
+
+        case ErrorCode.e_ErrLicenseUnsupportedPlatform:
+          return "The license does not support the current platform.";
+
+        case ErrorCode.e_ErrLicenseUnsupportedID:
+          return "The license does not support this application ID.";
+
+        case ErrorCode.e_ErrLicenseUnsupportedDevice:
+          return "The license does not support this device ID.";
+
+        case ErrorCode.e_ErrLicensePermissionDeny:
+          return "The license does not grant permission for this function.";
+
+        case ErrorCode.e_ErrLicenseUninitialized:
+          return "The license has not been initialized.";
+
+        case ErrorCode.e_ErrLicenseIllegalAccess:
+          return "The SDK rejected an illegal API access.";
+
+        case ErrorCode.e_ErrLicenseFileReadFailed:
+          return "The license file could not be read.";
+
+        case ErrorCode.e_ErrLicenseOCRPermissionDeny:
+          return "The license does not grant permission to use OCR.";
+
+        case ErrorCode.e_ErrLicenseConcurrencyExceeded:
+          return "The number of concurrent conversions exceeds the license limit.";
+
+        case ErrorCode.e_ErrLicensePageLimitExceeded:
+          return "The number of pages being converted exceeds the license limit.";
+
+        case ErrorCode.e_ErrLicenseQuotaCorrupted:
+          return "The stored license quota data is corrupted or has been tampered with.";
 
         case ErrorCode.e_ErrNoTable:
-          errorMessage = "There are no tables in the PDF document.";
-          break;
+          return "No tables were found in the source file.";
+
+        case ErrorCode.e_ErrOCRFailure:
+          return "The SDK failed to perform OCR recognition.";
 
         case ErrorCode.e_ErrConverting:
-          errorMessage = "A file is already being converted, so other files could not be converted at the same time.";
-          break;
+          return "Another conversion task is already running.";
+
+        case ErrorCode.e_ErrInvalidArg:
+          return "An invalid argument was provided to the SDK.";
+
+        case ErrorCode.e_ErrInvalidHandle:
+          return "An SDK handle is invalid, uninitialized, or has already been released.";
+
+        case ErrorCode.e_ErrModelInvalidFormat:
+          return "The AI model file has an invalid format or is corrupted.";
+
+        case ErrorCode.e_ErrModelFunctionUnsupported:
+          return "The AI model does not support the requested function.";
+
+        case ErrorCode.e_ErrModelFormatUnsupported:
+          return "The AI model format is not supported by this SDK.";
+
+        case ErrorCode.e_ErrModelSDKMismatch:
+          return "The AI model is incompatible with the current SDK version.";
+
+        case ErrorCode.e_ErrImageDataEmpty:
+          return "The image data is empty or was not provided.";
+
+        case ErrorCode.e_ErrImageWHError:
+          return "The image width or height is invalid.";
+
+        case ErrorCode.e_ErrImageUnsupportedFormat:
+          return "The image pixel format is not supported by the SDK.";
+
+        case ErrorCode.e_ErrImageInvalid:
+          return "The image data is invalid or corrupted.";
+
+        case ErrorCode.e_ErrExpire:
+          return "A required resource, license, or token has expired.";
+
+        case ErrorCode.e_ErrMissingArg:
+          return "A required argument was not provided to the SDK.";
+
+        case ErrorCode.e_ErrLicenseUnsupportedAPI:
+          return "The current license does not permit this API.";
+
+        case ErrorCode.e_ErrLicenseMismatch:
+          return "The license does not match the current device, module, or SDK version.";
+
+        case ErrorCode.e_ErrInvalidTable:
+          return "The table data is invalid or missing.";
+
+        case ErrorCode.e_ErrUnsupportedFeature:
+          return "The source document uses a feature the SDK cannot lay out yet, so no output was produced.";
 
         case ErrorCode.e_ErrUnknown:
-          errorMessage = "Unknown error in processing conversion.";
-          break;
+          return "An unknown SDK error occurred.";
+
+        case ErrorCode.e_ErrLibraryNotLoad:
+          return "The native SDK library has not been loaded.";
 
         default:
-          errorMessage = "Unknown error in processing conversion.";
-          break;
+          return "The SDK returned an unrecognized error code.";
       }
+    }
 
-      MessageBox.Show("Conversion failure : " + errorMessage);
+    private void ShowErrorMessage(ErrorCode error, string operation = "Conversion")
+    {
+      string errorName = Enum.IsDefined(typeof(ErrorCode), error) ? error.ToString() : "Unrecognized";
+      string message = operation + " failed.\n\nReason: " + GetErrorMessage(error)
+        + "\n\nError code: " + (int)error + " (" + errorName + ")";
+
+      MessageBox.Show(message, operation + " Failed", MessageBoxButton.OK, MessageBoxImage.Error);
     }
 
     private async Task WordConvert()
@@ -199,6 +270,8 @@ namespace PDFSolid_Conversion_Demo
         wordOptions.EnableAiLayout = Options.EnableAiLayout;
         wordOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
         wordOptions.EnableOCR = ShouldEnableOCR();
+        wordOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        wordOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         wordOptions.LayoutMode = Options.LayoutMode;
         wordOptions.ContainPageBackgroundImage = Options.ContainPageBackgroundImage;
         wordOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
@@ -236,6 +309,8 @@ namespace PDFSolid_Conversion_Demo
         excelOptions.EnableAiLayout = Options.EnableAiLayout;
         excelOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
         excelOptions.EnableOCR = ShouldEnableOCR();
+        excelOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        excelOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         excelOptions.WorksheetOption = Options.WorksheetOption;
         excelOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
         excelOptions.AutoCreateFolder = Options.AutoCreateFolder;
@@ -271,6 +346,8 @@ namespace PDFSolid_Conversion_Demo
         pptOptions.EnableAiLayout = Options.EnableAiLayout;
         pptOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
         pptOptions.EnableOCR = ShouldEnableOCR();
+        pptOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        pptOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         pptOptions.ContainPageBackgroundImage = Options.ContainPageBackgroundImage;
         pptOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
         pptOptions.OcrOption = Options.OcrOption;
@@ -305,6 +382,8 @@ namespace PDFSolid_Conversion_Demo
         htmlOptions.EnableAiLayout = Options.EnableAiLayout;
         htmlOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
         htmlOptions.EnableOCR = ShouldEnableOCR();
+        htmlOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        htmlOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         htmlOptions.LayoutMode = Options.LayoutMode;
         htmlOptions.HtmlOption = Options.htmlOption;
         htmlOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
@@ -339,6 +418,8 @@ namespace PDFSolid_Conversion_Demo
         rtfOptions.EnableAiLayout = Options.EnableAiLayout;
         rtfOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
         rtfOptions.EnableOCR = ShouldEnableOCR();
+        rtfOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        rtfOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         rtfOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
         rtfOptions.OcrOption = Options.OcrOption;
         rtfOptions.PageRanges = Options.PageRanges;
@@ -372,6 +453,8 @@ namespace PDFSolid_Conversion_Demo
         pdfOptions.TransparentText = Options.TransparentText;
         pdfOptions.FormulaToImage = Options.FormulaToImage;
         pdfOptions.EnableOCR = true;
+        pdfOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        pdfOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         pdfOptions.PageRanges = Options.PageRanges;
         pdfOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
 
@@ -400,6 +483,8 @@ namespace PDFSolid_Conversion_Demo
         txtOptions.EnableAiLayout = Options.EnableAiLayout;
         txtOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
         txtOptions.EnableOCR = ShouldEnableOCR();
+        txtOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        txtOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         txtOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
         txtOptions.OcrOption = Options.OcrOption;
         txtOptions.PageRanges = Options.PageRanges;
@@ -458,6 +543,8 @@ namespace PDFSolid_Conversion_Demo
         jsonOptions.EnableAiLayout = Options.EnableAiLayout;
         jsonOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
         jsonOptions.EnableOCR = ShouldEnableOCR();
+        jsonOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        jsonOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         jsonOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
         jsonOptions.OcrOption = Options.OcrOption;
         jsonOptions.PageRanges = Options.PageRanges;
@@ -489,6 +576,8 @@ namespace PDFSolid_Conversion_Demo
         markdownOptions.EnableAiLayout = Options.EnableAiLayout;
         markdownOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
         markdownOptions.EnableOCR = ShouldEnableOCR();
+        markdownOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        markdownOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         markdownOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
         markdownOptions.OcrOption = Options.OcrOption;
         markdownOptions.PageRanges = Options.PageRanges;
@@ -519,6 +608,8 @@ namespace PDFSolid_Conversion_Demo
         ofdOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
         ofdOptions.OcrOption = Options.OcrOption;
         ofdOptions.EnableOCR = true;
+        ofdOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
+        ofdOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
         ofdOptions.PageRanges = Options.PageRanges;
         ofdOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
 
@@ -549,15 +640,21 @@ namespace PDFSolid_Conversion_Demo
       {
         LibraryManager.Initialize(Path.Combine(resPath, "resource"));
         ErrorCode result = LibraryManager.LicenseVerify(Path.Combine(resPath, "license.xml"));
-        LibraryManager.SetDocumentAIModel(Path.Combine(resPath, "resource", "models", "documentai.model"));
         if (result != ErrorCode.e_ErrSuccess)
         {
-          MessageBox.Show("PDFSolid Conversion SDK Load Failed!");
+          ShowErrorMessage(result, "SDK license verification");
+          return;
+        }
+
+        ErrorCode modelResult = LibraryManager.SetDocumentAIModel(Path.Combine(resPath, "resource", "models", "documentai.model"));
+        if (modelResult != ErrorCode.e_ErrSuccess)
+        {
+          ShowErrorMessage(modelResult, "Document AI model loading");
         }
       }
       else
       {
-        MessageBox.Show("PDFSolid Conversion SDK NativeLibrary Load Failed!");
+        ShowErrorMessage(ErrorCode.e_ErrLibraryNotLoad, "SDK initialization");
       }
     }
 

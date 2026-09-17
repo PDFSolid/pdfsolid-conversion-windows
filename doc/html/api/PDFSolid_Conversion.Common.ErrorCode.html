@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
 
@@ -86,7 +86,7 @@
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="PDFSolid_Conversion.html">PDFSolid_Conversion</a>.<a class="xref" href="PDFSolid_Conversion.Common.html">Common</a></h6>
-  <h6><strong>Assembly</strong>: cpdfconversionsdk_dotnet.dll</h6>
+  <h6><strong>Assembly</strong>: .dll</h6>
   <h5 id="PDFSolid_Conversion_Common_ErrorCode_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public enum ErrorCode</code></pre>
@@ -172,6 +172,11 @@
 </td>
       </tr>
       <tr>
+        <td id="PDFSolid_Conversion_Common_ErrorCode_e_ErrLicenseConcurrencyExceeded">e_ErrLicenseConcurrencyExceeded</td>
+        <td><p>The current conversion concurrency exceeds the license limit.</p>
+</td>
+      </tr>
+      <tr>
         <td id="PDFSolid_Conversion_Common_ErrorCode_e_ErrLicenseExpire">e_ErrLicenseExpire</td>
         <td><p>The license has expired.</p>
 </td>
@@ -202,8 +207,18 @@
 </td>
       </tr>
       <tr>
+        <td id="PDFSolid_Conversion_Common_ErrorCode_e_ErrLicensePageLimitExceeded">e_ErrLicensePageLimitExceeded</td>
+        <td><p>The current conversion pages exceed the license limit.</p>
+</td>
+      </tr>
+      <tr>
         <td id="PDFSolid_Conversion_Common_ErrorCode_e_ErrLicensePermissionDeny">e_ErrLicensePermissionDeny</td>
         <td><p>The license does not have the function permission.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="PDFSolid_Conversion_Common_ErrorCode_e_ErrLicenseQuotaCorrupted">e_ErrLicenseQuotaCorrupted</td>
+        <td><p>The quota persistence file has been tampered with.</p>
 </td>
       </tr>
       <tr>
@@ -299,6 +314,11 @@
       <tr>
         <td id="PDFSolid_Conversion_Common_ErrorCode_e_ErrUnknown">e_ErrUnknown</td>
         <td><p>Any unknown error occurs.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="PDFSolid_Conversion_Common_ErrorCode_e_ErrUnsupportedFeature">e_ErrUnsupportedFeature</td>
+        <td><p>The source document uses a feature this SDK cannot lay out yet, so no output was produced.</p>
 </td>
       </tr>
     </tbody>

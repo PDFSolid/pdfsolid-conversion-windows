@@ -76,9 +76,15 @@
                 <CheckBox x:Name="EnableOCR" Margin="0,0,0,0"/>
             </StackPanel>
 
-            <StackPanel x:Name="IsUseWindowsOCRPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="-120,0,0,0" Visibility="Collapsed">
-                <TextBlock Text="Use Windows OCR : " Width="120" Height="30" TextAlignment="Center"/>
-                <CheckBox x:Name="UseWindowsOCR" Margin="0,0,0,0"/>
+            <!-- Document preprocessing is not exposed in the demo UI; both options stay at their default value. -->
+            <StackPanel x:Name="IsEnableDocumentOrientationClassificationPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="-120,0,0,0" Visibility="Collapsed">
+                <TextBlock Text="Doc Orientation : " Width="220" Height="30" TextAlignment="Center"/>
+                <CheckBox x:Name="EnableDocumentOrientationClassification" IsEnabled="False" Margin="0,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel x:Name="IsEnableDocumentDewarpPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="-120,0,0,0" Visibility="Collapsed">
+                <TextBlock Text="Document Dewarp : " Width="220" Height="30" TextAlignment="Center"/>
+                <CheckBox x:Name="EnableDocumentDewarp" IsEnabled="False" Margin="0,0,0,0"/>
             </StackPanel>
 
             <StackPanel x:Name="IsContainPageBackgroundImagePanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="-120,0,0,0" Visibility="Collapsed">

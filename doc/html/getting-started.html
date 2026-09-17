@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
 
@@ -71,24 +71,7 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="getting-started">Getting Started</h1>
-      <p>Use <a class="xref" href="api/PDFSolid_Conversion.Common.LibraryManager.html">LibraryManager</a> to load and initialize the SDK, then call the static conversion methods on <a class="xref" href="api/PDFSolid_Conversion.Conversion.CPDFConversion.html">CPDFConversion</a>.</p>
-      <pre><code class="lang-csharp">using PDFSolid_Conversion.Common;
-      using PDFSolid_Conversion.Conversion;
 
-      LibraryManager.InitLibrary(libraryPath);
-      LibraryManager.Initialize(resourcePath);
-      ErrorCode licenseResult = LibraryManager.LicenseVerify(license);
-
-      var options = new WordOptions
-      {
-        ContainImage = true,
-        EnableOCR = false,
-        PageRanges = ""
-      };
-
-      ErrorCode result = CPDFConversion.StartPDFToWord(inputPdf, "", outputDocx, options);
-      LibraryManager.Release();
-      </code></pre>
 
 </article>
           </div>

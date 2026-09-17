@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
 
@@ -81,7 +81,10 @@
 
 
   <h1 id="PDFSolid_Conversion_Common_LibraryManager" data-uid="PDFSolid_Conversion.Common.LibraryManager" class="text-break">Class LibraryManager</h1>
-  <div class="markdown level0 summary"><p>Manages the public SDK lifecycle, including library loading, resource initialization, license verification, version retrieval, page counting, and release.</p>
+  <div class="markdown level0 summary"><p>Manages all operations related to the SDK library.
+The <code>LibraryManager</code> class serves as a central hub for managing the lifecycle of an SDK library. It provides
+functionalities such as initializing the library with specified resources, verifying licenses, installing fonts,
+setting up logging and progress callbacks, retrieving version information, and counting pages in documents.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -92,16 +95,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
-    </div>
-    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
@@ -112,9 +109,15 @@
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="PDFSolid_Conversion.html">PDFSolid_Conversion</a>.<a class="xref" href="PDFSolid_Conversion.Common.html">Common</a></h6>
-  <h6><strong>Assembly</strong>: cpdfconversionsdk_dotnet.dll</h6>
+  <h6><strong>Assembly</strong>: .dll</h6>
   <h5 id="PDFSolid_Conversion_Common_LibraryManager_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class LibraryManager</code></pre>
@@ -168,6 +171,33 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td><p>The total number of pages in the document.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <a id="PDFSolid_Conversion_Common_LibraryManager_GetRemainingPageQuota_" data-uid="PDFSolid_Conversion.Common.LibraryManager.GetRemainingPageQuota*"></a>
+  <h4 id="PDFSolid_Conversion_Common_LibraryManager_GetRemainingPageQuota" data-uid="PDFSolid_Conversion.Common.LibraryManager.GetRemainingPageQuota">GetRemainingPageQuota()</h4>
+  <div class="markdown level1 summary"><p>Returns the remaining page quota granted by the license.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GetRemainingPageQuota()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><p>The remaining pages when zero or greater, -1 when the license has not been initialized, -2 when the quota is unlimited, -3 when the quota file is corrupted.</p>
 </td>
       </tr>
     </tbody>
@@ -334,28 +364,38 @@
       </tr>
     </tbody>
   </table>
+
+
+  <a id="PDFSolid_Conversion_Common_LibraryManager_Release_" data-uid="PDFSolid_Conversion.Common.LibraryManager.Release*"></a>
+  <h4 id="PDFSolid_Conversion_Common_LibraryManager_Release" data-uid="PDFSolid_Conversion.Common.LibraryManager.Release">Release()</h4>
+  <div class="markdown level1 summary"><p>Releases all resources used by the library. Should be called when the SDK is no longer needed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Release()</code></pre>
+  </div>
+
+
   <a id="PDFSolid_Conversion_Common_LibraryManager_ReleaseDocumentAIModel_" data-uid="PDFSolid_Conversion.Common.LibraryManager.ReleaseDocumentAIModel*"></a>
   <h4 id="PDFSolid_Conversion_Common_LibraryManager_ReleaseDocumentAIModel" data-uid="PDFSolid_Conversion.Common.LibraryManager.ReleaseDocumentAIModel">ReleaseDocumentAIModel()</h4>
-  <div class="markdown level1 summary"><p>Releases the memory used by the DocumentAI model.</p>
+  <div class="markdown level1 summary"><p>Release the memory by the AI model. If you want to use the AI function again after this call, you need to call the SetDocumentAIModel interface again.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static void ReleaseDocumentAIModel()</code></pre>
   </div>
-  <h5 class="remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Call <code>SetDocumentAIModel</code> again before using OCR, layout analysis, or table recognition features after this call.</p>
-</div>
 
 
   <a id="PDFSolid_Conversion_Common_LibraryManager_SetDocumentAIModel_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetDocumentAIModel*"></a>
   <h4 id="PDFSolid_Conversion_Common_LibraryManager_SetDocumentAIModel_System_String_System_Int32_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetDocumentAIModel(System.String,System.Int32)">SetDocumentAIModel(string, int)</h4>
-  <div class="markdown level1 summary"><p>Sets the DocumentAI model used by OCR, layout analysis, and table recognition.</p>
+  <div class="markdown level1 summary"><p>Sets the Document AI model for OCR based on the provided file path and GPU ID.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ErrorCode SetDocumentAIModel(string modelPath, int gpuId = -1)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ErrorCode SetDocumentAIModel(string model_path, int gpu_id = -1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -369,14 +409,14 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">modelPath</span></td>
-        <td><p>Path to the DocumentAI model file.</p>
+        <td><span class="parametername">model_path</span></td>
+        <td><p>Path to the Document AI model file.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><span class="parametername">gpuId</span></td>
-        <td><p>GPU device index for the AI model. Use -1 to disable GPU acceleration.</p>
+        <td><span class="parametername">gpu_id</span></td>
+        <td><p>The GPU ID to use for model processing.</p>
 </td>
       </tr>
     </tbody>
@@ -392,7 +432,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html">ErrorCode</a></td>
-        <td><p>ErrorCode indicating the success or failure of setting the model.</p>
+        <td><p>ErrorCode indicating the success or failure of setting up the AI model.</p>
 </td>
       </tr>
     </tbody>
@@ -401,12 +441,12 @@
 
   <a id="PDFSolid_Conversion_Common_LibraryManager_SetDocumentAIModelCount_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetDocumentAIModelCount*"></a>
   <h4 id="PDFSolid_Conversion_Common_LibraryManager_SetDocumentAIModelCount_System_Int32_System_Int32_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetDocumentAIModelCount(System.Int32,System.Int32)">SetDocumentAIModelCount(int, int)</h4>
-  <div class="markdown level1 summary"><p>Sets the number of DocumentAI model instances for layout analysis and table recognition.</p>
+  <div class="markdown level1 summary"><p>Set the number of layout and table models for Document AI.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void SetDocumentAIModelCount(int layoutModelCount, int tableModelCount)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void SetDocumentAIModelCount(int layout_model_count, int table_model_coun)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -420,27 +460,49 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><span class="parametername">layoutModelCount</span></td>
-        <td><p>Number of layout analysis model instances.</p>
+        <td><span class="parametername">layout_model_count</span></td>
+        <td><p>The number of layout models.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><span class="parametername">tableModelCount</span></td>
-        <td><p>Number of table recognition model instances.</p>
+        <td><span class="parametername">table_model_coun</span></td>
+        <td><p>The number of tabular models.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <a id="PDFSolid_Conversion_Common_LibraryManager_Release_" data-uid="PDFSolid_Conversion.Common.LibraryManager.Release*"></a>
-  <h4 id="PDFSolid_Conversion_Common_LibraryManager_Release" data-uid="PDFSolid_Conversion.Common.LibraryManager.Release">Release()</h4>
-  <div class="markdown level1 summary"><p>Releases all resources used by the library. Should be called when the SDK is no longer needed.</p>
+
+
+  <a id="PDFSolid_Conversion_Common_LibraryManager_SetProgress_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetProgress*"></a>
+  <h4 id="PDFSolid_Conversion_Common_LibraryManager_SetProgress_System_IntPtr_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetProgress(System.IntPtr)">SetProgress(nint)</h4>
+  <div class="markdown level1 summary"><p>Sets a callback function to track the progress of SDK operations.(This function has been de-used.)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void Release()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;The native library no longer exports this entry point. Set ConvertCallback.progress on the conversion call instead.&quot;)]
+public static void SetProgress(nint progress)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.intptr">nint</a></td>
+        <td><span class="parametername">progress</span></td>
+        <td><p>A pointer to the progress callback function.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
 </article>
           </div>
 
