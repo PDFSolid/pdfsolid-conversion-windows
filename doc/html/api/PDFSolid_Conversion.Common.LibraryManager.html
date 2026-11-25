@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class LibraryManager | PDFSolid Conversion SDK ">
     
-    <meta name="description" content="Manages all operations related to the SDK library. The LibraryManager class serves as a central hub for managing the lifecycle of an SDK library. It provides functionalities such as initializing the library with specified resources, verifying licenses, installing fonts, setting up logging and progress callbacks, retrieving version information, and counting pages in documents.">
+    <meta name="description" content="Manages all operations related to the SDK library. The LibraryManager class manages the lifecycle of the SDK library: loading the native library, initializing it with resources, verifying licenses, loading and releasing DocumentAI models, setting the number of DocumentAI models, counting pages in documents, querying the remaining page quota, retrieving version information, and releasing resources.">
       <link rel="shortcut icon" href="../favicon.ico">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
       <link rel="stylesheet" href="../styles/docfx.css">
@@ -82,9 +82,10 @@
 
   <h1 id="PDFSolid_Conversion_Common_LibraryManager" data-uid="PDFSolid_Conversion.Common.LibraryManager" class="text-break">Class LibraryManager</h1>
   <div class="markdown level0 summary"><p>Manages all operations related to the SDK library.
-The <code>LibraryManager</code> class serves as a central hub for managing the lifecycle of an SDK library. It provides
-functionalities such as initializing the library with specified resources, verifying licenses, installing fonts,
-setting up logging and progress callbacks, retrieving version information, and counting pages in documents.</p>
+The <code>LibraryManager</code> class manages the lifecycle of the SDK library: loading the native library,
+initializing it with resources, verifying licenses, loading and releasing DocumentAI models,
+setting the number of DocumentAI models, counting pages in documents, querying the remaining
+page quota, retrieving version information, and releasing resources.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -124,6 +125,33 @@ setting up logging and progress callbacks, retrieving version information, and c
   </div>
   <h3 id="methods">Methods
 </h3>
+
+
+  <a id="PDFSolid_Conversion_Common_LibraryManager_GetLicenseType_" data-uid="PDFSolid_Conversion.Common.LibraryManager.GetLicenseType*"></a>
+  <h4 id="PDFSolid_Conversion_Common_LibraryManager_GetLicenseType" data-uid="PDFSolid_Conversion.Common.LibraryManager.GetLicenseType">GetLicenseType()</h4>
+  <div class="markdown level1 summary"><p>Returns the type of the currently verified license without verifying again or consuming page quota.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LicenseType GetLicenseType()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.LicenseType.html">LicenseType</a></td>
+        <td><p><a class="xref" href="PDFSolid_Conversion.Common.LicenseType.html#PDFSolid_Conversion_Common_LicenseType_e_Unknown">e_Unknown</a> before verification, after failed verification, or while the SDK is releasing.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 
   <a id="PDFSolid_Conversion_Common_LibraryManager_GetPageCount_" data-uid="PDFSolid_Conversion.Common.LibraryManager.GetPageCount*"></a>
@@ -323,7 +351,7 @@ setting up logging and progress callbacks, retrieving version information, and c
 
   <a id="PDFSolid_Conversion_Common_LibraryManager_LicenseVerify_" data-uid="PDFSolid_Conversion.Common.LibraryManager.LicenseVerify*"></a>
   <h4 id="PDFSolid_Conversion_Common_LibraryManager_LicenseVerify_System_String_" data-uid="PDFSolid_Conversion.Common.LibraryManager.LicenseVerify(System.String)">LicenseVerify(string)</h4>
-  <div class="markdown level1 summary"><p>Verifies the provided license key along with device ID and application ID.</p>
+  <div class="markdown level1 summary"><p>Verifies the provided license along with the device ID and application ID.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -343,7 +371,7 @@ setting up logging and progress callbacks, retrieving version information, and c
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">license</span></td>
-        <td><p>The license key string to be verified.</p>
+        <td><p>The license key string, or the path to a license.xml license file.</p>
 </td>
       </tr>
     </tbody>
@@ -390,7 +418,12 @@ setting up logging and progress callbacks, retrieving version information, and c
 
   <a id="PDFSolid_Conversion_Common_LibraryManager_SetDocumentAIModel_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetDocumentAIModel*"></a>
   <h4 id="PDFSolid_Conversion_Common_LibraryManager_SetDocumentAIModel_System_String_System_Int32_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetDocumentAIModel(System.String,System.Int32)">SetDocumentAIModel(string, int)</h4>
-  <div class="markdown level1 summary"><p>Sets the Document AI model for OCR based on the provided file path and GPU ID.</p>
+  <div class="markdown level1 summary"><p>Loads DocumentAI components from a model package, used for OCR, layout analysis and table recognition.
+Each call loads only the capabilities contained in the given model package and merges them with
+the capabilities already loaded; it does not replace them. If a package fails to load, the
+capabilities loaded before are kept. For example, load documentai.model first and then
+table_legacy.model to enable <a class="xref" href="PDFSolid_Conversion.Common.TableRecognitionAccuracy.html#PDFSolid_Conversion_Common_TableRecognitionAccuracy_e_HighAccuracy">e_HighAccuracy</a>.
+Stop new SDK calls and wait for running conversions to finish before calling it.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -410,13 +443,13 @@ setting up logging and progress callbacks, retrieving version information, and c
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">model_path</span></td>
-        <td><p>Path to the Document AI model file.</p>
+        <td><p>Path to the model package file, e.g. &quot;documentai.model&quot;.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td><span class="parametername">gpu_id</span></td>
-        <td><p>The GPU ID to use for model processing.</p>
+        <td><p>Index of the GPU used by the AI model. -1 (the default) disables GPU.</p>
 </td>
       </tr>
     </tbody>
@@ -432,7 +465,9 @@ setting up logging and progress callbacks, retrieving version information, and c
     <tbody>
       <tr>
         <td><a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html">ErrorCode</a></td>
-        <td><p>ErrorCode indicating the success or failure of setting up the AI model.</p>
+        <td><p>ErrorCode indicating the success or failure of loading the model package.
+<a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html#PDFSolid_Conversion_Common_ErrorCode_e_ErrInvalidArg">e_ErrInvalidArg</a> if model_path is empty; <a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html#PDFSolid_Conversion_Common_ErrorCode_e_ErrConverting">e_ErrConverting</a>
+while conversion tasks are running or a release is pending.</p>
 </td>
       </tr>
     </tbody>
@@ -441,12 +476,14 @@ setting up logging and progress callbacks, retrieving version information, and c
 
   <a id="PDFSolid_Conversion_Common_LibraryManager_SetDocumentAIModelCount_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetDocumentAIModelCount*"></a>
   <h4 id="PDFSolid_Conversion_Common_LibraryManager_SetDocumentAIModelCount_System_Int32_System_Int32_" data-uid="PDFSolid_Conversion.Common.LibraryManager.SetDocumentAIModelCount(System.Int32,System.Int32)">SetDocumentAIModelCount(int, int)</h4>
-  <div class="markdown level1 summary"><p>Set the number of layout and table models for Document AI.</p>
+  <div class="markdown level1 summary"><p>Sets the number of DocumentAI models for layout analysis and table recognition.
+Call it before conversion starts; the call is ignored while conversion tasks are running
+or a release is pending.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void SetDocumentAIModelCount(int layout_model_count, int table_model_coun)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void SetDocumentAIModelCount(int layout_model_count, int table_model_count)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -461,13 +498,13 @@ setting up logging and progress callbacks, retrieving version information, and c
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td><span class="parametername">layout_model_count</span></td>
-        <td><p>The number of layout models.</p>
+        <td><p>The number of layout analysis models.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><span class="parametername">table_model_coun</span></td>
-        <td><p>The number of tabular models.</p>
+        <td><span class="parametername">table_model_count</span></td>
+        <td><p>The number of table recognition models.</p>
 </td>
       </tr>
     </tbody>

@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class CPDFConversion | PDFSolid Conversion SDK ">
     
-    <meta name="description" content="Provides functionalities to convert PDF files into various formats such as Word, Excel, PPT, HTML, etc.">
+    <meta name="description" content="Provides functionalities to convert PDF files into various formats such as Word, Excel, PPT, HTML, etc., and to convert Word documents to PDF.">
       <link rel="shortcut icon" href="../favicon.ico">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
       <link rel="stylesheet" href="../styles/docfx.css">
@@ -81,7 +81,8 @@
 
 
   <h1 id="PDFSolid_Conversion_Conversion_CPDFConversion" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion" class="text-break">Class CPDFConversion</h1>
-  <div class="markdown level0 summary"><p>Provides functionalities to convert PDF files into various formats such as Word, Excel, PPT, HTML, etc.</p>
+  <div class="markdown level0 summary"><p>Provides functionalities to convert PDF files into various formats such as Word, Excel, PPT, HTML, etc.,
+and to convert Word documents to PDF.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -133,6 +134,33 @@
     <pre><code class="lang-csharp hljs">[Obsolete(&quot;The native library no longer exports this entry point. Set ConvertCallback.cancel on the conversion call instead.&quot;)]
 public static void Cancel()</code></pre>
   </div>
+
+
+  <a id="PDFSolid_Conversion_Conversion_CPDFConversion_IsWordToPDFSupported_" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion.IsWordToPDFSupported*"></a>
+  <h4 id="PDFSolid_Conversion_Conversion_CPDFConversion_IsWordToPDFSupported" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion.IsWordToPDFSupported">IsWordToPDFSupported()</h4>
+  <div class="markdown level1 summary"><p>Whether the loaded native library can convert Word documents to PDF.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsWordToPDFSupported()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>True when <a class="xref" href="PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_ConvertCallback_">StartWordToPDF(string, string, ConvertCallback)</a> and its overloads can be called.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 
   <a id="PDFSolid_Conversion_Conversion_CPDFConversion_StartPDFToExcel_" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion.StartPDFToExcel*"></a>
@@ -892,6 +920,222 @@ public static void Cancel()</code></pre>
       </tr>
     </tbody>
   </table>
+
+
+  <a id="PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF*"></a>
+  <h4 id="PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_ConvertCallback_" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(System.String,System.String,PDFSolid_Conversion.Common.ConvertCallback)">StartWordToPDF(string, string, ConvertCallback)</h4>
+  <div class="markdown level1 summary"><p>Starts the conversion of a Word document to a PDF file with the default options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ErrorCode StartWordToPDF(string file_path, string output_path, ConvertCallback callback = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">file_path</span></td>
+        <td><p>The input Word document path.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">output_path</span></td>
+        <td><p>The output path of the converted PDF file.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.ConvertCallback.html">ConvertCallback</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>Callback for reporting conversion progress or canceling the operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html">ErrorCode</a></td>
+        <td><p>ErrorCode indicating the success or failure of the operation.
+<a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html#PDFSolid_Conversion_Common_ErrorCode_e_ErrUnsupportedFeature">e_ErrUnsupportedFeature</a> means the document uses features that may affect
+fidelity; the PDF is usually still produced.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_ConvertCallback__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native libraries built with Word to PDF support export this entry point.
+Call <a class="xref" href="PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_IsWordToPDFSupported">IsWordToPDFSupported()</a> after the library is loaded to find out.</p>
+</div>
+
+
+  <a id="PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF*"></a>
+  <h4 id="PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_WordOptions_PDFSolid_Conversion_Common_ConvertCallback_" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(System.String,System.String,PDFSolid_Conversion.Common.WordOptions,PDFSolid_Conversion.Common.ConvertCallback)">StartWordToPDF(string, string, WordOptions, ConvertCallback)</h4>
+  <div class="markdown level1 summary"><p>Starts the conversion of a Word document to a PDF file with bookmark and page-range options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ErrorCode StartWordToPDF(string file_path, string output_path, WordOptions options, ConvertCallback callback = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">file_path</span></td>
+        <td><p>The input Word document path.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">output_path</span></td>
+        <td><p>The output path of the converted PDF file.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.WordOptions.html">WordOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Conversion options; null uses the defaults. Word to PDF uses only
+<a class="xref" href="PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_PageRanges">PageRanges</a> and <a class="xref" href="PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_WordPdfBookmarkMode">WordPdfBookmarkMode</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.ConvertCallback.html">ConvertCallback</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>Callback for reporting conversion progress or canceling the operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html">ErrorCode</a></td>
+        <td><p>ErrorCode indicating the success or failure of the operation.
+<a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html#PDFSolid_Conversion_Common_ErrorCode_e_ErrUnsupportedFeature">e_ErrUnsupportedFeature</a> means the document uses features that may affect
+fidelity; the PDF is usually still produced. Use
+<a class="xref" href="PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_WordOptions_System_String__PDFSolid_Conversion_Common_ConvertCallback_">StartWordToPDF(string, string, WordOptions, out string, ConvertCallback)</a>
+to learn which features were reported.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_WordOptions_PDFSolid_Conversion_Common_ConvertCallback__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native libraries built with Word to PDF support export this entry point.
+Call <a class="xref" href="PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_IsWordToPDFSupported">IsWordToPDFSupported()</a> after the library is loaded to find out.</p>
+</div>
+
+
+  <a id="PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF*"></a>
+  <h4 id="PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_WordOptions_System_String__PDFSolid_Conversion_Common_ConvertCallback_" data-uid="PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(System.String,System.String,PDFSolid_Conversion.Common.WordOptions,System.String@,PDFSolid_Conversion.Common.ConvertCallback)">StartWordToPDF(string, string, WordOptions, out string, ConvertCallback)</h4>
+  <div class="markdown level1 summary"><p>Starts the conversion of a Word document to a PDF file and returns the conversion diagnostics.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ErrorCode StartWordToPDF(string file_path, string output_path, WordOptions options, out string diagnostics, ConvertCallback callback = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">file_path</span></td>
+        <td><p>The input Word document path.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">output_path</span></td>
+        <td><p>The output path of the converted PDF file.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.WordOptions.html">WordOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td><p>Conversion options; null uses the defaults. Word to PDF uses only
+<a class="xref" href="PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_PageRanges">PageRanges</a> and <a class="xref" href="PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_WordPdfBookmarkMode">WordPdfBookmarkMode</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">diagnostics</span></td>
+        <td><p>Receives the diagnostics decoded from the native UTF-8 text, or an empty
+string when there is nothing to report. The first line is <code>output=produced</code> when the PDF was
+written or <code>output=not_produced</code> when it was not; each following line names one unsupported
+feature, reported once per feature.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.ConvertCallback.html">ConvertCallback</a></td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>Callback for reporting conversion progress or canceling the operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html">ErrorCode</a></td>
+        <td><p>ErrorCode indicating the success or failure of the operation.
+<a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html#PDFSolid_Conversion_Common_ErrorCode_e_ErrUnsupportedFeature">e_ErrUnsupportedFeature</a> means the document uses features that may affect
+fidelity; the PDF is usually still produced, which the first diagnostics line confirms.
+<a class="xref" href="PDFSolid_Conversion.Common.ErrorCode.html#PDFSolid_Conversion_Common_ErrorCode_e_ErrOutOfMemory">e_ErrOutOfMemory</a> means the diagnostics did not fit in the native
+8192-byte buffer. A real conversion failure returns its own error code, which takes precedence.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_WordOptions_System_String__PDFSolid_Conversion_Common_ConvertCallback__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Only native libraries built with Word to PDF support export this entry point.
+Call <a class="xref" href="PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_IsWordToPDFSupported">IsWordToPDFSupported()</a> after the library is loaded to find out.</p>
+</div>
 
 </article>
           </div>

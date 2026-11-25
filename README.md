@@ -1,15 +1,17 @@
 # PDFSolid Conversion SDK for Windows (.NET)
 
-High-performance .NET SDK for converting PDF to Word, Excel, PowerPoint, HTML, Image, TXT, RTF, CSV, JSON, Markdown, Searchable PDF, and OFD with AI-powered OCR, layout analysis, and table recognition.
+High-performance .NET SDK for converting PDF to Word, Excel, PowerPoint, HTML, Image, TXT, RTF, CSV, JSON, Markdown, Searchable PDF, and OFD with AI-powered OCR, layout analysis, and table recognition. SDK v1.3.0 also converts Word documents (`.docx`) to PDF.
 
 ## Features
 
 - **PDF to Word** (.docx) — Flow and Box layout modes
+- **Word to PDF** (.docx → .pdf) — optional page ranges and PDF bookmarks
 - **PDF to Excel** (.xlsx) — per-table, per-page, or per-document worksheet options
 - **PDF to PowerPoint** (.pptx)
 - **PDF to HTML** (.html) — single/multi-page with optional bookmark navigation
 - **PDF to CSV** (.csv)
 - **PDF to Image** (.png, .jpg, .jpeg, .jpeg2000, .bmp, .tiff, .tga, .gif, .webp) — color/grayscale/binary, configurable scaling
+- **Image to Image** — supported image inputs, including individual frames of multi-page TIFF files
 - **PDF to Plain Text** (.txt) — optional table format preservation
 - **PDF to RTF** (.rtf)
 - **PDF to Searchable PDF** (.pdf) — OCR with transparent text layer
@@ -36,17 +38,25 @@ High-performance .NET SDK for converting PDF to Word, Excel, PowerPoint, HTML, I
 
 Contact [sales@pdfsolid.com](mailto:sales@pdfsolid.com) for a 30-day free trial or commercial license.
 
-### 2. Apply License and Initialize
+### 2. Load the Native SDK, Initialize and Apply the License
+
+Use the 1.3.0 managed assembly with the matching native DLLs for your process (x86 or x64). See [Getting Started](doc/html/getting-started.html) for deployment.
 
 ```csharp
 using PDFSolid_Conversion.Common;
 using PDFSolid_Conversion.Conversion;
 
-ErrorCode result = LibraryManager.LicenseVerify("LICENSE_KEY");
-if (result != ErrorCode.e_ErrSuccess) {
+if (!LibraryManager.InitLibrary(@"path\to\x64") ||
+    !LibraryManager.Initialize(@"path\to\resource"))
+{
     return;
 }
-LibraryManager.Initialize("path/to/resource");
+ErrorCode result = LibraryManager.LicenseVerify("LICENSE_KEY");
+if (result != ErrorCode.e_ErrSuccess)
+{
+    LibraryManager.Release();
+    return;
+}
 ```
 
 ### 3. Convert
@@ -64,6 +74,26 @@ LibraryManager.Release();
 ```
 
 ## Conversion Examples
+
+### Word (DOCX) to PDF
+
+Use the 1.3.0 managed assembly with the matching native SDK and dependencies for your process architecture (x86 or x64). After applying the license and initializing the SDK, check that the loaded native library provides Word to PDF:
+
+```csharp
+using PDFSolid_Conversion.Common;
+using PDFSolid_Conversion.Conversion;
+
+if (!CPDFConversion.IsWordToPDFSupported())
+{
+    throw new System.NotSupportedException("The loaded native SDK does not expose Word to PDF.");
+}
+
+ErrorCode result = CPDFConversion.StartWordToPDF("input.docx", "output.pdf");
+```
+
+The default converts all pages without PDF bookmarks. With the `WordOptions` overload, set `WordOptions.PageRanges` to select pages (for example, `1-2`) and `WordOptions.WordPdfBookmarkMode` to generate bookmarks from headings or Word bookmarks. Check the returned status before using the PDF. `ErrorCode.e_ErrUnsupportedFeature` means the input contains features that may affect fidelity; a PDF may still have been written.
+
+For the overload with `out string diagnostics`, see the [.NET API reference](doc/html/api/PDFSolid_Conversion.Conversion.CPDFConversion.html).
 
 ### PDF to Excel
 
@@ -85,13 +115,13 @@ ErrorCode error = CPDFConversion.StartPDFToImage("input.pdf", "", "output", imag
 ### PDF to Searchable PDF (OCR)
 
 ```csharp
-LibraryManager.SetDocumentAIModel("path/model", -1);
+LibraryManager.SetDocumentAIModel("path/to/resource/models/documentai.model", -1);
 
-WordOptions wordOptions = new WordOptions();
-wordOptions.EnableOCR = true;
-wordOptions.Languages = new List<OCRLanguage> { OCRLanguage.e_ENGLISH };
-wordOptions.TransparentText = true;
-ErrorCode error = CPDFConversion.StartPDFToWord("scan.pdf", "", "output.docx", wordOptions);
+var options = new SearchablePdfOptions();
+options.EnableOCR = true;
+options.Languages = new System.Collections.Generic.List<OCRLanguage> { OCRLanguage.e_ENGLISH };
+options.TransparentText = true;
+ErrorCode error = CPDFConversion.StartPDFToSearchablePDF("scan.pdf", "", "output.pdf", options);
 ```
 
 ### PDF to JSON with Table Extraction
@@ -104,20 +134,7 @@ ErrorCode error = CPDFConversion.StartPDFToJson("input.pdf", "", "output.json", 
 
 ### Custom AI Engine (SDK v1.1.0+)
 
-```csharp
-ConvertCallback callback = new ConvertCallback();
-callback.OnOcr = (imagePath) => { /* your OCR */ return true; };
-callback.GetOcrResult = () => { return ocrJson; };
-callback.OnLayout = (imagePath) => { /* your layout */ return true; };
-callback.GetLayoutResult = () => { return layoutJson; };
-callback.OnTable = (imagePath) => { /* your table */ return true; };
-callback.GetTableResult = () => { return tableJson; };
-
-WordOptions wordOptions = new WordOptions();
-wordOptions.EnableOCR = true;
-wordOptions.EnableAiLayout = true;
-CPDFConversion.StartPDFToWord("input.pdf", "", "output.docx", wordOptions, callback);
-```
+See [Use Custom AI Models via Callbacks](doc/developer_guide_dotnet.md#312-use-custom-ai-models-via-callbacks) for the callback delegates, JSON results, and native pointer lifetime requirements.
 
 ## Documentation
 

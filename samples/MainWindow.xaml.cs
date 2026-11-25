@@ -1,54 +1,24 @@
 ﻿using PDFSolid_Conversion.Common;
 using PDFSolid_Conversion.Conversion;
-using PDFSolid_Conversion.DocumentAI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
-using System.Xml.Linq;
-using MessageBox = System.Windows.MessageBox;
+using System.Windows.Media.Animation;
 
 namespace PDFSolid_Conversion_Demo
 {
-  public class ConvertOptions
-  {
-    public OCRLanguage OCRLanguage = OCRLanguage.e_ENGLISH;
-    public bool ContainAnnotations = true;
-    public bool CsvFormat = false;
-    public bool AllContent = false;
-    public bool OneTablePerSheet = true;
-    public bool ContainImages = true;
-    public bool ContainPageBackgroundImage = true;
-    public bool TransparentText = true;
-    public bool AutoCreateFolder = true;
-    public bool OutputDocumentPerPage = false;
-    public bool EnableAiLayout = true;
-    public bool EnableAiTableRecognition = true;
-    public bool EnableOCR = false;
-    public bool EnableDocumentOrientationClassification = false;
-    public bool EnableDocumentDewarp = false;
-    public bool TxtTableFormat = true;
-    public bool FormulaToImage = true;
-    public bool ImagePathEnhance = false;
-    public bool ContainTables = true;
-    public float ImageRatio = 4.0f;
-    public PageLayoutMode LayoutMode = PageLayoutMode.e_Flow;
-    public ExcelWorksheetOption WorksheetOption = ExcelWorksheetOption.e_ForTable;
-    public HtmlPageOption htmlOption = HtmlPageOption.e_SinglePage;
-    public ImageType ImageFormat = ImageType.JPG;
-    public ImageColorMode ImageMode = ImageColorMode.Color;
-    public OCROption OcrOption = OCROption.e_All;
-    public string FontName = "";
-    public string PageRanges = "";
-  }
-
   /// <summary>
   /// Copyright © 2014-2026 PDF Technologies, Inc. All Rights Reserved.
   ///
@@ -61,725 +31,757 @@ namespace PDFSolid_Conversion_Demo
   /// </summary>
   public partial class MainWindow : Window
   {
-    private OnProgress getPorgress = null;
-    private OnCancel getCancel = null;
-    private ErrorCode err;
-    private bool cancel = false;
-    public ConvertOptions Options;
-    private List<string> selectedFiles;
+    private readonly ObservableCollection<FileItem> files = new ObservableCollection<FileItem>();
+    private readonly Dictionary<ConversionTool, RadioButton> navItems = new Dictionary<ConversionTool, RadioButton>();
+
+    private ConvertOptions options = new ConvertOptions();
+    private ConversionTool tool;
+    private string outputFolder = "";
+    private string lastRunFolder = "";
+    private bool running;
+    private volatile bool cancelRequested;
+    private readonly SemaphoreSlim conversionGate = new SemaphoreSlim(4, 4);
+
+    private bool sdkChecked;
+    private bool sdkLoaded;
+    private ErrorCode licenseResult = ErrorCode.e_ErrLicenseUninitialized;
+    private bool wordToPdfSupported;
+
     public MainWindow()
     {
       InitializeComponent();
-      getPorgress = GetProgress;
-      getCancel = GetCancel;
-      Options = new ConvertOptions();
+      ThemeManager.Attach(this);
+
+      FileList.ItemsSource = files;
+      OptionsView.Options = options;
+      BuildNav();
+      SelectTool(ConversionTool.All[0], false);
+      UpdateFileArea();
+      UpdateOutputField();
     }
 
-    #region Method
-    private void GetProgress(int pageIndex, int total)
+    #region SDK
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-      Dispatcher.Invoke(() =>
+      string exePath = Path.GetDirectoryName(typeof(MainWindow).Assembly.Location);
+      string libraryPath = Path.Combine(exePath, "x64");
+      sdkChecked = true;
+
+      sdkLoaded = LibraryManager.InitLibrary(libraryPath);
+      if (!sdkLoaded)
       {
-        Progress.Text = pageIndex + "/" + total;
-        if (pageIndex == total)
-        {
-          Progress.Text += " Conversion to complete.";
-        }
-      });
+        Log("The SDK library could not be loaded from " + libraryPath + ".");
+        SetSdkStatus(false, "SDK not loaded", "Check the x64 folder");
+        UpdateNotice();
+        UpdateActions();
+        return;
+      }
+
+      LibraryManager.Initialize(Path.Combine(exePath, "resource"));
+      string version = LibraryManager.GetVersion();
+      Log("SDK " + version + " loaded from " + libraryPath);
+
+      licenseResult = LibraryManager.LicenseVerify(Path.Combine(exePath, "license.xml"));
+      if (licenseResult != ErrorCode.e_ErrSuccess)
+      {
+        Log("License verification failed. " + ConversionRunner.Describe(licenseResult));
+        SetSdkStatus(false, "License invalid", "SDK " + version);
+      }
+      else
+      {
+        Log("License verified");
+        SetSdkStatus(true, "License active", "SDK " + version);
+
+        ErrorCode modelResult = LibraryManager.SetDocumentAIModel(Path.Combine(exePath, "resource", "models", "documentai.model"));
+        Log(modelResult == ErrorCode.e_ErrSuccess
+          ? "Document AI model loaded"
+          : "Document AI model not loaded. " + ConversionRunner.Describe(modelResult));
+      }
+
+      wordToPdfSupported = CPDFConversion.IsWordToPDFSupported();
+      Log(wordToPdfSupported ? "Word to PDF is available" : "This SDK build doesn't include Word to PDF");
+      UpdateNotice();
+      UpdateActions();
     }
 
-    private ConvertCallback BuildCallback()
+    private void SetSdkStatus(bool healthy, string status, string detail)
     {
+      SdkDot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, healthy ? "OkBrush" : "BadBrush");
+      SdkStatus.Text = status;
+      SdkVersion.Text = detail;
+      if (!healthy)
+      {
+        ShowLog(true);
+      }
+    }
+
+    private ConvertCallback BuildCallback(FileItem file, out OnProgress progress, out OnCancel cancel)
+    {
+      progress = (pageIndex, total) => Dispatcher.BeginInvoke(new Action(() =>
+      {
+        if (file.Status == FileStatus.Converting)
+          file.SetProgress(pageIndex, total);
+      }));
+      cancel = () => cancelRequested;
       ConvertCallback callback = new ConvertCallback();
-      callback.progress = Marshal.GetFunctionPointerForDelegate(getPorgress);
-      callback.cancel = Marshal.GetFunctionPointerForDelegate(getCancel);
+      callback.progress = Marshal.GetFunctionPointerForDelegate(progress);
+      callback.cancel = Marshal.GetFunctionPointerForDelegate(cancel);
       callback.ocr = IntPtr.Zero;
       callback.get_ocr_result = IntPtr.Zero;
       return callback;
     }
 
-
-    private bool GetCancel()
-    {
-      return cancel;
-    }
-
-    private bool ShouldEnableOCR()
-    {
-      return Options.EnableOCR;
-    }
-
-    private static string GetErrorMessage(ErrorCode error)
-    {
-      switch (error)
-      {
-        case ErrorCode.e_ErrSuccess:
-          return "No error occurred.";
-
-        case ErrorCode.e_ErrCancel:
-          return "The conversion was canceled.";
-
-        case ErrorCode.e_ErrFile:
-          return "The input file could not be found or opened.";
-
-        case ErrorCode.e_ErrPDFPassword:
-          return "The PDF requires a password, or the supplied password is incorrect.";
-
-        case ErrorCode.e_ErrPDFPage:
-          return "A PDF page could not be loaded because it is missing or contains invalid content.";
-
-        case ErrorCode.e_ErrPDFFormat:
-          return "The input is not a valid PDF file, or the file is corrupted.";
-
-        case ErrorCode.e_ErrPDFSecurity:
-          return "The PDF uses an unsupported security scheme.";
-
-        case ErrorCode.e_ErrOutOfMemory:
-          return "The SDK could not allocate enough memory to complete the operation.";
-
-        case ErrorCode.e_ErrIO:
-          return "A system input/output error occurred while reading or writing data.";
-
-        case ErrorCode.e_ErrCompress:
-          return "The SDK failed to compress the output folder.";
-
-        case ErrorCode.e_ErrLicenseInvalid:
-          return "The license is invalid.";
-
-        case ErrorCode.e_ErrLicenseExpire:
-          return "The license has expired.";
-
-        case ErrorCode.e_ErrLicenseUnsupportedPlatform:
-          return "The license does not support the current platform.";
-
-        case ErrorCode.e_ErrLicenseUnsupportedID:
-          return "The license does not support this application ID.";
-
-        case ErrorCode.e_ErrLicenseUnsupportedDevice:
-          return "The license does not support this device ID.";
-
-        case ErrorCode.e_ErrLicensePermissionDeny:
-          return "The license does not grant permission for this function.";
-
-        case ErrorCode.e_ErrLicenseUninitialized:
-          return "The license has not been initialized.";
-
-        case ErrorCode.e_ErrLicenseIllegalAccess:
-          return "The SDK rejected an illegal API access.";
-
-        case ErrorCode.e_ErrLicenseFileReadFailed:
-          return "The license file could not be read.";
-
-        case ErrorCode.e_ErrLicenseOCRPermissionDeny:
-          return "The license does not grant permission to use OCR.";
-
-        case ErrorCode.e_ErrLicenseConcurrencyExceeded:
-          return "The number of concurrent conversions exceeds the license limit.";
-
-        case ErrorCode.e_ErrLicensePageLimitExceeded:
-          return "The number of pages being converted exceeds the license limit.";
-
-        case ErrorCode.e_ErrLicenseQuotaCorrupted:
-          return "The stored license quota data is corrupted or has been tampered with.";
-
-        case ErrorCode.e_ErrNoTable:
-          return "No tables were found in the source file.";
-
-        case ErrorCode.e_ErrOCRFailure:
-          return "The SDK failed to perform OCR recognition.";
-
-        case ErrorCode.e_ErrConverting:
-          return "Another conversion task is already running.";
-
-        case ErrorCode.e_ErrInvalidArg:
-          return "An invalid argument was provided to the SDK.";
-
-        case ErrorCode.e_ErrInvalidHandle:
-          return "An SDK handle is invalid, uninitialized, or has already been released.";
-
-        case ErrorCode.e_ErrModelInvalidFormat:
-          return "The AI model file has an invalid format or is corrupted.";
-
-        case ErrorCode.e_ErrModelFunctionUnsupported:
-          return "The AI model does not support the requested function.";
-
-        case ErrorCode.e_ErrModelFormatUnsupported:
-          return "The AI model format is not supported by this SDK.";
-
-        case ErrorCode.e_ErrModelSDKMismatch:
-          return "The AI model is incompatible with the current SDK version.";
-
-        case ErrorCode.e_ErrImageDataEmpty:
-          return "The image data is empty or was not provided.";
-
-        case ErrorCode.e_ErrImageWHError:
-          return "The image width or height is invalid.";
-
-        case ErrorCode.e_ErrImageUnsupportedFormat:
-          return "The image pixel format is not supported by the SDK.";
-
-        case ErrorCode.e_ErrImageInvalid:
-          return "The image data is invalid or corrupted.";
-
-        case ErrorCode.e_ErrExpire:
-          return "A required resource, license, or token has expired.";
-
-        case ErrorCode.e_ErrMissingArg:
-          return "A required argument was not provided to the SDK.";
-
-        case ErrorCode.e_ErrLicenseUnsupportedAPI:
-          return "The current license does not permit this API.";
-
-        case ErrorCode.e_ErrLicenseMismatch:
-          return "The license does not match the current device, module, or SDK version.";
-
-        case ErrorCode.e_ErrInvalidTable:
-          return "The table data is invalid or missing.";
-
-        case ErrorCode.e_ErrUnsupportedFeature:
-          return "The source document uses a feature the SDK cannot lay out yet, so no output was produced.";
-
-        case ErrorCode.e_ErrUnknown:
-          return "An unknown SDK error occurred.";
-
-        case ErrorCode.e_ErrLibraryNotLoad:
-          return "The native SDK library has not been loaded.";
-
-        default:
-          return "The SDK returned an unrecognized error code.";
-      }
-    }
-
-    private void ShowErrorMessage(ErrorCode error, string operation = "Conversion")
-    {
-      string errorName = Enum.IsDefined(typeof(ErrorCode), error) ? error.ToString() : "Unrecognized";
-      string message = operation + " failed.\n\nReason: " + GetErrorMessage(error)
-        + "\n\nError code: " + (int)error + " (" + errorName + ")";
-
-      MessageBox.Show(message, operation + " Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-    }
-
-    private async Task WordConvert()
-    {
-      try
-      {
-        WordOptions wordOptions = new WordOptions();
-        wordOptions.ContainImage = Options.ContainImages;
-        wordOptions.ContainAnnotation = Options.ContainAnnotations;
-        wordOptions.FormulaToImage = Options.FormulaToImage;
-        wordOptions.EnableAiLayout = Options.EnableAiLayout;
-        wordOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
-        wordOptions.EnableOCR = ShouldEnableOCR();
-        wordOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        wordOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        wordOptions.LayoutMode = Options.LayoutMode;
-        wordOptions.ContainPageBackgroundImage = Options.ContainPageBackgroundImage;
-        wordOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        wordOptions.OcrOption = Options.OcrOption;
-        wordOptions.FontName = Options.FontName;
-        wordOptions.PageRanges = Options.PageRanges;
-        wordOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToWord(input, "", outputFolder, wordOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task ExcelConvert()
-    {
-      try
-      {
-        ExcelOptions excelOptions = new ExcelOptions();
-        excelOptions.ContainImage = Options.ContainImages;
-        excelOptions.ContainAnnotation = Options.ContainAnnotations;
-        excelOptions.FormulaToImage = Options.FormulaToImage;
-        excelOptions.AllContent = Options.AllContent;
-        excelOptions.CsvFormat = Options.CsvFormat;
-        excelOptions.EnableAiLayout = Options.EnableAiLayout;
-        excelOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
-        excelOptions.EnableOCR = ShouldEnableOCR();
-        excelOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        excelOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        excelOptions.WorksheetOption = Options.WorksheetOption;
-        excelOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        excelOptions.AutoCreateFolder = Options.AutoCreateFolder;
-        excelOptions.OcrOption = Options.OcrOption;
-        excelOptions.FontName = Options.FontName;
-        excelOptions.PageRanges = Options.PageRanges;
-        excelOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToExcel(input, "", outputFolder, excelOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task PptConvert()
-    {
-      try
-      {
-        PptOptions pptOptions = new PptOptions();
-        pptOptions.ContainImage = Options.ContainImages;
-        pptOptions.ContainAnnotation = Options.ContainAnnotations;
-        pptOptions.FormulaToImage = Options.FormulaToImage;
-        pptOptions.EnableAiLayout = Options.EnableAiLayout;
-        pptOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
-        pptOptions.EnableOCR = ShouldEnableOCR();
-        pptOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        pptOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        pptOptions.ContainPageBackgroundImage = Options.ContainPageBackgroundImage;
-        pptOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        pptOptions.OcrOption = Options.OcrOption;
-        pptOptions.FontName = Options.FontName;
-        pptOptions.PageRanges = Options.PageRanges;
-        pptOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToPpt(input, "", outputFolder, pptOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task HtmlConvert()
-    {
-      try
-      {
-        HtmlOptions htmlOptions = new HtmlOptions();
-        htmlOptions.ContainImage = Options.ContainImages;
-        htmlOptions.ContainAnnotation = Options.ContainAnnotations;
-        htmlOptions.FormulaToImage = Options.FormulaToImage;
-        htmlOptions.EnableAiLayout = Options.EnableAiLayout;
-        htmlOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
-        htmlOptions.EnableOCR = ShouldEnableOCR();
-        htmlOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        htmlOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        htmlOptions.LayoutMode = Options.LayoutMode;
-        htmlOptions.HtmlOption = Options.htmlOption;
-        htmlOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        htmlOptions.OcrOption = Options.OcrOption;
-        htmlOptions.PageRanges = Options.PageRanges;
-        htmlOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToHtml(input, "", outputFolder, htmlOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task RtfConvert()
-    {
-      try
-      {
-        RtfOptions rtfOptions = new RtfOptions();
-        rtfOptions.ContainImage = Options.ContainImages;
-        rtfOptions.ContainAnnotation = Options.ContainAnnotations;
-        rtfOptions.FormulaToImage = Options.FormulaToImage;
-        rtfOptions.EnableAiLayout = Options.EnableAiLayout;
-        rtfOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
-        rtfOptions.EnableOCR = ShouldEnableOCR();
-        rtfOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        rtfOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        rtfOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        rtfOptions.OcrOption = Options.OcrOption;
-        rtfOptions.PageRanges = Options.PageRanges;
-        rtfOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToRtf(input, "", outputFolder, rtfOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task PdfConvert()
-    {
-      try
-      {
-        SearchablePdfOptions pdfOptions = new SearchablePdfOptions();
-        pdfOptions.ContainImage = Options.ContainImages;
-        pdfOptions.ContainPageBackgroundImage = Options.ContainPageBackgroundImage;
-        pdfOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        pdfOptions.OcrOption = Options.OcrOption;
-        pdfOptions.TransparentText = Options.TransparentText;
-        pdfOptions.FormulaToImage = Options.FormulaToImage;
-        pdfOptions.EnableOCR = true;
-        pdfOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        pdfOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        pdfOptions.PageRanges = Options.PageRanges;
-        pdfOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToSearchablePDF(input, "", outputFolder, pdfOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task TxtConvert()
-    {
-      try
-      {
-        TxtOptions txtOptions = new TxtOptions();
-        txtOptions.TableFormat = Options.TxtTableFormat;
-        txtOptions.EnableAiLayout = Options.EnableAiLayout;
-        txtOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
-        txtOptions.EnableOCR = ShouldEnableOCR();
-        txtOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        txtOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        txtOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        txtOptions.OcrOption = Options.OcrOption;
-        txtOptions.PageRanges = Options.PageRanges;
-        txtOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToTxt(input, "", outputFolder, txtOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task ImageConvert()
-    {
-      try
-      {
-        ImageOptions imageOptions = new ImageOptions();
-        imageOptions.ImageScaling = Options.ImageRatio;
-        imageOptions.PathEnhance = Options.ImagePathEnhance;
-        imageOptions.ImageType = Options.ImageFormat;
-        imageOptions.ImageColorMode = Options.ImageMode;
-        imageOptions.PageRanges = Options.PageRanges;
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToImage(input, "", Path.Combine(outputFolder, outputFileName), imageOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task JsonConvert()
-    {
-      try
-      {
-        JsonOptions jsonOptions = new JsonOptions();
-        jsonOptions.ContainImage = Options.ContainImages;
-        jsonOptions.ContainTable = Options.ContainTables;
-        jsonOptions.EnableAiLayout = Options.EnableAiLayout;
-        jsonOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
-        jsonOptions.EnableOCR = ShouldEnableOCR();
-        jsonOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        jsonOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        jsonOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        jsonOptions.OcrOption = Options.OcrOption;
-        jsonOptions.PageRanges = Options.PageRanges;
-        jsonOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToJson(input, "", outputFolder, jsonOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task MarkdownConvert()
-    {
-      try
-      {
-        MarkdownOptions markdownOptions = new MarkdownOptions();
-        markdownOptions.ContainImage = Options.ContainImages;
-        markdownOptions.ContainAnnotation = Options.ContainAnnotations;
-        markdownOptions.EnableAiLayout = Options.EnableAiLayout;
-        markdownOptions.EnableAiTableRecognition = Options.EnableAiTableRecognition;
-        markdownOptions.EnableOCR = ShouldEnableOCR();
-        markdownOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        markdownOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        markdownOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        markdownOptions.OcrOption = Options.OcrOption;
-        markdownOptions.PageRanges = Options.PageRanges;
-        markdownOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToMarkdown(input, "", outputFolder, markdownOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
-
-    private async Task OfdConvert()
-    {
-      try
-      {
-        OfdOptions ofdOptions = new OfdOptions();
-        ofdOptions.TransparentText = Options.TransparentText;
-        ofdOptions.OutputDocumentPerPage = Options.OutputDocumentPerPage;
-        ofdOptions.OcrOption = Options.OcrOption;
-        ofdOptions.EnableOCR = true;
-        ofdOptions.EnableDocumentOrientationClassification = Options.EnableDocumentOrientationClassification;
-        ofdOptions.EnableDocumentDewarp = Options.EnableDocumentDewarp;
-        ofdOptions.PageRanges = Options.PageRanges;
-        ofdOptions.Languages = new List<OCRLanguage> { Options.OCRLanguage };
-
-        string outputFolder = OutputPath.Text;
-        string outputFileName = Path.GetFileNameWithoutExtension(InputPath.Text);
-        string input = InputPath.Text;
-        ConvertCallback callback = BuildCallback();
-        err = await Task.Run(() => CPDFConversion.StartPDFToOfd(input, "", outputFolder, ofdOptions, callback));
-        if (err != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(err);
-        }
-      }
-      catch (Exception ex)
-      {
-        return;
-      }
-    }
     #endregion
 
-    #region Event
-    private void Window_Loaded(object sender, RoutedEventArgs e)
+    #region Tools
+
+    private void BuildNav()
     {
-      string exePath = Path.GetDirectoryName(typeof(MainWindow).Assembly.Location);
-      string resPath = exePath + "\\";
-
-      if (LibraryManager.InitLibrary(Path.Combine(resPath, "x64")))
+      var groups = new[]
       {
-        LibraryManager.Initialize(Path.Combine(resPath, "resource"));
-        ErrorCode result = LibraryManager.LicenseVerify(Path.Combine(resPath, "license.xml"));
-        if (result != ErrorCode.e_ErrSuccess)
-        {
-          ShowErrorMessage(result, "SDK license verification");
-          return;
-        }
+        new { Group = ToolGroup.FromPdf, Title = "Convert PDF to" },
+        new { Group = ToolGroup.MakeSearchable, Title = "Make searchable" },
+        new { Group = ToolGroup.CreatePdf, Title = "Create PDF" },
+      };
 
-        ErrorCode modelResult = LibraryManager.SetDocumentAIModel(Path.Combine(resPath, "resource", "models", "documentai.model"));
-        if (modelResult != ErrorCode.e_ErrSuccess)
+      foreach (var group in groups)
+      {
+        var title = new TextBlock { Text = group.Title, FontSize = 12, FontWeight = FontWeights.SemiBold, Margin = new Thickness(20, 16, 20, 6) };
+        title.SetResourceReference(TextBlock.ForegroundProperty, "Ink3Brush");
+        NavPanel.Children.Add(title);
+
+        foreach (ConversionTool entry in ConversionTool.All.Where(t => t.Group == group.Group))
         {
-          ShowErrorMessage(modelResult, "Document AI model loading");
+          var content = new DockPanel();
+          var chip = new DocChip { Width = 16, Height = 20, ShowLines = true, Fill = entry.Chip.BaseBrush, Margin = new Thickness(0, 0, 10, 0) };
+          content.Children.Add(chip);
+          if (entry.Badge != null)
+          {
+            var badge = new Border { Style = (Style)FindResource("Pill"), Child = new TextBlock { Text = entry.Badge } };
+            DockPanel.SetDock(badge, Dock.Right);
+            content.Children.Add(badge);
+          }
+          content.Children.Add(new TextBlock { Text = entry.Name, VerticalAlignment = VerticalAlignment.Center });
+
+          var item = new RadioButton { Style = (Style)FindResource("NavItem"), Content = content, GroupName = "tools" };
+          System.Windows.Automation.AutomationProperties.SetName(item, entry.Title);
+          ConversionTool target = entry;
+          item.Checked += (sender, args) => SelectTool(target, true);
+          navItems[entry] = item;
+          NavPanel.Children.Add(item);
         }
+      }
+    }
+
+    private void SelectTool(ConversionTool next, bool animate)
+    {
+      if (next == tool)
+      {
+        return;
+      }
+      tool = next;
+      navItems[next].IsChecked = true;
+      ThemeManager.SetAccent(next.Target);
+
+      SourceChip.Fill = next.Source.BaseBrush;
+      SourceChip.Label = next.Source.Label;
+      SwapTargetChip(next.Target, animate);
+      ToolTitle.Text = next.Title;
+      ToolDescription.Text = next.Description;
+      DropTitle.Text = "Drop " + next.InputNoun + " here";
+      DropTypes.Text = next.InputSummary;
+      DropBarText.Text = "Drop more " + next.InputNoun + " here, or";
+
+      OptionsView.ShowTool(next);
+      ResetButton.Visibility = next.Options.Length > 0 ? Visibility.Visible : Visibility.Hidden;
+      OptionsScroller.ScrollToTop();
+
+      // Results belong to the tool that produced them, so a new tool starts every row afresh.
+      foreach (FileItem file in files)
+      {
+        MarkForTool(file);
+      }
+      ClearRunSummary();
+      UpdateNotice();
+      UpdateActions();
+    }
+
+    // The only animation in the window: the new output chip slides in as the old one leaves.
+    private void SwapTargetChip(DocFormat format, bool animate)
+    {
+      var chip = new DocChip { Width = 40, Height = 50, Fill = format.BaseBrush, Label = format.Label };
+      if (!animate || ThemeManager.ReduceMotion || TargetChipHost.Children.Count == 0)
+      {
+        TargetChipHost.Children.Clear();
+        TargetChipHost.Children.Add(chip);
+        return;
+      }
+
+      var old = (UIElement)TargetChipHost.Children[TargetChipHost.Children.Count - 1];
+      TargetChipHost.Children.Add(chip);
+      Slide(old, 1, 0, 0, -8, 140, new QuadraticEase { EasingMode = EasingMode.EaseIn }, () => TargetChipHost.Children.Remove(old));
+      Slide(chip, 0, 1, 8, 0, 180, new QuadraticEase { EasingMode = EasingMode.EaseOut }, null);
+    }
+
+    private static void Slide(UIElement element, double fromOpacity, double toOpacity, double fromY, double toY,
+                              int milliseconds, IEasingFunction easing, Action completed)
+    {
+      var shift = new TranslateTransform(0, fromY);
+      element.RenderTransform = shift;
+      var duration = TimeSpan.FromMilliseconds(milliseconds);
+      var fade = new DoubleAnimation(fromOpacity, toOpacity, duration) { EasingFunction = easing };
+      if (completed != null)
+      {
+        fade.Completed += (sender, args) => completed();
+      }
+      element.BeginAnimation(OpacityProperty, fade);
+      shift.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(fromY, toY, duration) { EasingFunction = easing });
+    }
+
+    private void UpdateNotice()
+    {
+      string title = null;
+      string text = null;
+      if (!sdkChecked)
+      {
+        // Nothing to say until Window_Loaded has tried the library.
+      }
+      else if (!sdkLoaded)
+      {
+        title = "The SDK library didn't load.";
+        text = "Put pdfsolidconversionsdk.dll and the libraries it needs in the x64 folder next to the app, then start it again.";
+      }
+      else if (licenseResult != ErrorCode.e_ErrSuccess)
+      {
+        title = "The license didn't verify.";
+        text = ConversionRunner.Describe(licenseResult) + " Conversions fail until license.xml is valid.";
+      }
+      else if (tool.Kind == ToolKind.WordToPdf && !wordToPdfSupported)
+      {
+        title = "This SDK build doesn't include Word to PDF.";
+        text = "You can still add files. Convert turns on once the SDK library supports it.";
+      }
+
+      Notice.Visibility = title == null ? Visibility.Collapsed : Visibility.Visible;
+      NoticeTitle.Text = title ?? "";
+      NoticeText.Text = text ?? "";
+    }
+
+    private void ResetOptions_Click(object sender, RoutedEventArgs e)
+    {
+      options = new ConvertOptions();
+      OptionsView.Options = options;
+    }
+
+    #endregion
+
+    #region Files
+
+    private void Browse_Click(object sender, RoutedEventArgs e)
+    {
+      BrowseForFiles();
+    }
+
+    private void BrowseForFiles()
+    {
+      if (running)
+      {
+        return;
+      }
+      var dialog = new Microsoft.Win32.OpenFileDialog { Filter = tool.OpenFileFilter, Multiselect = true };
+      if (dialog.ShowDialog(this) == true)
+      {
+        AddFiles(dialog.FileNames);
+      }
+    }
+
+    // Folders are opened one level deep and only contribute files the current tool can take.
+    private void AddFiles(IEnumerable<string> paths)
+    {
+      var known = new HashSet<string>(files.Select(f => f.FilePath), StringComparer.OrdinalIgnoreCase);
+      var added = new List<string>();
+      foreach (string path in paths)
+      {
+        if (Directory.Exists(path))
+        {
+          try
+          {
+            added.AddRange(Directory.GetFiles(path).Where(tool.Accepts).OrderBy(p => p, StringComparer.OrdinalIgnoreCase));
+          }
+          catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+          {
+            Log("Can't read the folder " + path + ": " + ex.Message);
+          }
+        }
+        else if (File.Exists(path))
+        {
+          added.Add(path);
+        }
+      }
+
+      foreach (string path in added.Where(known.Add))
+      {
+        var file = new FileItem(path);
+        MarkForTool(file);
+        files.Add(file);
+      }
+
+      if (string.IsNullOrEmpty(outputFolder) && files.Count > 0)
+      {
+        outputFolder = files[0].Folder;
+        UpdateOutputField();
+      }
+      ClearRunSummary();
+      UpdateFileArea();
+      UpdateActions();
+    }
+
+    private void MarkForTool(FileItem file)
+    {
+      if (tool.Accepts(file.FilePath))
+      {
+        file.SetReady();
       }
       else
       {
-        ShowErrorMessage(ErrorCode.e_ErrLibraryNotLoad, "SDK initialization");
+        file.SetUnsupported(tool.TakesWordFiles ? "Not a Word file" : "Not a PDF or image");
       }
     }
 
-    private void Input_Click(object sender, RoutedEventArgs e)
+    private void RemoveFile_Click(object sender, RoutedEventArgs e)
     {
-      var dlg = new Microsoft.Win32.OpenFileDialog();
-      dlg.Filter = "PDF Image Files (*.pdf;*.bmp;*.jpg;*.jpeg;*.png;*.tiff;*.webp;*.jp2;*.tif)|*.pdf;*.bmp;*.jpg;*.jpeg;*.png;*.tiff;*.webp;*.jp2;*.tif";
-      dlg.Multiselect = true;
-
-      if (dlg.ShowDialog() == true)
+      if (((FrameworkElement)sender).DataContext is FileItem file && !running)
       {
-        selectedFiles = new List<string>(dlg.FileNames);
+        files.Remove(file);
+        UpdateFileArea();
+        UpdateActions();
+      }
+    }
 
-        if (selectedFiles.Count > 0)
+    private void Clear_Click(object sender, RoutedEventArgs e)
+    {
+      files.Clear();
+      ClearRunSummary();
+      UpdateFileArea();
+      UpdateActions();
+    }
+
+    private void UpdateFileArea()
+    {
+      bool any = files.Count > 0;
+      DropZone.Visibility = any ? Visibility.Collapsed : Visibility.Visible;
+      FilesArea.Visibility = any ? Visibility.Visible : Visibility.Collapsed;
+      FileCount.Text = files.Count.ToString(CultureInfo.InvariantCulture);
+    }
+
+    private void Workspace_DragOver(object sender, DragEventArgs e)
+    {
+      bool accept = !running && e.Data.GetDataPresent(DataFormats.FileDrop);
+      e.Effects = accept ? DragDropEffects.Copy : DragDropEffects.None;
+      SetDropHighlight(accept);
+      e.Handled = true;
+    }
+
+    private void Workspace_DragLeave(object sender, DragEventArgs e)
+    {
+      SetDropHighlight(false);
+    }
+
+    private void Workspace_Drop(object sender, DragEventArgs e)
+    {
+      SetDropHighlight(false);
+      if (!running && e.Data.GetData(DataFormats.FileDrop) is string[] paths)
+      {
+        AddFiles(paths);
+      }
+    }
+
+    private void SetDropHighlight(bool on)
+    {
+      foreach (System.Windows.Shapes.Rectangle frame in new[] { DropZoneBorder, DropBarBorder })
+      {
+        frame.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, on ? "AccentHiBrush" : "RuleStrongBrush");
+        if (on)
         {
-          InputPath.Text = selectedFiles[0];
+          frame.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "SelSoftBrush");
         }
-        Progress.Text = "";
+        else
+        {
+          frame.Fill = Brushes.Transparent;
+        }
       }
     }
 
-    private void Output_Click(object sender, RoutedEventArgs e)
+    private void ShowFile_Click(object sender, RoutedEventArgs e)
     {
-      FolderSelectDialog dlg = new FolderSelectDialog();
-
-      if (dlg.ShowDialog())
+      if (!(((FrameworkElement)sender).DataContext is FileItem file))
       {
-        OutputPath.Text = dlg.FileName;
+        return;
       }
+      if (File.Exists(file.OutputPath))
+      {
+        Process.Start("explorer.exe", "/select,\"" + file.OutputPath + "\"");
+      }
+      else if (Directory.Exists(file.OutputPath))
+      {
+        Process.Start("explorer.exe", "\"" + file.OutputPath + "\"");
+      }
+      else
+      {
+        OpenFolder(lastRunFolder);
+      }
+    }
+
+    private void OpenFolder_Click(object sender, RoutedEventArgs e)
+    {
+      OpenFolder(lastRunFolder);
+    }
+
+    private static void OpenFolder(string folder)
+    {
+      if (Directory.Exists(folder))
+      {
+        Process.Start("explorer.exe", "\"" + folder + "\"");
+      }
+    }
+
+    #endregion
+
+    #region Output folder
+
+    private void ChangeOutput_Click(object sender, RoutedEventArgs e)
+    {
+      ChooseOutputFolder();
+    }
+
+    private void OutputField_Click(object sender, MouseButtonEventArgs e)
+    {
+      ChooseOutputFolder();
+    }
+
+    private void ChooseOutputFolder()
+    {
+      if (running)
+      {
+        return;
+      }
+      var dialog = new FolderSelectDialog { Title = "Save converted files to" };
+      if (Directory.Exists(outputFolder))
+      {
+        dialog.InitialDirectory = outputFolder;
+      }
+      if (dialog.ShowDialog(new WindowInteropHelper(this).Handle))
+      {
+        outputFolder = dialog.FileName;
+        UpdateOutputField();
+        UpdateActions();
+      }
+    }
+
+    private void UpdateOutputField()
+    {
+      bool empty = string.IsNullOrEmpty(outputFolder);
+      OutputPath.Text = empty ? "Choose a folder" : outputFolder;
+      OutputPath.SetResourceReference(TextBlock.ForegroundProperty, empty ? "Ink3Brush" : "InkBrush");
+      OutputField.ToolTip = empty ? null : outputFolder;
+    }
+
+    #endregion
+
+    #region Convert
+
+    private void UpdateActions()
+    {
+      int count = files.Count(f => tool.Accepts(f.FilePath));
+      bool blocked = tool.Kind == ToolKind.WordToPdf && !wordToPdfSupported;
+      ConvertButton.Content = count == 0 ? "Convert" : "Convert " + count + (count == 1 ? " file" : " files");
+      ConvertButton.IsEnabled = !running && count > 0 && !string.IsNullOrEmpty(outputFolder) && !blocked;
     }
 
     private async void Convert_Click(object sender, RoutedEventArgs e)
     {
-      cancel = false;
-
-      if (selectedFiles == null || selectedFiles.Count == 0)
+      if (running || !ConvertButton.IsEnabled)
       {
-        MessageBox.Show("Invalid input path!");
+        return;
+      }
+      List<FileItem> queue = files.Where(f => tool.Accepts(f.FilePath)).ToList();
+      ConversionTool runTool = tool;
+      ConvertOptions runOptions = options.Copy();
+      string runFolder = outputFolder;
+
+      try
+      {
+        Directory.CreateDirectory(runFolder);
+      }
+      catch (Exception ex)
+      {
+        Log("Can't use the output folder " + runFolder + ": " + ex.Message);
+        ShowLog(true);
         return;
       }
 
-      if (string.IsNullOrEmpty(OutputPath.Text))
+      SetRunning(true);
+      lastRunFolder = runFolder;
+      foreach (FileItem file in queue)
       {
-        MessageBox.Show("Invalid output path!");
-        return;
+        file.SetWaiting();
       }
+      Log(runTool.Title + ": " + queue.Count + (queue.Count == 1 ? " file" : " files") + " to " + runFolder);
+      Log("  " + OptionsView.Summary());
 
-      Cancel.IsEnabled = true;
-      Convert.IsEnabled = false;
-      ConvertType.IsEnabled = false;
-      ConverterOptions.IsEnabled = false;
-
-      foreach (string filePath in selectedFiles)
+      int converted = 0, failed = 0, stopped = 0;
+      try
       {
-        InputPath.Text = filePath;
-        switch ((ConvertType.SelectedItem as ComboBoxItem).Name)
+        // SDK suffix selection is not atomic. Serialize inputs whose output names can collide,
+        // before taking a worker slot so other names can still use all four workers.
+        var nameGates = queue.Select(file => ConversionRunner.OutputNameKey(file.FilePath))
+          .Distinct(StringComparer.OrdinalIgnoreCase)
+          .ToDictionary(name => name, name => new SemaphoreSlim(1, 1), StringComparer.OrdinalIgnoreCase);
+        Task<ConversionResult>[] tasks = queue.Select((file, index) =>
+          ConvertOneAsync(file, index, queue.Count, runTool, runFolder, runOptions,
+            nameGates[ConversionRunner.OutputNameKey(file.FilePath)])).ToArray();
+        ConversionResult[] results = await Task.WhenAll(tasks);
+        converted = results.Count(r => r.Code == ErrorCode.e_ErrSuccess);
+        failed = results.Count(r => r.Code != ErrorCode.e_ErrSuccess && r.Code != ErrorCode.e_ErrCancel);
+        stopped = results.Count(r => r.Code == ErrorCode.e_ErrCancel);
+      }
+      catch (Exception ex)
+      {
+        Log("Batch failed: " + ex.Message);
+        failed = queue.Count(f => f.Status == FileStatus.Failed);
+        converted = queue.Count(f => f.Status == FileStatus.Done);
+        stopped = queue.Count(f => f.Status == FileStatus.Stopped);
+      }
+      finally
+      {
+        SetRunning(false);
+      }
+      var parts = new List<string> { converted + " converted" };
+      if (failed > 0)
+      {
+        parts.Add(failed + " failed");
+      }
+      if (stopped > 0)
+      {
+        parts.Add(stopped + " stopped");
+      }
+      RunSummary.Text = string.Join(", ", parts);
+      OpenFolderButton.Visibility = converted > 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private sealed class ConversionResult
+    {
+      public ErrorCode Code;
+    }
+
+    private async Task<ConversionResult> ConvertOneAsync(FileItem file, int index, int total,
+                                                          ConversionTool runTool, string runFolder,
+                                                          ConvertOptions runOptions, SemaphoreSlim nameGate)
+    {
+      await nameGate.WaitAsync();
+      try
+      {
+        await conversionGate.WaitAsync();
+        try
         {
-          case "Word":
-            await WordConvert();
-            break;
-
-          case "Excel":
-            await ExcelConvert();
-            break;
-
-          case "Ppt":
-            await PptConvert();
-            break;
-
-          case "Html":
-            await HtmlConvert();
-            break;
-
-          case "Rtf":
-            await RtfConvert();
-            break;
-
-          case "SearchablePDF":
-            await PdfConvert();
-            break;
-
-          case "Txt":
-            await TxtConvert();
-            break;
-
-          case "Json":
-            await JsonConvert();
-            break;
-
-          case "Image":
-            await ImageConvert();
-            break;
-
-          case "Markdown":
-            await MarkdownConvert();
-            break;
-
-          case "Ofd":
-            await OfdConvert();
-            break;
-
-          default:
-            break;
+          return await ConvertOneCoreAsync(file, index, total, runTool, runFolder, runOptions);
+        }
+        finally
+        {
+          conversionGate.Release();
         }
       }
-
-      if (err == ErrorCode.e_ErrSuccess)
-        Process.Start(OutputPath.Text);
-
-      Cancel.IsEnabled = false;
-      Convert.IsEnabled = true;
-      ConvertType.IsEnabled = true;
-      ConverterOptions.IsEnabled = true;
+      finally
+      {
+        nameGate.Release();
+      }
     }
 
-    private void Cancel_Click(object sender, RoutedEventArgs e)
+    private async Task<ConversionResult> ConvertOneCoreAsync(FileItem file, int index, int total,
+                                                              ConversionTool runTool, string runFolder,
+                                                              ConvertOptions runOptions)
     {
-      cancel = true;
+      if (cancelRequested)
+      {
+        await Dispatcher.InvokeAsync(file.SetStopped);
+        return new ConversionResult { Code = ErrorCode.e_ErrCancel };
+      }
+
+      await Dispatcher.InvokeAsync(() =>
+      {
+        RunSummary.Text = "Up to 4 conversions at once · " + total + " files";
+        file.SetConverting();
+        Log(file.Name);
+      });
+
+      Stopwatch watch = Stopwatch.StartNew();
+      ISet<string> existingOutputs = null;
+      string revealPath = null;
+      ErrorCode result = ErrorCode.e_ErrUnknown;
+      string exceptionText = null;
+      OnProgress progress = null;
+      OnCancel cancel = null;
+      try
+      {
+        ConvertCallback callback = BuildCallback(file, out progress, out cancel);
+        string input = file.FilePath;
+        existingOutputs = ConversionRunner.SnapshotOutput(runFolder);
+        result = await Task.Run(() => cancelRequested ? ErrorCode.e_ErrCancel
+          : ConversionRunner.Run(runTool, input, runFolder, runOptions.Copy(), callback, out revealPath));
+      }
+      catch (Exception ex)
+      {
+        exceptionText = ex.GetType().Name + ": " + ex.Message;
+      }
+
+      finally
+      {
+        GC.KeepAlive(progress);
+        GC.KeepAlive(cancel);
+      }
+
+      string output = null;
+      if (result == ErrorCode.e_ErrSuccess && exceptionText == null)
+      {
+        output = ConversionRunner.FindOutput(runTool, runOptions, runFolder, file.FilePath, revealPath, existingOutputs);
+        if (string.IsNullOrEmpty(output) || !File.Exists(output) && !Directory.Exists(output))
+        {
+          exceptionText = "The SDK reported success but produced no output. Results folder: " + runFolder;
+          result = ErrorCode.e_ErrUnknown;
+        }
+      }
+      await Dispatcher.InvokeAsync(() =>
+      {
+        if (exceptionText != null)
+        {
+          file.SetFailed("Conversion failed", exceptionText);
+          Log("  " + exceptionText);
+        }
+        else if (result == ErrorCode.e_ErrSuccess)
+        {
+          file.SetDone(output);
+          Log("  Done in " + watch.Elapsed.TotalSeconds.ToString("0.0", CultureInfo.InvariantCulture) + " s");
+        }
+        else if (result == ErrorCode.e_ErrCancel)
+        {
+          file.SetStopped();
+          Log("  Stopped");
+        }
+        else
+        {
+          file.SetFailed(ConversionRunner.ShortReason(result), ConversionRunner.Describe(result));
+          Log("  Failed. " + ConversionRunner.Describe(result));
+        }
+      });
+      return new ConversionResult { Code = exceptionText == null ? result : ErrorCode.e_ErrUnknown };
     }
 
-    private void ConverterOptions_Click(object sender, RoutedEventArgs e)
+    private void Stop_Click(object sender, RoutedEventArgs e)
     {
-      ConverterOptionsWindow optionsWindow = new ConverterOptionsWindow(this, (ConvertType.SelectedItem as ComboBoxItem).Name);
-      optionsWindow.ShowDialog();
+      if (!running || cancelRequested)
+      {
+        return;
+      }
+      cancelRequested = true;
+      StopButton.IsEnabled = false;
+      Log("Stopping at the next page");
     }
+
+    private void SetRunning(bool value)
+    {
+      running = value;
+      cancelRequested = false;
+      ConvertButton.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
+      StopButton.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+      StopButton.IsEnabled = true;
+      NavPanel.IsEnabled = !value;
+      OptionsView.IsEnabled = !value;
+      OptionsView.Opacity = value ? 0.6 : 1;
+      ResetButton.IsEnabled = !value;
+      ChangeButton.IsEnabled = !value;
+      BrowseButton.IsEnabled = !value;
+      BrowseLink.IsEnabled = !value;
+      ClearButton.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
+      OpenFolderButton.Visibility = Visibility.Collapsed;
+      foreach (FileItem file in files)
+      {
+        file.CanRemove = !value;
+      }
+      UpdateActions();
+    }
+
+    private void ClearRunSummary()
+    {
+      RunSummary.Text = "";
+      OpenFolderButton.Visibility = Visibility.Collapsed;
+    }
+
     #endregion
+
+    #region Activity log
+
+    private void Log(string message)
+    {
+      string line = DateTime.Now.ToString("HH:mm:ss", CultureInfo.InvariantCulture) + "  " + message;
+      LogText.AppendText(LogText.Text.Length == 0 ? line : Environment.NewLine + line);
+      LogText.ScrollToEnd();
+    }
+
+    private void ShowLog(bool show)
+    {
+      LogPanel.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+      LogButton.IsChecked = show;
+      if (show)
+      {
+        LogText.ScrollToEnd();
+      }
+    }
+
+    private void LogButton_Click(object sender, RoutedEventArgs e)
+    {
+      ShowLog(LogButton.IsChecked == true);
+    }
+
+    private void CloseLog_Click(object sender, RoutedEventArgs e)
+    {
+      ShowLog(false);
+    }
+
+    private void CopyLog_Click(object sender, RoutedEventArgs e)
+    {
+      if (LogText.Text.Length > 0)
+      {
+        Clipboard.SetText(LogText.Text);
+      }
+    }
+
+    private void SdkStatus_Click(object sender, RoutedEventArgs e)
+    {
+      ShowLog(true);
+    }
+
+    #endregion
+
+    // Ctrl+O adds files, Ctrl+Enter converts, Esc stops a running conversion.
+    private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+      bool ctrl = (Keyboard.Modifiers & ModifierKeys.Control) != 0;
+      if (ctrl && e.Key == Key.O)
+      {
+        BrowseForFiles();
+        e.Handled = true;
+      }
+      else if (ctrl && e.Key == Key.Enter && ConvertButton.IsEnabled && ConvertButton.Visibility == Visibility.Visible)
+      {
+        Convert_Click(ConvertButton, new RoutedEventArgs());
+        e.Handled = true;
+      }
+      else if (e.Key == Key.Escape && running)
+      {
+        Stop_Click(StopButton, new RoutedEventArgs());
+        e.Handled = true;
+      }
+    }
   }
 }

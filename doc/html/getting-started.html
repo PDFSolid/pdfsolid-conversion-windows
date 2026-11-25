@@ -72,6 +72,49 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="getting-started">Getting Started</h1>
 
+<h2 id="deploy-and-initialize">Deploy and initialize</h2>
+<ol>
+<li>Reference <code>lib/pdfsolidconversionsdk_dotnet.dll</code> from the 1.3.0 SDK. Keep the matching native DLLs from <code>lib/x64</code> or <code>lib/x86</code> together and set your project to the corresponding process architecture. Do not mix x86 and x64 DLLs or use an older native SDK with the 1.3.0 managed assembly.</li>
+<li>Call <code>LibraryManager.InitLibrary</code> with the directory containing the native DLLs, then call <code>LibraryManager.Initialize</code> with the SDK <code>resource</code> directory. Verify a valid Windows license before converting. Stop on a load, initialization, or license failure.</li>
+<li>For the shipped x64 demo, open <a href="../../samples/PDFSolid_Conversion_Demo.sln">PDFSolid_Conversion_Demo.sln</a> in Visual Studio. Use its x64 configuration and provide your Windows <code>license.xml</code> next to the executable. The project copies the x64 native DLLs and resources to the output directory.</li>
+</ol>
+<h2 id="convert-word-docx-to-pdf">Convert Word (DOCX) to PDF</h2>
+<p>Check <code>IsWordToPDFSupported()</code> on the loaded native library before converting. The example uses <code>x64</code>, <code>resource</code>, and <code>license.xml</code> next to the application; use <code>x86</code> instead when deploying an x86 application. Supply an existing DOCX and a writable output path.</p>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using PDFSolid_Conversion.Common;
+using PDFSolid_Conversion.Conversion;
+
+string appDir = AppDomain.CurrentDomain.BaseDirectory;
+if (!LibraryManager.InitLibrary(Path.Combine(appDir, &quot;x64&quot;)))
+    throw new InvalidOperationException(&quot;Could not load the x64 native SDK.&quot;);
+
+try
+{
+    if (!LibraryManager.Initialize(Path.Combine(appDir, &quot;resource&quot;)))
+        throw new InvalidOperationException(&quot;Could not initialize SDK resources.&quot;);
+
+    ErrorCode license = LibraryManager.LicenseVerify(Path.Combine(appDir, &quot;license.xml&quot;));
+    if (license != ErrorCode.e_ErrSuccess)
+        throw new InvalidOperationException(&quot;License verification failed: &quot; + license);
+
+    if (!CPDFConversion.IsWordToPDFSupported())
+        throw new NotSupportedException(&quot;The loaded native SDK does not expose Word to PDF.&quot;);
+
+    var options = new WordOptions { PageRanges = &quot;1-2&quot;, WordPdfBookmarkMode = WordPdfBookmarkMode.e_Headings };
+    string diagnostics;
+    ErrorCode result = CPDFConversion.StartWordToPDF(&quot;input.docx&quot;, &quot;output.pdf&quot;, options, out diagnostics);
+    if (result == ErrorCode.e_ErrUnsupportedFeature)
+        Console.Error.WriteLine(diagnostics); // Check output=produced or output=not_produced before using the PDF.
+    else if (result != ErrorCode.e_ErrSuccess)
+        throw new InvalidOperationException(&quot;Conversion failed: &quot; + result);
+}
+finally
+{
+    LibraryManager.Release();
+}
+</code></pre>
+<p>Omit <code>WordOptions</code> for all pages with no bookmarks. Word to PDF does not require loading a DocumentAI model. For supported options, the diagnostics overload and result handling, see the <a href="api/PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_">Word to PDF API</a> and the <a href="../developer_guide_dotnet.md#324-convert-word-to-pdf">Word to PDF guide</a>. For PDF input, see the <a href="../developer_guide_dotnet.md#3-conversion-guides">Conversion Guides</a> and <a href="api/PDFSolid_Conversion.Conversion.CPDFConversion.html">CPDFConversion class</a>.</p>
 
 </article>
           </div>

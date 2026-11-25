@@ -67,86 +67,6 @@ references:
   commentId: F:PDFSolid_Conversion.Common.ConvertCallback.table
   fullName: PDFSolid_Conversion.Common.ConvertCallback.table
   nameWithType: ConvertCallback.table
-- uid: PDFSolid_Conversion.Common.DetectionResult
-  name: DetectionResult
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html
-  commentId: T:PDFSolid_Conversion.Common.DetectionResult
-  fullName: PDFSolid_Conversion.Common.DetectionResult
-  nameWithType: DetectionResult
-- uid: PDFSolid_Conversion.Common.DetectionResult.#ctor
-  name: DetectionResult()
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult__ctor
-  commentId: M:PDFSolid_Conversion.Common.DetectionResult.#ctor
-  name.vb: New()
-  fullName: PDFSolid_Conversion.Common.DetectionResult.DetectionResult()
-  fullName.vb: PDFSolid_Conversion.Common.DetectionResult.New()
-  nameWithType: DetectionResult.DetectionResult()
-  nameWithType.vb: DetectionResult.New()
-- uid: PDFSolid_Conversion.Common.DetectionResult.#ctor*
-  name: DetectionResult
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult__ctor_
-  commentId: Overload:PDFSolid_Conversion.Common.DetectionResult.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: PDFSolid_Conversion.Common.DetectionResult.DetectionResult
-  fullName.vb: PDFSolid_Conversion.Common.DetectionResult.New
-  nameWithType: DetectionResult.DetectionResult
-  nameWithType.vb: DetectionResult.New
-- uid: PDFSolid_Conversion.Common.DetectionResult.Finalize
-  name: ~DetectionResult()
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult_Finalize
-  commentId: M:PDFSolid_Conversion.Common.DetectionResult.Finalize
-  name.vb: ''
-  fullName: PDFSolid_Conversion.Common.DetectionResult.~DetectionResult()
-  fullName.vb: ''
-  nameWithType: DetectionResult.~DetectionResult()
-  nameWithType.vb: ''
-- uid: PDFSolid_Conversion.Common.DetectionResult.Finalize*
-  name: ~DetectionResult
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult_Finalize_
-  commentId: Overload:PDFSolid_Conversion.Common.DetectionResult.Finalize
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.DetectionResult.~DetectionResult
-  nameWithType: DetectionResult.~DetectionResult
-- uid: PDFSolid_Conversion.Common.DetectionResult.boxes
-  name: boxes
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult_boxes
-  commentId: P:PDFSolid_Conversion.Common.DetectionResult.boxes
-  fullName: PDFSolid_Conversion.Common.DetectionResult.boxes
-  nameWithType: DetectionResult.boxes
-- uid: PDFSolid_Conversion.Common.DetectionResult.boxes*
-  name: boxes
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult_boxes_
-  commentId: Overload:PDFSolid_Conversion.Common.DetectionResult.boxes
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.DetectionResult.boxes
-  nameWithType: DetectionResult.boxes
-- uid: PDFSolid_Conversion.Common.DetectionResult.labels
-  name: labels
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult_labels
-  commentId: P:PDFSolid_Conversion.Common.DetectionResult.labels
-  fullName: PDFSolid_Conversion.Common.DetectionResult.labels
-  nameWithType: DetectionResult.labels
-- uid: PDFSolid_Conversion.Common.DetectionResult.labels*
-  name: labels
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult_labels_
-  commentId: Overload:PDFSolid_Conversion.Common.DetectionResult.labels
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.DetectionResult.labels
-  nameWithType: DetectionResult.labels
-- uid: PDFSolid_Conversion.Common.DetectionResult.scores
-  name: scores
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult_scores
-  commentId: P:PDFSolid_Conversion.Common.DetectionResult.scores
-  fullName: PDFSolid_Conversion.Common.DetectionResult.scores
-  nameWithType: DetectionResult.scores
-- uid: PDFSolid_Conversion.Common.DetectionResult.scores*
-  name: scores
-  href: api/PDFSolid_Conversion.Common.DetectionResult.html#PDFSolid_Conversion_Common_DetectionResult_scores_
-  commentId: Overload:PDFSolid_Conversion.Common.DetectionResult.scores
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.DetectionResult.scores
-  nameWithType: DetectionResult.scores
 - uid: PDFSolid_Conversion.Common.ErrorCode
   name: ErrorCode
   href: api/PDFSolid_Conversion.Common.ErrorCode.html
@@ -453,6 +373,18 @@ references:
   commentId: F:PDFSolid_Conversion.Common.ExcelOptions.CsvFormat
   fullName: PDFSolid_Conversion.Common.ExcelOptions.CsvFormat
   nameWithType: ExcelOptions.CsvFormat
+- uid: PDFSolid_Conversion.Common.ExcelOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.ExcelOptions.html#PDFSolid_Conversion_Common_ExcelOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.ExcelOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.ExcelOptions.CustomPageHeight
+  nameWithType: ExcelOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.ExcelOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.ExcelOptions.html#PDFSolid_Conversion_Common_ExcelOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.ExcelOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.ExcelOptions.CustomPageWidth
+  nameWithType: ExcelOptions.CustomPageWidth
 - uid: PDFSolid_Conversion.Common.ExcelOptions.EnableAiLayout
   name: EnableAiLayout
   href: api/PDFSolid_Conversion.Common.ExcelOptions.html#PDFSolid_Conversion_Common_ExcelOptions_EnableAiLayout
@@ -465,6 +397,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.ExcelOptions.EnableAiTableRecognition
   fullName: PDFSolid_Conversion.Common.ExcelOptions.EnableAiTableRecognition
   nameWithType: ExcelOptions.EnableAiTableRecognition
+- uid: PDFSolid_Conversion.Common.ExcelOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.ExcelOptions.html#PDFSolid_Conversion_Common_ExcelOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.ExcelOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.ExcelOptions.EnableAutoPageSize
+  nameWithType: ExcelOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.ExcelOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.ExcelOptions.html#PDFSolid_Conversion_Common_ExcelOptions_EnableDocumentDewarp
@@ -519,6 +457,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.ExcelOptions.PageRanges
   fullName: PDFSolid_Conversion.Common.ExcelOptions.PageRanges
   nameWithType: ExcelOptions.PageRanges
+- uid: PDFSolid_Conversion.Common.ExcelOptions.TableRecognitionAccuracy
+  name: TableRecognitionAccuracy
+  href: api/PDFSolid_Conversion.Common.ExcelOptions.html#PDFSolid_Conversion_Common_ExcelOptions_TableRecognitionAccuracy
+  commentId: F:PDFSolid_Conversion.Common.ExcelOptions.TableRecognitionAccuracy
+  fullName: PDFSolid_Conversion.Common.ExcelOptions.TableRecognitionAccuracy
+  nameWithType: ExcelOptions.TableRecognitionAccuracy
 - uid: PDFSolid_Conversion.Common.ExcelOptions.WorksheetOption
   name: WorksheetOption
   href: api/PDFSolid_Conversion.Common.ExcelOptions.html#PDFSolid_Conversion_Common_ExcelOptions_WorksheetOption
@@ -567,6 +511,18 @@ references:
   commentId: F:PDFSolid_Conversion.Common.HtmlOptions.ContainImage
   fullName: PDFSolid_Conversion.Common.HtmlOptions.ContainImage
   nameWithType: HtmlOptions.ContainImage
+- uid: PDFSolid_Conversion.Common.HtmlOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.HtmlOptions.html#PDFSolid_Conversion_Common_HtmlOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.HtmlOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.HtmlOptions.CustomPageHeight
+  nameWithType: HtmlOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.HtmlOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.HtmlOptions.html#PDFSolid_Conversion_Common_HtmlOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.HtmlOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.HtmlOptions.CustomPageWidth
+  nameWithType: HtmlOptions.CustomPageWidth
 - uid: PDFSolid_Conversion.Common.HtmlOptions.EnableAiLayout
   name: EnableAiLayout
   href: api/PDFSolid_Conversion.Common.HtmlOptions.html#PDFSolid_Conversion_Common_HtmlOptions_EnableAiLayout
@@ -579,6 +535,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.HtmlOptions.EnableAiTableRecognition
   fullName: PDFSolid_Conversion.Common.HtmlOptions.EnableAiTableRecognition
   nameWithType: HtmlOptions.EnableAiTableRecognition
+- uid: PDFSolid_Conversion.Common.HtmlOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.HtmlOptions.html#PDFSolid_Conversion_Common_HtmlOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.HtmlOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.HtmlOptions.EnableAutoPageSize
+  nameWithType: HtmlOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.HtmlOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.HtmlOptions.html#PDFSolid_Conversion_Common_HtmlOptions_EnableDocumentDewarp
@@ -639,6 +601,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.HtmlOptions.PageRanges
   fullName: PDFSolid_Conversion.Common.HtmlOptions.PageRanges
   nameWithType: HtmlOptions.PageRanges
+- uid: PDFSolid_Conversion.Common.HtmlOptions.TableRecognitionAccuracy
+  name: TableRecognitionAccuracy
+  href: api/PDFSolid_Conversion.Common.HtmlOptions.html#PDFSolid_Conversion_Common_HtmlOptions_TableRecognitionAccuracy
+  commentId: F:PDFSolid_Conversion.Common.HtmlOptions.TableRecognitionAccuracy
+  fullName: PDFSolid_Conversion.Common.HtmlOptions.TableRecognitionAccuracy
+  nameWithType: HtmlOptions.TableRecognitionAccuracy
 - uid: PDFSolid_Conversion.Common.HtmlPageOption
   name: HtmlPageOption
   href: api/PDFSolid_Conversion.Common.HtmlPageOption.html
@@ -813,6 +781,18 @@ references:
   commentId: F:PDFSolid_Conversion.Common.JsonOptions.ContainTable
   fullName: PDFSolid_Conversion.Common.JsonOptions.ContainTable
   nameWithType: JsonOptions.ContainTable
+- uid: PDFSolid_Conversion.Common.JsonOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.JsonOptions.html#PDFSolid_Conversion_Common_JsonOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.JsonOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.JsonOptions.CustomPageHeight
+  nameWithType: JsonOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.JsonOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.JsonOptions.html#PDFSolid_Conversion_Common_JsonOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.JsonOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.JsonOptions.CustomPageWidth
+  nameWithType: JsonOptions.CustomPageWidth
 - uid: PDFSolid_Conversion.Common.JsonOptions.EnableAiLayout
   name: EnableAiLayout
   href: api/PDFSolid_Conversion.Common.JsonOptions.html#PDFSolid_Conversion_Common_JsonOptions_EnableAiLayout
@@ -825,6 +805,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.JsonOptions.EnableAiTableRecognition
   fullName: PDFSolid_Conversion.Common.JsonOptions.EnableAiTableRecognition
   nameWithType: JsonOptions.EnableAiTableRecognition
+- uid: PDFSolid_Conversion.Common.JsonOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.JsonOptions.html#PDFSolid_Conversion_Common_JsonOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.JsonOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.JsonOptions.EnableAutoPageSize
+  nameWithType: JsonOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.JsonOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.JsonOptions.html#PDFSolid_Conversion_Common_JsonOptions_EnableDocumentDewarp
@@ -867,12 +853,31 @@ references:
   commentId: F:PDFSolid_Conversion.Common.JsonOptions.PageRanges
   fullName: PDFSolid_Conversion.Common.JsonOptions.PageRanges
   nameWithType: JsonOptions.PageRanges
+- uid: PDFSolid_Conversion.Common.JsonOptions.TableRecognitionAccuracy
+  name: TableRecognitionAccuracy
+  href: api/PDFSolid_Conversion.Common.JsonOptions.html#PDFSolid_Conversion_Common_JsonOptions_TableRecognitionAccuracy
+  commentId: F:PDFSolid_Conversion.Common.JsonOptions.TableRecognitionAccuracy
+  fullName: PDFSolid_Conversion.Common.JsonOptions.TableRecognitionAccuracy
+  nameWithType: JsonOptions.TableRecognitionAccuracy
 - uid: PDFSolid_Conversion.Common.LibraryManager
   name: LibraryManager
   href: api/PDFSolid_Conversion.Common.LibraryManager.html
   commentId: T:PDFSolid_Conversion.Common.LibraryManager
   fullName: PDFSolid_Conversion.Common.LibraryManager
   nameWithType: LibraryManager
+- uid: PDFSolid_Conversion.Common.LibraryManager.GetLicenseType
+  name: GetLicenseType()
+  href: api/PDFSolid_Conversion.Common.LibraryManager.html#PDFSolid_Conversion_Common_LibraryManager_GetLicenseType
+  commentId: M:PDFSolid_Conversion.Common.LibraryManager.GetLicenseType
+  fullName: PDFSolid_Conversion.Common.LibraryManager.GetLicenseType()
+  nameWithType: LibraryManager.GetLicenseType()
+- uid: PDFSolid_Conversion.Common.LibraryManager.GetLicenseType*
+  name: GetLicenseType
+  href: api/PDFSolid_Conversion.Common.LibraryManager.html#PDFSolid_Conversion_Common_LibraryManager_GetLicenseType_
+  commentId: Overload:PDFSolid_Conversion.Common.LibraryManager.GetLicenseType
+  isSpec: "True"
+  fullName: PDFSolid_Conversion.Common.LibraryManager.GetLicenseType
+  nameWithType: LibraryManager.GetLicenseType
 - uid: PDFSolid_Conversion.Common.LibraryManager.GetPageCount(System.String,System.String)
   name: GetPageCount(string, string)
   href: api/PDFSolid_Conversion.Common.LibraryManager.html#PDFSolid_Conversion_Common_LibraryManager_GetPageCount_System_String_System_String_
@@ -1037,6 +1042,30 @@ references:
   isSpec: "True"
   fullName: PDFSolid_Conversion.Common.LibraryManager.SetProgress
   nameWithType: LibraryManager.SetProgress
+- uid: PDFSolid_Conversion.Common.LicenseType
+  name: LicenseType
+  href: api/PDFSolid_Conversion.Common.LicenseType.html
+  commentId: T:PDFSolid_Conversion.Common.LicenseType
+  fullName: PDFSolid_Conversion.Common.LicenseType
+  nameWithType: LicenseType
+- uid: PDFSolid_Conversion.Common.LicenseType.e_Formal
+  name: e_Formal
+  href: api/PDFSolid_Conversion.Common.LicenseType.html#PDFSolid_Conversion_Common_LicenseType_e_Formal
+  commentId: F:PDFSolid_Conversion.Common.LicenseType.e_Formal
+  fullName: PDFSolid_Conversion.Common.LicenseType.e_Formal
+  nameWithType: LicenseType.e_Formal
+- uid: PDFSolid_Conversion.Common.LicenseType.e_Trial
+  name: e_Trial
+  href: api/PDFSolid_Conversion.Common.LicenseType.html#PDFSolid_Conversion_Common_LicenseType_e_Trial
+  commentId: F:PDFSolid_Conversion.Common.LicenseType.e_Trial
+  fullName: PDFSolid_Conversion.Common.LicenseType.e_Trial
+  nameWithType: LicenseType.e_Trial
+- uid: PDFSolid_Conversion.Common.LicenseType.e_Unknown
+  name: e_Unknown
+  href: api/PDFSolid_Conversion.Common.LicenseType.html#PDFSolid_Conversion_Common_LicenseType_e_Unknown
+  commentId: F:PDFSolid_Conversion.Common.LicenseType.e_Unknown
+  fullName: PDFSolid_Conversion.Common.LicenseType.e_Unknown
+  nameWithType: LicenseType.e_Unknown
 - uid: PDFSolid_Conversion.Common.MarkdownOptions
   name: MarkdownOptions
   href: api/PDFSolid_Conversion.Common.MarkdownOptions.html
@@ -1055,6 +1084,18 @@ references:
   commentId: F:PDFSolid_Conversion.Common.MarkdownOptions.ContainImage
   fullName: PDFSolid_Conversion.Common.MarkdownOptions.ContainImage
   nameWithType: MarkdownOptions.ContainImage
+- uid: PDFSolid_Conversion.Common.MarkdownOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.MarkdownOptions.html#PDFSolid_Conversion_Common_MarkdownOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.MarkdownOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.MarkdownOptions.CustomPageHeight
+  nameWithType: MarkdownOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.MarkdownOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.MarkdownOptions.html#PDFSolid_Conversion_Common_MarkdownOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.MarkdownOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.MarkdownOptions.CustomPageWidth
+  nameWithType: MarkdownOptions.CustomPageWidth
 - uid: PDFSolid_Conversion.Common.MarkdownOptions.EnableAiLayout
   name: EnableAiLayout
   href: api/PDFSolid_Conversion.Common.MarkdownOptions.html#PDFSolid_Conversion_Common_MarkdownOptions_EnableAiLayout
@@ -1067,6 +1108,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.MarkdownOptions.EnableAiTableRecognition
   fullName: PDFSolid_Conversion.Common.MarkdownOptions.EnableAiTableRecognition
   nameWithType: MarkdownOptions.EnableAiTableRecognition
+- uid: PDFSolid_Conversion.Common.MarkdownOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.MarkdownOptions.html#PDFSolid_Conversion_Common_MarkdownOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.MarkdownOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.MarkdownOptions.EnableAutoPageSize
+  nameWithType: MarkdownOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.MarkdownOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.MarkdownOptions.html#PDFSolid_Conversion_Common_MarkdownOptions_EnableDocumentDewarp
@@ -1109,6 +1156,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.MarkdownOptions.PageRanges
   fullName: PDFSolid_Conversion.Common.MarkdownOptions.PageRanges
   nameWithType: MarkdownOptions.PageRanges
+- uid: PDFSolid_Conversion.Common.MarkdownOptions.TableRecognitionAccuracy
+  name: TableRecognitionAccuracy
+  href: api/PDFSolid_Conversion.Common.MarkdownOptions.html#PDFSolid_Conversion_Common_MarkdownOptions_TableRecognitionAccuracy
+  commentId: F:PDFSolid_Conversion.Common.MarkdownOptions.TableRecognitionAccuracy
+  fullName: PDFSolid_Conversion.Common.MarkdownOptions.TableRecognitionAccuracy
+  nameWithType: MarkdownOptions.TableRecognitionAccuracy
 - uid: PDFSolid_Conversion.Common.OCRLanguage
   name: OCRLanguage
   href: api/PDFSolid_Conversion.Common.OCRLanguage.html
@@ -1247,131 +1300,30 @@ references:
   commentId: F:PDFSolid_Conversion.Common.OCROption.e_ScanPage
   fullName: PDFSolid_Conversion.Common.OCROption.e_ScanPage
   nameWithType: OCROption.e_ScanPage
-- uid: PDFSolid_Conversion.Common.OCRResult
-  name: OCRResult
-  href: api/PDFSolid_Conversion.Common.OCRResult.html
-  commentId: T:PDFSolid_Conversion.Common.OCRResult
-  fullName: PDFSolid_Conversion.Common.OCRResult
-  nameWithType: OCRResult
-- uid: PDFSolid_Conversion.Common.OCRResult.#ctor
-  name: OCRResult()
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult__ctor
-  commentId: M:PDFSolid_Conversion.Common.OCRResult.#ctor
-  name.vb: New()
-  fullName: PDFSolid_Conversion.Common.OCRResult.OCRResult()
-  fullName.vb: PDFSolid_Conversion.Common.OCRResult.New()
-  nameWithType: OCRResult.OCRResult()
-  nameWithType.vb: OCRResult.New()
-- uid: PDFSolid_Conversion.Common.OCRResult.#ctor*
-  name: OCRResult
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult__ctor_
-  commentId: Overload:PDFSolid_Conversion.Common.OCRResult.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: PDFSolid_Conversion.Common.OCRResult.OCRResult
-  fullName.vb: PDFSolid_Conversion.Common.OCRResult.New
-  nameWithType: OCRResult.OCRResult
-  nameWithType.vb: OCRResult.New
-- uid: PDFSolid_Conversion.Common.OCRResult.Finalize
-  name: ~OCRResult()
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_Finalize
-  commentId: M:PDFSolid_Conversion.Common.OCRResult.Finalize
-  name.vb: ''
-  fullName: PDFSolid_Conversion.Common.OCRResult.~OCRResult()
-  fullName.vb: ''
-  nameWithType: OCRResult.~OCRResult()
-  nameWithType.vb: ''
-- uid: PDFSolid_Conversion.Common.OCRResult.Finalize*
-  name: ~OCRResult
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_Finalize_
-  commentId: Overload:PDFSolid_Conversion.Common.OCRResult.Finalize
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.OCRResult.~OCRResult
-  nameWithType: OCRResult.~OCRResult
-- uid: PDFSolid_Conversion.Common.OCRResult.boxes
-  name: boxes
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_boxes
-  commentId: P:PDFSolid_Conversion.Common.OCRResult.boxes
-  fullName: PDFSolid_Conversion.Common.OCRResult.boxes
-  nameWithType: OCRResult.boxes
-- uid: PDFSolid_Conversion.Common.OCRResult.boxes*
-  name: boxes
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_boxes_
-  commentId: Overload:PDFSolid_Conversion.Common.OCRResult.boxes
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.OCRResult.boxes
-  nameWithType: OCRResult.boxes
-- uid: PDFSolid_Conversion.Common.OCRResult.cls_labels
-  name: cls_labels
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_cls_labels
-  commentId: P:PDFSolid_Conversion.Common.OCRResult.cls_labels
-  fullName: PDFSolid_Conversion.Common.OCRResult.cls_labels
-  nameWithType: OCRResult.cls_labels
-- uid: PDFSolid_Conversion.Common.OCRResult.cls_labels*
-  name: cls_labels
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_cls_labels_
-  commentId: Overload:PDFSolid_Conversion.Common.OCRResult.cls_labels
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.OCRResult.cls_labels
-  nameWithType: OCRResult.cls_labels
-- uid: PDFSolid_Conversion.Common.OCRResult.cls_scores
-  name: cls_scores
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_cls_scores
-  commentId: P:PDFSolid_Conversion.Common.OCRResult.cls_scores
-  fullName: PDFSolid_Conversion.Common.OCRResult.cls_scores
-  nameWithType: OCRResult.cls_scores
-- uid: PDFSolid_Conversion.Common.OCRResult.cls_scores*
-  name: cls_scores
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_cls_scores_
-  commentId: Overload:PDFSolid_Conversion.Common.OCRResult.cls_scores
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.OCRResult.cls_scores
-  nameWithType: OCRResult.cls_scores
-- uid: PDFSolid_Conversion.Common.OCRResult.font_size
-  name: font_size
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_font_size
-  commentId: P:PDFSolid_Conversion.Common.OCRResult.font_size
-  fullName: PDFSolid_Conversion.Common.OCRResult.font_size
-  nameWithType: OCRResult.font_size
-- uid: PDFSolid_Conversion.Common.OCRResult.font_size*
-  name: font_size
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_font_size_
-  commentId: Overload:PDFSolid_Conversion.Common.OCRResult.font_size
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.OCRResult.font_size
-  nameWithType: OCRResult.font_size
-- uid: PDFSolid_Conversion.Common.OCRResult.rec_scores
-  name: rec_scores
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_rec_scores
-  commentId: P:PDFSolid_Conversion.Common.OCRResult.rec_scores
-  fullName: PDFSolid_Conversion.Common.OCRResult.rec_scores
-  nameWithType: OCRResult.rec_scores
-- uid: PDFSolid_Conversion.Common.OCRResult.rec_scores*
-  name: rec_scores
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_rec_scores_
-  commentId: Overload:PDFSolid_Conversion.Common.OCRResult.rec_scores
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.OCRResult.rec_scores
-  nameWithType: OCRResult.rec_scores
-- uid: PDFSolid_Conversion.Common.OCRResult.text
-  name: text
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_text
-  commentId: P:PDFSolid_Conversion.Common.OCRResult.text
-  fullName: PDFSolid_Conversion.Common.OCRResult.text
-  nameWithType: OCRResult.text
-- uid: PDFSolid_Conversion.Common.OCRResult.text*
-  name: text
-  href: api/PDFSolid_Conversion.Common.OCRResult.html#PDFSolid_Conversion_Common_OCRResult_text_
-  commentId: Overload:PDFSolid_Conversion.Common.OCRResult.text
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.OCRResult.text
-  nameWithType: OCRResult.text
 - uid: PDFSolid_Conversion.Common.OfdOptions
   name: OfdOptions
   href: api/PDFSolid_Conversion.Common.OfdOptions.html
   commentId: T:PDFSolid_Conversion.Common.OfdOptions
   fullName: PDFSolid_Conversion.Common.OfdOptions
   nameWithType: OfdOptions
+- uid: PDFSolid_Conversion.Common.OfdOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.OfdOptions.html#PDFSolid_Conversion_Common_OfdOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.OfdOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.OfdOptions.CustomPageHeight
+  nameWithType: OfdOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.OfdOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.OfdOptions.html#PDFSolid_Conversion_Common_OfdOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.OfdOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.OfdOptions.CustomPageWidth
+  nameWithType: OfdOptions.CustomPageWidth
+- uid: PDFSolid_Conversion.Common.OfdOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.OfdOptions.html#PDFSolid_Conversion_Common_OfdOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.OfdOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.OfdOptions.EnableAutoPageSize
+  nameWithType: OfdOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.OfdOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.OfdOptions.html#PDFSolid_Conversion_Common_OfdOptions_EnableDocumentDewarp
@@ -1510,6 +1462,18 @@ references:
   commentId: F:PDFSolid_Conversion.Common.PptOptions.ContainPageBackgroundImage
   fullName: PDFSolid_Conversion.Common.PptOptions.ContainPageBackgroundImage
   nameWithType: PptOptions.ContainPageBackgroundImage
+- uid: PDFSolid_Conversion.Common.PptOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.PptOptions.html#PDFSolid_Conversion_Common_PptOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.PptOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.PptOptions.CustomPageHeight
+  nameWithType: PptOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.PptOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.PptOptions.html#PDFSolid_Conversion_Common_PptOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.PptOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.PptOptions.CustomPageWidth
+  nameWithType: PptOptions.CustomPageWidth
 - uid: PDFSolid_Conversion.Common.PptOptions.EnableAiLayout
   name: EnableAiLayout
   href: api/PDFSolid_Conversion.Common.PptOptions.html#PDFSolid_Conversion_Common_PptOptions_EnableAiLayout
@@ -1522,6 +1486,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.PptOptions.EnableAiTableRecognition
   fullName: PDFSolid_Conversion.Common.PptOptions.EnableAiTableRecognition
   nameWithType: PptOptions.EnableAiTableRecognition
+- uid: PDFSolid_Conversion.Common.PptOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.PptOptions.html#PDFSolid_Conversion_Common_PptOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.PptOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.PptOptions.EnableAutoPageSize
+  nameWithType: PptOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.PptOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.PptOptions.html#PDFSolid_Conversion_Common_PptOptions_EnableDocumentDewarp
@@ -1576,6 +1546,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.PptOptions.PageRanges
   fullName: PDFSolid_Conversion.Common.PptOptions.PageRanges
   nameWithType: PptOptions.PageRanges
+- uid: PDFSolid_Conversion.Common.PptOptions.TableRecognitionAccuracy
+  name: TableRecognitionAccuracy
+  href: api/PDFSolid_Conversion.Common.PptOptions.html#PDFSolid_Conversion_Common_PptOptions_TableRecognitionAccuracy
+  commentId: F:PDFSolid_Conversion.Common.PptOptions.TableRecognitionAccuracy
+  fullName: PDFSolid_Conversion.Common.PptOptions.TableRecognitionAccuracy
+  nameWithType: PptOptions.TableRecognitionAccuracy
 - uid: PDFSolid_Conversion.Common.RtfOptions
   name: RtfOptions
   href: api/PDFSolid_Conversion.Common.RtfOptions.html
@@ -1594,6 +1570,18 @@ references:
   commentId: F:PDFSolid_Conversion.Common.RtfOptions.ContainImage
   fullName: PDFSolid_Conversion.Common.RtfOptions.ContainImage
   nameWithType: RtfOptions.ContainImage
+- uid: PDFSolid_Conversion.Common.RtfOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.RtfOptions.html#PDFSolid_Conversion_Common_RtfOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.RtfOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.RtfOptions.CustomPageHeight
+  nameWithType: RtfOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.RtfOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.RtfOptions.html#PDFSolid_Conversion_Common_RtfOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.RtfOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.RtfOptions.CustomPageWidth
+  nameWithType: RtfOptions.CustomPageWidth
 - uid: PDFSolid_Conversion.Common.RtfOptions.EnableAiLayout
   name: EnableAiLayout
   href: api/PDFSolid_Conversion.Common.RtfOptions.html#PDFSolid_Conversion_Common_RtfOptions_EnableAiLayout
@@ -1606,6 +1594,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.RtfOptions.EnableAiTableRecognition
   fullName: PDFSolid_Conversion.Common.RtfOptions.EnableAiTableRecognition
   nameWithType: RtfOptions.EnableAiTableRecognition
+- uid: PDFSolid_Conversion.Common.RtfOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.RtfOptions.html#PDFSolid_Conversion_Common_RtfOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.RtfOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.RtfOptions.EnableAutoPageSize
+  nameWithType: RtfOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.RtfOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.RtfOptions.html#PDFSolid_Conversion_Common_RtfOptions_EnableDocumentDewarp
@@ -1654,6 +1648,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.RtfOptions.PageRanges
   fullName: PDFSolid_Conversion.Common.RtfOptions.PageRanges
   nameWithType: RtfOptions.PageRanges
+- uid: PDFSolid_Conversion.Common.RtfOptions.TableRecognitionAccuracy
+  name: TableRecognitionAccuracy
+  href: api/PDFSolid_Conversion.Common.RtfOptions.html#PDFSolid_Conversion_Common_RtfOptions_TableRecognitionAccuracy
+  commentId: F:PDFSolid_Conversion.Common.RtfOptions.TableRecognitionAccuracy
+  fullName: PDFSolid_Conversion.Common.RtfOptions.TableRecognitionAccuracy
+  nameWithType: RtfOptions.TableRecognitionAccuracy
 - uid: PDFSolid_Conversion.Common.SearchablePdfOptions
   name: SearchablePdfOptions
   href: api/PDFSolid_Conversion.Common.SearchablePdfOptions.html
@@ -1672,6 +1672,24 @@ references:
   commentId: F:PDFSolid_Conversion.Common.SearchablePdfOptions.ContainPageBackgroundImage
   fullName: PDFSolid_Conversion.Common.SearchablePdfOptions.ContainPageBackgroundImage
   nameWithType: SearchablePdfOptions.ContainPageBackgroundImage
+- uid: PDFSolid_Conversion.Common.SearchablePdfOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.SearchablePdfOptions.html#PDFSolid_Conversion_Common_SearchablePdfOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.SearchablePdfOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.SearchablePdfOptions.CustomPageHeight
+  nameWithType: SearchablePdfOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.SearchablePdfOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.SearchablePdfOptions.html#PDFSolid_Conversion_Common_SearchablePdfOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.SearchablePdfOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.SearchablePdfOptions.CustomPageWidth
+  nameWithType: SearchablePdfOptions.CustomPageWidth
+- uid: PDFSolid_Conversion.Common.SearchablePdfOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.SearchablePdfOptions.html#PDFSolid_Conversion_Common_SearchablePdfOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.SearchablePdfOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.SearchablePdfOptions.EnableAutoPageSize
+  nameWithType: SearchablePdfOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.SearchablePdfOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.SearchablePdfOptions.html#PDFSolid_Conversion_Common_SearchablePdfOptions_EnableDocumentDewarp
@@ -1726,213 +1744,42 @@ references:
   commentId: F:PDFSolid_Conversion.Common.SearchablePdfOptions.TransparentText
   fullName: PDFSolid_Conversion.Common.SearchablePdfOptions.TransparentText
   nameWithType: SearchablePdfOptions.TransparentText
-- uid: PDFSolid_Conversion.Common.TableRecResult
-  name: TableRecResult
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html
-  commentId: T:PDFSolid_Conversion.Common.TableRecResult
-  fullName: PDFSolid_Conversion.Common.TableRecResult
-  nameWithType: TableRecResult
-- uid: PDFSolid_Conversion.Common.TableRecResult.#ctor
-  name: TableRecResult()
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult__ctor
-  commentId: M:PDFSolid_Conversion.Common.TableRecResult.#ctor
-  name.vb: New()
-  fullName: PDFSolid_Conversion.Common.TableRecResult.TableRecResult()
-  fullName.vb: PDFSolid_Conversion.Common.TableRecResult.New()
-  nameWithType: TableRecResult.TableRecResult()
-  nameWithType.vb: TableRecResult.New()
-- uid: PDFSolid_Conversion.Common.TableRecResult.#ctor*
-  name: TableRecResult
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult__ctor_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: PDFSolid_Conversion.Common.TableRecResult.TableRecResult
-  fullName.vb: PDFSolid_Conversion.Common.TableRecResult.New
-  nameWithType: TableRecResult.TableRecResult
-  nameWithType.vb: TableRecResult.New
-- uid: PDFSolid_Conversion.Common.TableRecResult.Finalize
-  name: ~TableRecResult()
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_Finalize
-  commentId: M:PDFSolid_Conversion.Common.TableRecResult.Finalize
-  name.vb: ''
-  fullName: PDFSolid_Conversion.Common.TableRecResult.~TableRecResult()
-  fullName.vb: ''
-  nameWithType: TableRecResult.~TableRecResult()
-  nameWithType.vb: ''
-- uid: PDFSolid_Conversion.Common.TableRecResult.Finalize*
-  name: ~TableRecResult
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_Finalize_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.Finalize
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.~TableRecResult
-  nameWithType: TableRecResult.~TableRecResult
-- uid: PDFSolid_Conversion.Common.TableRecResult.angle
-  name: angle
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_angle
-  commentId: F:PDFSolid_Conversion.Common.TableRecResult.angle
-  fullName: PDFSolid_Conversion.Common.TableRecResult.angle
-  nameWithType: TableRecResult.angle
-- uid: PDFSolid_Conversion.Common.TableRecResult.bound
-  name: bound
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_bound
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.bound
-  fullName: PDFSolid_Conversion.Common.TableRecResult.bound
-  nameWithType: TableRecResult.bound
-- uid: PDFSolid_Conversion.Common.TableRecResult.bound*
-  name: bound
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_bound_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.bound
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.bound
-  nameWithType: TableRecResult.bound
-- uid: PDFSolid_Conversion.Common.TableRecResult.cells
-  name: cells
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_cells
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.cells
-  fullName: PDFSolid_Conversion.Common.TableRecResult.cells
-  nameWithType: TableRecResult.cells
-- uid: PDFSolid_Conversion.Common.TableRecResult.cells*
-  name: cells
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_cells_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.cells
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.cells
-  nameWithType: TableRecResult.cells
-- uid: PDFSolid_Conversion.Common.TableRecResult.cells_text
-  name: cells_text
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_cells_text
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.cells_text
-  fullName: PDFSolid_Conversion.Common.TableRecResult.cells_text
-  nameWithType: TableRecResult.cells_text
-- uid: PDFSolid_Conversion.Common.TableRecResult.cells_text*
-  name: cells_text
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_cells_text_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.cells_text
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.cells_text
-  nameWithType: TableRecResult.cells_text
-- uid: PDFSolid_Conversion.Common.TableRecResult.col_count
-  name: col_count
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_col_count
-  commentId: F:PDFSolid_Conversion.Common.TableRecResult.col_count
-  fullName: PDFSolid_Conversion.Common.TableRecResult.col_count
-  nameWithType: TableRecResult.col_count
-- uid: PDFSolid_Conversion.Common.TableRecResult.confidence
-  name: confidence
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_confidence
-  commentId: F:PDFSolid_Conversion.Common.TableRecResult.confidence
-  fullName: PDFSolid_Conversion.Common.TableRecResult.confidence
-  nameWithType: TableRecResult.confidence
-- uid: PDFSolid_Conversion.Common.TableRecResult.height_of_rows
-  name: height_of_rows
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_height_of_rows
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.height_of_rows
-  fullName: PDFSolid_Conversion.Common.TableRecResult.height_of_rows
-  nameWithType: TableRecResult.height_of_rows
-- uid: PDFSolid_Conversion.Common.TableRecResult.height_of_rows*
-  name: height_of_rows
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_height_of_rows_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.height_of_rows
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.height_of_rows
-  nameWithType: TableRecResult.height_of_rows
-- uid: PDFSolid_Conversion.Common.TableRecResult.horizon_lines
-  name: horizon_lines
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_horizon_lines
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.horizon_lines
-  fullName: PDFSolid_Conversion.Common.TableRecResult.horizon_lines
-  nameWithType: TableRecResult.horizon_lines
-- uid: PDFSolid_Conversion.Common.TableRecResult.horizon_lines*
-  name: horizon_lines
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_horizon_lines_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.horizon_lines
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.horizon_lines
-  nameWithType: TableRecResult.horizon_lines
-- uid: PDFSolid_Conversion.Common.TableRecResult.html_str
-  name: html_str
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_html_str
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.html_str
-  fullName: PDFSolid_Conversion.Common.TableRecResult.html_str
-  nameWithType: TableRecResult.html_str
-- uid: PDFSolid_Conversion.Common.TableRecResult.html_str*
-  name: html_str
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_html_str_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.html_str
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.html_str
-  nameWithType: TableRecResult.html_str
-- uid: PDFSolid_Conversion.Common.TableRecResult.json_str
-  name: json_str
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_json_str
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.json_str
-  fullName: PDFSolid_Conversion.Common.TableRecResult.json_str
-  nameWithType: TableRecResult.json_str
-- uid: PDFSolid_Conversion.Common.TableRecResult.json_str*
-  name: json_str
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_json_str_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.json_str
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.json_str
-  nameWithType: TableRecResult.json_str
-- uid: PDFSolid_Conversion.Common.TableRecResult.num
-  name: num
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_num
-  commentId: F:PDFSolid_Conversion.Common.TableRecResult.num
-  fullName: PDFSolid_Conversion.Common.TableRecResult.num
-  nameWithType: TableRecResult.num
-- uid: PDFSolid_Conversion.Common.TableRecResult.row_count
-  name: row_count
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_row_count
-  commentId: F:PDFSolid_Conversion.Common.TableRecResult.row_count
-  fullName: PDFSolid_Conversion.Common.TableRecResult.row_count
-  nameWithType: TableRecResult.row_count
-- uid: PDFSolid_Conversion.Common.TableRecResult.table_type
-  name: table_type
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_table_type
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.table_type
-  fullName: PDFSolid_Conversion.Common.TableRecResult.table_type
-  nameWithType: TableRecResult.table_type
-- uid: PDFSolid_Conversion.Common.TableRecResult.table_type*
-  name: table_type
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_table_type_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.table_type
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.table_type
-  nameWithType: TableRecResult.table_type
-- uid: PDFSolid_Conversion.Common.TableRecResult.vertical_lines
-  name: vertical_lines
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_vertical_lines
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.vertical_lines
-  fullName: PDFSolid_Conversion.Common.TableRecResult.vertical_lines
-  nameWithType: TableRecResult.vertical_lines
-- uid: PDFSolid_Conversion.Common.TableRecResult.vertical_lines*
-  name: vertical_lines
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_vertical_lines_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.vertical_lines
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.vertical_lines
-  nameWithType: TableRecResult.vertical_lines
-- uid: PDFSolid_Conversion.Common.TableRecResult.width_of_cols
-  name: width_of_cols
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_width_of_cols
-  commentId: P:PDFSolid_Conversion.Common.TableRecResult.width_of_cols
-  fullName: PDFSolid_Conversion.Common.TableRecResult.width_of_cols
-  nameWithType: TableRecResult.width_of_cols
-- uid: PDFSolid_Conversion.Common.TableRecResult.width_of_cols*
-  name: width_of_cols
-  href: api/PDFSolid_Conversion.Common.TableRecResult.html#PDFSolid_Conversion_Common_TableRecResult_width_of_cols_
-  commentId: Overload:PDFSolid_Conversion.Common.TableRecResult.width_of_cols
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.Common.TableRecResult.width_of_cols
-  nameWithType: TableRecResult.width_of_cols
+- uid: PDFSolid_Conversion.Common.TableRecognitionAccuracy
+  name: TableRecognitionAccuracy
+  href: api/PDFSolid_Conversion.Common.TableRecognitionAccuracy.html
+  commentId: T:PDFSolid_Conversion.Common.TableRecognitionAccuracy
+  fullName: PDFSolid_Conversion.Common.TableRecognitionAccuracy
+  nameWithType: TableRecognitionAccuracy
+- uid: PDFSolid_Conversion.Common.TableRecognitionAccuracy.e_Balanced
+  name: e_Balanced
+  href: api/PDFSolid_Conversion.Common.TableRecognitionAccuracy.html#PDFSolid_Conversion_Common_TableRecognitionAccuracy_e_Balanced
+  commentId: F:PDFSolid_Conversion.Common.TableRecognitionAccuracy.e_Balanced
+  fullName: PDFSolid_Conversion.Common.TableRecognitionAccuracy.e_Balanced
+  nameWithType: TableRecognitionAccuracy.e_Balanced
+- uid: PDFSolid_Conversion.Common.TableRecognitionAccuracy.e_HighAccuracy
+  name: e_HighAccuracy
+  href: api/PDFSolid_Conversion.Common.TableRecognitionAccuracy.html#PDFSolid_Conversion_Common_TableRecognitionAccuracy_e_HighAccuracy
+  commentId: F:PDFSolid_Conversion.Common.TableRecognitionAccuracy.e_HighAccuracy
+  fullName: PDFSolid_Conversion.Common.TableRecognitionAccuracy.e_HighAccuracy
+  nameWithType: TableRecognitionAccuracy.e_HighAccuracy
 - uid: PDFSolid_Conversion.Common.TxtOptions
   name: TxtOptions
   href: api/PDFSolid_Conversion.Common.TxtOptions.html
   commentId: T:PDFSolid_Conversion.Common.TxtOptions
   fullName: PDFSolid_Conversion.Common.TxtOptions
   nameWithType: TxtOptions
+- uid: PDFSolid_Conversion.Common.TxtOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.TxtOptions.html#PDFSolid_Conversion_Common_TxtOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.TxtOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.TxtOptions.CustomPageHeight
+  nameWithType: TxtOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.TxtOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.TxtOptions.html#PDFSolid_Conversion_Common_TxtOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.TxtOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.TxtOptions.CustomPageWidth
+  nameWithType: TxtOptions.CustomPageWidth
 - uid: PDFSolid_Conversion.Common.TxtOptions.EnableAiLayout
   name: EnableAiLayout
   href: api/PDFSolid_Conversion.Common.TxtOptions.html#PDFSolid_Conversion_Common_TxtOptions_EnableAiLayout
@@ -1945,6 +1792,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.TxtOptions.EnableAiTableRecognition
   fullName: PDFSolid_Conversion.Common.TxtOptions.EnableAiTableRecognition
   nameWithType: TxtOptions.EnableAiTableRecognition
+- uid: PDFSolid_Conversion.Common.TxtOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.TxtOptions.html#PDFSolid_Conversion_Common_TxtOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.TxtOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.TxtOptions.EnableAutoPageSize
+  nameWithType: TxtOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.TxtOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.TxtOptions.html#PDFSolid_Conversion_Common_TxtOptions_EnableDocumentDewarp
@@ -1993,6 +1846,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.TxtOptions.TableFormat
   fullName: PDFSolid_Conversion.Common.TxtOptions.TableFormat
   nameWithType: TxtOptions.TableFormat
+- uid: PDFSolid_Conversion.Common.TxtOptions.TableRecognitionAccuracy
+  name: TableRecognitionAccuracy
+  href: api/PDFSolid_Conversion.Common.TxtOptions.html#PDFSolid_Conversion_Common_TxtOptions_TableRecognitionAccuracy
+  commentId: F:PDFSolid_Conversion.Common.TxtOptions.TableRecognitionAccuracy
+  fullName: PDFSolid_Conversion.Common.TxtOptions.TableRecognitionAccuracy
+  nameWithType: TxtOptions.TableRecognitionAccuracy
 - uid: PDFSolid_Conversion.Common.WordOptions
   name: WordOptions
   href: api/PDFSolid_Conversion.Common.WordOptions.html
@@ -2017,6 +1876,18 @@ references:
   commentId: F:PDFSolid_Conversion.Common.WordOptions.ContainPageBackgroundImage
   fullName: PDFSolid_Conversion.Common.WordOptions.ContainPageBackgroundImage
   nameWithType: WordOptions.ContainPageBackgroundImage
+- uid: PDFSolid_Conversion.Common.WordOptions.CustomPageHeight
+  name: CustomPageHeight
+  href: api/PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_CustomPageHeight
+  commentId: F:PDFSolid_Conversion.Common.WordOptions.CustomPageHeight
+  fullName: PDFSolid_Conversion.Common.WordOptions.CustomPageHeight
+  nameWithType: WordOptions.CustomPageHeight
+- uid: PDFSolid_Conversion.Common.WordOptions.CustomPageWidth
+  name: CustomPageWidth
+  href: api/PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_CustomPageWidth
+  commentId: F:PDFSolid_Conversion.Common.WordOptions.CustomPageWidth
+  fullName: PDFSolid_Conversion.Common.WordOptions.CustomPageWidth
+  nameWithType: WordOptions.CustomPageWidth
 - uid: PDFSolid_Conversion.Common.WordOptions.EnableAiLayout
   name: EnableAiLayout
   href: api/PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_EnableAiLayout
@@ -2029,6 +1900,12 @@ references:
   commentId: F:PDFSolid_Conversion.Common.WordOptions.EnableAiTableRecognition
   fullName: PDFSolid_Conversion.Common.WordOptions.EnableAiTableRecognition
   nameWithType: WordOptions.EnableAiTableRecognition
+- uid: PDFSolid_Conversion.Common.WordOptions.EnableAutoPageSize
+  name: EnableAutoPageSize
+  href: api/PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_EnableAutoPageSize
+  commentId: F:PDFSolid_Conversion.Common.WordOptions.EnableAutoPageSize
+  fullName: PDFSolid_Conversion.Common.WordOptions.EnableAutoPageSize
+  nameWithType: WordOptions.EnableAutoPageSize
 - uid: PDFSolid_Conversion.Common.WordOptions.EnableDocumentDewarp
   name: EnableDocumentDewarp
   href: api/PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_EnableDocumentDewarp
@@ -2089,6 +1966,42 @@ references:
   commentId: F:PDFSolid_Conversion.Common.WordOptions.PageRanges
   fullName: PDFSolid_Conversion.Common.WordOptions.PageRanges
   nameWithType: WordOptions.PageRanges
+- uid: PDFSolid_Conversion.Common.WordOptions.TableRecognitionAccuracy
+  name: TableRecognitionAccuracy
+  href: api/PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_TableRecognitionAccuracy
+  commentId: F:PDFSolid_Conversion.Common.WordOptions.TableRecognitionAccuracy
+  fullName: PDFSolid_Conversion.Common.WordOptions.TableRecognitionAccuracy
+  nameWithType: WordOptions.TableRecognitionAccuracy
+- uid: PDFSolid_Conversion.Common.WordOptions.WordPdfBookmarkMode
+  name: WordPdfBookmarkMode
+  href: api/PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_WordPdfBookmarkMode
+  commentId: F:PDFSolid_Conversion.Common.WordOptions.WordPdfBookmarkMode
+  fullName: PDFSolid_Conversion.Common.WordOptions.WordPdfBookmarkMode
+  nameWithType: WordOptions.WordPdfBookmarkMode
+- uid: PDFSolid_Conversion.Common.WordPdfBookmarkMode
+  name: WordPdfBookmarkMode
+  href: api/PDFSolid_Conversion.Common.WordPdfBookmarkMode.html
+  commentId: T:PDFSolid_Conversion.Common.WordPdfBookmarkMode
+  fullName: PDFSolid_Conversion.Common.WordPdfBookmarkMode
+  nameWithType: WordPdfBookmarkMode
+- uid: PDFSolid_Conversion.Common.WordPdfBookmarkMode.e_Headings
+  name: e_Headings
+  href: api/PDFSolid_Conversion.Common.WordPdfBookmarkMode.html#PDFSolid_Conversion_Common_WordPdfBookmarkMode_e_Headings
+  commentId: F:PDFSolid_Conversion.Common.WordPdfBookmarkMode.e_Headings
+  fullName: PDFSolid_Conversion.Common.WordPdfBookmarkMode.e_Headings
+  nameWithType: WordPdfBookmarkMode.e_Headings
+- uid: PDFSolid_Conversion.Common.WordPdfBookmarkMode.e_None
+  name: e_None
+  href: api/PDFSolid_Conversion.Common.WordPdfBookmarkMode.html#PDFSolid_Conversion_Common_WordPdfBookmarkMode_e_None
+  commentId: F:PDFSolid_Conversion.Common.WordPdfBookmarkMode.e_None
+  fullName: PDFSolid_Conversion.Common.WordPdfBookmarkMode.e_None
+  nameWithType: WordPdfBookmarkMode.e_None
+- uid: PDFSolid_Conversion.Common.WordPdfBookmarkMode.e_WordBookmarks
+  name: e_WordBookmarks
+  href: api/PDFSolid_Conversion.Common.WordPdfBookmarkMode.html#PDFSolid_Conversion_Common_WordPdfBookmarkMode_e_WordBookmarks
+  commentId: F:PDFSolid_Conversion.Common.WordPdfBookmarkMode.e_WordBookmarks
+  fullName: PDFSolid_Conversion.Common.WordPdfBookmarkMode.e_WordBookmarks
+  nameWithType: WordPdfBookmarkMode.e_WordBookmarks
 - uid: PDFSolid_Conversion.Conversion
   name: PDFSolid_Conversion.Conversion
   href: api/PDFSolid_Conversion.Conversion.html
@@ -2114,6 +2027,19 @@ references:
   isSpec: "True"
   fullName: PDFSolid_Conversion.Conversion.CPDFConversion.Cancel
   nameWithType: CPDFConversion.Cancel
+- uid: PDFSolid_Conversion.Conversion.CPDFConversion.IsWordToPDFSupported
+  name: IsWordToPDFSupported()
+  href: api/PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_IsWordToPDFSupported
+  commentId: M:PDFSolid_Conversion.Conversion.CPDFConversion.IsWordToPDFSupported
+  fullName: PDFSolid_Conversion.Conversion.CPDFConversion.IsWordToPDFSupported()
+  nameWithType: CPDFConversion.IsWordToPDFSupported()
+- uid: PDFSolid_Conversion.Conversion.CPDFConversion.IsWordToPDFSupported*
+  name: IsWordToPDFSupported
+  href: api/PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_IsWordToPDFSupported_
+  commentId: Overload:PDFSolid_Conversion.Conversion.CPDFConversion.IsWordToPDFSupported
+  isSpec: "True"
+  fullName: PDFSolid_Conversion.Conversion.CPDFConversion.IsWordToPDFSupported
+  nameWithType: CPDFConversion.IsWordToPDFSupported
 - uid: PDFSolid_Conversion.Conversion.CPDFConversion.StartPDFToExcel(System.String,System.String,System.String,PDFSolid_Conversion.Common.ExcelOptions,PDFSolid_Conversion.Common.ConvertCallback)
   name: StartPDFToExcel(string, string, string, ExcelOptions, ConvertCallback)
   href: api/PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_StartPDFToExcel_System_String_System_String_System_String_PDFSolid_Conversion_Common_ExcelOptions_PDFSolid_Conversion_Common_ConvertCallback_
@@ -2290,120 +2216,37 @@ references:
   isSpec: "True"
   fullName: PDFSolid_Conversion.Conversion.CPDFConversion.StartPDFToWord
   nameWithType: CPDFConversion.StartPDFToWord
-- uid: PDFSolid_Conversion.DocumentAI
-  name: PDFSolid_Conversion.DocumentAI
-  href: api/PDFSolid_Conversion.DocumentAI.html
-  commentId: N:PDFSolid_Conversion.DocumentAI
-  fullName: PDFSolid_Conversion.DocumentAI
-  nameWithType: PDFSolid_Conversion.DocumentAI
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI
-  name: PDFSolidDocumentAI
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html
-  commentId: T:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI
-  nameWithType: PDFSolidDocumentAI
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Dewarp(System.String,System.Single[]@,System.String)
-  name: Dewarp(string, ref float[], string)
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_Dewarp_System_String_System_Single____System_String_
-  commentId: M:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Dewarp(System.String,System.Single[]@,System.String)
-  name.vb: Dewarp(String, Single(), String)
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Dewarp(string, ref float[], string)
-  fullName.vb: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Dewarp(String, Single(), String)
-  nameWithType: PDFSolidDocumentAI.Dewarp(string, ref float[], string)
-  nameWithType.vb: PDFSolidDocumentAI.Dewarp(String, Single(), String)
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Dewarp*
-  name: Dewarp
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_Dewarp_
-  commentId: Overload:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Dewarp
+- uid: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(System.String,System.String,PDFSolid_Conversion.Common.ConvertCallback)
+  name: StartWordToPDF(string, string, ConvertCallback)
+  href: api/PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_ConvertCallback_
+  commentId: M:PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(System.String,System.String,PDFSolid_Conversion.Common.ConvertCallback)
+  name.vb: StartWordToPDF(String, String, ConvertCallback)
+  fullName: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(string, string, PDFSolid_Conversion.Common.ConvertCallback)
+  fullName.vb: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(String, String, PDFSolid_Conversion.Common.ConvertCallback)
+  nameWithType: CPDFConversion.StartWordToPDF(string, string, ConvertCallback)
+  nameWithType.vb: CPDFConversion.StartWordToPDF(String, String, ConvertCallback)
+- uid: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(System.String,System.String,PDFSolid_Conversion.Common.WordOptions,PDFSolid_Conversion.Common.ConvertCallback)
+  name: StartWordToPDF(string, string, WordOptions, ConvertCallback)
+  href: api/PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_WordOptions_PDFSolid_Conversion_Common_ConvertCallback_
+  commentId: M:PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(System.String,System.String,PDFSolid_Conversion.Common.WordOptions,PDFSolid_Conversion.Common.ConvertCallback)
+  name.vb: StartWordToPDF(String, String, WordOptions, ConvertCallback)
+  fullName: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(string, string, PDFSolid_Conversion.Common.WordOptions, PDFSolid_Conversion.Common.ConvertCallback)
+  fullName.vb: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(String, String, PDFSolid_Conversion.Common.WordOptions, PDFSolid_Conversion.Common.ConvertCallback)
+  nameWithType: CPDFConversion.StartWordToPDF(string, string, WordOptions, ConvertCallback)
+  nameWithType.vb: CPDFConversion.StartWordToPDF(String, String, WordOptions, ConvertCallback)
+- uid: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(System.String,System.String,PDFSolid_Conversion.Common.WordOptions,System.String@,PDFSolid_Conversion.Common.ConvertCallback)
+  name: StartWordToPDF(string, string, WordOptions, out string, ConvertCallback)
+  href: api/PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_System_String_System_String_PDFSolid_Conversion_Common_WordOptions_System_String__PDFSolid_Conversion_Common_ConvertCallback_
+  commentId: M:PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(System.String,System.String,PDFSolid_Conversion.Common.WordOptions,System.String@,PDFSolid_Conversion.Common.ConvertCallback)
+  name.vb: StartWordToPDF(String, String, WordOptions, String, ConvertCallback)
+  fullName: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(string, string, PDFSolid_Conversion.Common.WordOptions, out string, PDFSolid_Conversion.Common.ConvertCallback)
+  fullName.vb: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF(String, String, PDFSolid_Conversion.Common.WordOptions, String, PDFSolid_Conversion.Common.ConvertCallback)
+  nameWithType: CPDFConversion.StartWordToPDF(string, string, WordOptions, out string, ConvertCallback)
+  nameWithType.vb: CPDFConversion.StartWordToPDF(String, String, WordOptions, String, ConvertCallback)
+- uid: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF*
+  name: StartWordToPDF
+  href: api/PDFSolid_Conversion.Conversion.CPDFConversion.html#PDFSolid_Conversion_Conversion_CPDFConversion_StartWordToPDF_
+  commentId: Overload:PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF
   isSpec: "True"
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Dewarp
-  nameWithType: PDFSolidDocumentAI.Dewarp
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.LayoutAnalysis(System.String,PDFSolid_Conversion.Common.ErrorCode@)
-  name: LayoutAnalysis(string, out ErrorCode)
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_LayoutAnalysis_System_String_PDFSolid_Conversion_Common_ErrorCode__
-  commentId: M:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.LayoutAnalysis(System.String,PDFSolid_Conversion.Common.ErrorCode@)
-  name.vb: LayoutAnalysis(String, ErrorCode)
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.LayoutAnalysis(string, out PDFSolid_Conversion.Common.ErrorCode)
-  fullName.vb: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.LayoutAnalysis(String, PDFSolid_Conversion.Common.ErrorCode)
-  nameWithType: PDFSolidDocumentAI.LayoutAnalysis(string, out ErrorCode)
-  nameWithType.vb: PDFSolidDocumentAI.LayoutAnalysis(String, ErrorCode)
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.LayoutAnalysis*
-  name: LayoutAnalysis
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_LayoutAnalysis_
-  commentId: Overload:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.LayoutAnalysis
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.LayoutAnalysis
-  nameWithType: PDFSolidDocumentAI.LayoutAnalysis
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.MagicColor(System.String,System.String)
-  name: MagicColor(string, string)
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_MagicColor_System_String_System_String_
-  commentId: M:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.MagicColor(System.String,System.String)
-  name.vb: MagicColor(String, String)
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.MagicColor(string, string)
-  fullName.vb: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.MagicColor(String, String)
-  nameWithType: PDFSolidDocumentAI.MagicColor(string, string)
-  nameWithType.vb: PDFSolidDocumentAI.MagicColor(String, String)
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.MagicColor*
-  name: MagicColor
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_MagicColor_
-  commentId: Overload:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.MagicColor
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.MagicColor
-  nameWithType: PDFSolidDocumentAI.MagicColor
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr(System.Byte[],System.Collections.Generic.List{PDFSolid_Conversion.Common.OCRLanguage},PDFSolid_Conversion.Common.ErrorCode@)
-  name: Ocr(byte[], List<OCRLanguage>, out ErrorCode)
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_Ocr_System_Byte___System_Collections_Generic_List_PDFSolid_Conversion_Common_OCRLanguage__PDFSolid_Conversion_Common_ErrorCode__
-  commentId: M:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr(System.Byte[],System.Collections.Generic.List{PDFSolid_Conversion.Common.OCRLanguage},PDFSolid_Conversion.Common.ErrorCode@)
-  name.vb: Ocr(Byte(), List(Of OCRLanguage), ErrorCode)
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr(byte[], System.Collections.Generic.List<PDFSolid_Conversion.Common.OCRLanguage>, out PDFSolid_Conversion.Common.ErrorCode)
-  fullName.vb: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr(Byte(), System.Collections.Generic.List(Of PDFSolid_Conversion.Common.OCRLanguage), PDFSolid_Conversion.Common.ErrorCode)
-  nameWithType: PDFSolidDocumentAI.Ocr(byte[], List<OCRLanguage>, out ErrorCode)
-  nameWithType.vb: PDFSolidDocumentAI.Ocr(Byte(), List(Of OCRLanguage), ErrorCode)
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr(System.String,System.Collections.Generic.List{PDFSolid_Conversion.Common.OCRLanguage},PDFSolid_Conversion.Common.ErrorCode@)
-  name: Ocr(string, List<OCRLanguage>, out ErrorCode)
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_Ocr_System_String_System_Collections_Generic_List_PDFSolid_Conversion_Common_OCRLanguage__PDFSolid_Conversion_Common_ErrorCode__
-  commentId: M:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr(System.String,System.Collections.Generic.List{PDFSolid_Conversion.Common.OCRLanguage},PDFSolid_Conversion.Common.ErrorCode@)
-  name.vb: Ocr(String, List(Of OCRLanguage), ErrorCode)
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr(string, System.Collections.Generic.List<PDFSolid_Conversion.Common.OCRLanguage>, out PDFSolid_Conversion.Common.ErrorCode)
-  fullName.vb: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr(String, System.Collections.Generic.List(Of PDFSolid_Conversion.Common.OCRLanguage), PDFSolid_Conversion.Common.ErrorCode)
-  nameWithType: PDFSolidDocumentAI.Ocr(string, List<OCRLanguage>, out ErrorCode)
-  nameWithType.vb: PDFSolidDocumentAI.Ocr(String, List(Of OCRLanguage), ErrorCode)
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr*
-  name: Ocr
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_Ocr_
-  commentId: Overload:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.Ocr
-  nameWithType: PDFSolidDocumentAI.Ocr
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.StampDetection(System.String,PDFSolid_Conversion.Common.ErrorCode@)
-  name: StampDetection(string, out ErrorCode)
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_StampDetection_System_String_PDFSolid_Conversion_Common_ErrorCode__
-  commentId: M:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.StampDetection(System.String,PDFSolid_Conversion.Common.ErrorCode@)
-  name.vb: StampDetection(String, ErrorCode)
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.StampDetection(string, out PDFSolid_Conversion.Common.ErrorCode)
-  fullName.vb: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.StampDetection(String, PDFSolid_Conversion.Common.ErrorCode)
-  nameWithType: PDFSolidDocumentAI.StampDetection(string, out ErrorCode)
-  nameWithType.vb: PDFSolidDocumentAI.StampDetection(String, ErrorCode)
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.StampDetection*
-  name: StampDetection
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_StampDetection_
-  commentId: Overload:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.StampDetection
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.StampDetection
-  nameWithType: PDFSolidDocumentAI.StampDetection
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.TableRec(System.String,PDFSolid_Conversion.Common.ErrorCode@)
-  name: TableRec(string, out ErrorCode)
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_TableRec_System_String_PDFSolid_Conversion_Common_ErrorCode__
-  commentId: M:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.TableRec(System.String,PDFSolid_Conversion.Common.ErrorCode@)
-  name.vb: TableRec(String, ErrorCode)
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.TableRec(string, out PDFSolid_Conversion.Common.ErrorCode)
-  fullName.vb: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.TableRec(String, PDFSolid_Conversion.Common.ErrorCode)
-  nameWithType: PDFSolidDocumentAI.TableRec(string, out ErrorCode)
-  nameWithType.vb: PDFSolidDocumentAI.TableRec(String, ErrorCode)
-- uid: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.TableRec*
-  name: TableRec
-  href: api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html#PDFSolid_Conversion_DocumentAI_PDFSolidDocumentAI_TableRec_
-  commentId: Overload:PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.TableRec
-  isSpec: "True"
-  fullName: PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.TableRec
-  nameWithType: PDFSolidDocumentAI.TableRec
+  fullName: PDFSolid_Conversion.Conversion.CPDFConversion.StartWordToPDF
+  nameWithType: CPDFConversion.StartWordToPDF

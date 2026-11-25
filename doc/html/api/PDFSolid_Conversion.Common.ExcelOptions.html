@@ -248,6 +248,60 @@
   </table>
 
 
+  <h4 id="PDFSolid_Conversion_Common_ExcelOptions_CustomPageHeight" data-uid="PDFSolid_Conversion.Common.ExcelOptions.CustomPageHeight">CustomPageHeight</h4>
+  <div class="markdown level1 summary"><p>Specify the output page height in points. See CustomPageWidth.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float CustomPageHeight</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h4 id="PDFSolid_Conversion_Common_ExcelOptions_CustomPageWidth" data-uid="PDFSolid_Conversion.Common.ExcelOptions.CustomPageWidth">CustomPageWidth</h4>
+  <div class="markdown level1 summary"><p>Specify the output page width in points (1 pt = 1/72 inch), or 0 to not specify
+one. Set together with CustomPageHeight to choose the page outright, which takes
+precedence over EnableAutoPageSize. The size is used exactly as given, orientation
+included, and the image is scaled to fit inside it without cropping. Only takes
+effect when the input is an image file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float CustomPageWidth</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+
   <h4 id="PDFSolid_Conversion_Common_ExcelOptions_EnableAiLayout" data-uid="PDFSolid_Conversion.Common.ExcelOptions.EnableAiLayout">EnableAiLayout</h4>
   <div class="markdown level1 summary"><p>Whether to enable AI layout analysis during conversion.</p>
 </div>
@@ -280,6 +334,33 @@
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool EnableAiTableRecognition</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h4 id="PDFSolid_Conversion_Common_ExcelOptions_EnableAutoPageSize" data-uid="PDFSolid_Conversion.Common.ExcelOptions.EnableAutoPageSize">EnableAutoPageSize</h4>
+  <div class="markdown level1 summary"><p>Whether to size the output page from the image's own resolution, matching it to
+the nearest standard paper. Only takes effect when the input is an image file;
+when disabled, one image pixel becomes one page point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableAutoPageSize</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-condensed">
@@ -499,7 +580,7 @@
 
 
   <h4 id="PDFSolid_Conversion_Common_ExcelOptions_PageRanges" data-uid="PDFSolid_Conversion.Common.ExcelOptions.PageRanges">PageRanges</h4>
-  <div class="markdown level1 summary"><p>Specify the pages to convert, e.g. &quot;1-3,5,7-9&quot;. Using fixed-size array for simplicity.</p>
+  <div class="markdown level1 summary"><p>Specify the pages to convert, e.g. &quot;1-3,5,7-9&quot;.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -517,6 +598,37 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h4 id="PDFSolid_Conversion_Common_ExcelOptions_TableRecognitionAccuracy" data-uid="PDFSolid_Conversion.Common.ExcelOptions.TableRecognitionAccuracy">TableRecognitionAccuracy</h4>
+  <div class="markdown level1 summary"><p>Specify the DocumentAI table recognition accuracy. The default is
+<a class="xref" href="PDFSolid_Conversion.Common.TableRecognitionAccuracy.html#PDFSolid_Conversion_Common_TableRecognitionAccuracy_e_Balanced">e_Balanced</a>. Takes effect only when
+EnableAiTableRecognition is true. <a class="xref" href="PDFSolid_Conversion.Common.TableRecognitionAccuracy.html#PDFSolid_Conversion_Common_TableRecognitionAccuracy_e_HighAccuracy">e_HighAccuracy</a>
+additionally requires the table_legacy.model package to be loaded with
+<a class="xref" href="PDFSolid_Conversion.Common.LibraryManager.html#PDFSolid_Conversion_Common_LibraryManager_SetDocumentAIModel_System_String_System_Int32_">SetDocumentAIModel(string, int)</a>. If the model of the requested accuracy
+is not loaded, the conversion still succeeds, but tables are recognized with the
+rule-based method instead, so the result differs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TableRecognitionAccuracy TableRecognitionAccuracy</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="PDFSolid_Conversion.Common.TableRecognitionAccuracy.html">TableRecognitionAccuracy</a></td>
         <td></td>
       </tr>
     </tbody>

@@ -5,48 +5,311 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PDFSolid_Conversion_Demo"
         mc:Ignorable="d"
-        Title="PDFSolid Conversion SDK V1.2.0" Height="450" Width="800"
-        WindowStartupLocation ="CenterScreen"
-        Loaded="Window_Loaded">
+        Title="PDFSolid Conversion SDK V1.3.0" Width="1180" Height="760" MinWidth="1060" MinHeight="640"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource PaperBrush}" Foreground="{DynamicResource InkBrush}"
+        FontFamily="{StaticResource UiFont}" FontSize="13"
+        TextOptions.TextFormattingMode="Display" UseLayoutRounding="True"
+        Loaded="Window_Loaded" PreviewKeyDown="Window_PreviewKeyDown">
+    <!-- Layout and sizes: docs/demo_ui/design_spec.md §3–4. The macOS demo follows the same spec. -->
+    <Window.Resources>
+        <DataTemplate x:Key="FileRow" DataType="{x:Type local:FileItem}">
+            <Border x:Name="Row" Height="60" Padding="16,0,12,0" Background="Transparent"
+                    BorderBrush="{DynamicResource RuleBrush}" BorderThickness="0,1,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="26"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="64"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="168"/>
+                        <ColumnDefinition Width="24"/>
+                    </Grid.ColumnDefinitions>
+                    <local:DocChip Width="26" Height="32" VerticalAlignment="Center" Fill="{Binding ChipBrush}" Label="{Binding ChipLabel}"/>
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center" ToolTip="{Binding FilePath}">
+                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding Folder}" FontSize="12" Foreground="{DynamicResource Ink3Brush}" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="3" Text="{Binding SizeText}" FontSize="12" Foreground="{DynamicResource Ink2Brush}"
+                               HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Grid Grid.Column="5" VerticalAlignment="Center">
+                        <TextBlock x:Name="QuietStatus" Text="{Binding StatusText}" FontSize="12" Foreground="{DynamicResource Ink3Brush}"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <StackPanel x:Name="ConvertingStatus" Orientation="Horizontal" Visibility="Collapsed">
+                            <ProgressBar Style="{StaticResource ThinProgress}" Width="96" VerticalAlignment="Center"
+                                         Value="{Binding Progress, Mode=OneWay}"/>
+                            <TextBlock Text="{Binding ProgressText}" FontSize="12" Foreground="{DynamicResource Ink2Brush}" Margin="8,0,0,0"/>
+                        </StackPanel>
+                        <StackPanel x:Name="DoneStatus" Orientation="Horizontal" Visibility="Collapsed"
+                                    TextElement.Foreground="{DynamicResource OkBrush}">
+                            <Path Style="{StaticResource Icon}" Data="{StaticResource IconCheck}"/>
+                            <TextBlock Text="Done" FontSize="12" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                            <Button Content="Show" Style="{StaticResource AccentTextButton}" Margin="10,0,0,0" Click="ShowFile_Click"
+                                    ToolTip="Show the result in File Explorer"/>
+                        </StackPanel>
+                        <StackPanel x:Name="FailedStatus" Orientation="Horizontal" Visibility="Collapsed" Background="Transparent"
+                                    TextElement.Foreground="{DynamicResource BadBrush}" ToolTip="{Binding ErrorDetail}">
+                            <Path Style="{StaticResource Icon}" Data="{StaticResource IconAlert}"/>
+                            <TextBlock Text="{Binding ErrorText}" FontSize="12" Margin="6,0,0,0" VerticalAlignment="Center"
+                                       MaxWidth="144" TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                    </Grid>
+                    <Button x:Name="RemoveButton" Grid.Column="6" Style="{StaticResource SmallIconButton}" VerticalAlignment="Center"
+                            Visibility="Hidden" Click="RemoveFile_Click" ToolTip="Remove from the list"
+                            AutomationProperties.Name="Remove from the list">
+                        <Viewbox Width="14" Height="14">
+                            <Path Style="{StaticResource Icon}" Data="{StaticResource IconClose}"/>
+                        </Viewbox>
+                    </Button>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Status}" Value="{x:Static local:FileStatus.Converting}">
+                    <Setter TargetName="QuietStatus" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="ConvertingStatus" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="{x:Static local:FileStatus.Done}">
+                    <Setter TargetName="QuietStatus" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="DoneStatus" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="{x:Static local:FileStatus.Failed}">
+                    <Setter TargetName="QuietStatus" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="FailedStatus" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsMouseOver, ElementName=Row}" Value="True"/>
+                        <Condition Binding="{Binding CanRemove}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="RemoveButton" Property="Visibility" Value="Visible"/>
+                </MultiDataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid>
-        <StackPanel Margin="0,50,0,0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="Input" Content="Input"  Width="80" Height="30" Click="Input_Click"/>
-                <TextBox x:Name="InputPath" Width="300" Height="30" Margin="10" IsReadOnly="True"/>
-            </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="236"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="Output" Content="Output" Width="80" Height="30" Click="Output_Click" />
-                <TextBox x:Name="OutputPath" Width="300" Height="30" Margin="10" IsReadOnly="True" />
-            </StackPanel>
+        <!-- ================= Sidebar ================= -->
+        <Border Background="{DynamicResource Paper2Brush}" BorderBrush="{DynamicResource RuleBrush}" BorderThickness="0,0,1,0">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="20,18,20,10">
+                    <local:DocChip Width="22" Height="28" ShowLines="True" Fill="{Binding Source={x:Static local:DocFormat.Pdf}, Path=BaseBrush}"/>
+                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="PDFSolid Conversion" FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Text="SDK demo" FontSize="12" Foreground="{DynamicResource Ink3Brush}"/>
+                    </StackPanel>
+                </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="Convert Type : " Width="90" Height="30" TextAlignment="Center"/>
-                <ComboBox x:Name="ConvertType" Width="193" Height="30" SelectedIndex="0" Margin="10">
-                    <ComboBoxItem x:Name="Word" Content="Word" />
-                    <ComboBoxItem x:Name="Excel" Content="Excel" />
-                    <ComboBoxItem x:Name="Ppt" Content="PPT" />
-                    <ComboBoxItem x:Name="Html" Content="HTML" />
-                    <ComboBoxItem x:Name="Rtf" Content="RTF" />
-                    <ComboBoxItem x:Name="SearchablePDF" Content="Searchable PDF" />
-                    <ComboBoxItem x:Name="Ofd" Content="Searchable OFD"/>
-                    <ComboBoxItem x:Name="Txt" Content="TXT"/>
-                    <ComboBoxItem x:Name="Image" Content="Image"/>
-                    <ComboBoxItem x:Name="Json" Content="JSON"/>
-                    <ComboBoxItem x:Name="Markdown" Content="Markdown"/>
-                </ComboBox>
-                <Button x:Name="ConverterOptions" Content="Options" Width="90" Height="30" Margin="0,10,10,10" Click="ConverterOptions_Click" />
-            </StackPanel>
+                <Border DockPanel.Dock="Bottom" BorderBrush="{DynamicResource RuleBrush}" BorderThickness="0,1,0,0" Padding="20,12,20,14">
+                    <Button Style="{StaticResource TextButton}" HorizontalAlignment="Left" Click="SdkStatus_Click" ToolTip="Show the activity log">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse x:Name="SdkDot" Width="8" Height="8" VerticalAlignment="Center" Fill="{DynamicResource Ink3Brush}"/>
+                                <TextBlock x:Name="SdkStatus" Text="Loading the SDK" Margin="8,0,0,0" Foreground="{DynamicResource Ink2Brush}"/>
+                            </StackPanel>
+                            <TextBlock x:Name="SdkVersion" Margin="16,0,0,0" Foreground="{DynamicResource Ink3Brush}"/>
+                        </StackPanel>
+                    </Button>
+                </Border>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="Progress : " Width="80" Height="30" TextAlignment="Center"/>
-                <TextBlock x:Name="Progress" Width="300" Height="30"/>
-            </StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+                    <StackPanel x:Name="NavPanel" Margin="0,0,0,12" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="Convert" Content="Convert" Width="80" Height="30" Click="Convert_Click"/>
-                <Button x:Name="Cancel" Content="Cancel" Width="80" Height="30" Margin="10,0,0,0" IsEnabled="false" Click="Cancel_Click"/>
-            </StackPanel>
-        </StackPanel>
+        <!-- ================= Workspace ================= -->
+        <Grid x:Name="Workspace" Grid.Column="1" AllowDrop="True" Background="Transparent"
+              DragEnter="Workspace_DragOver" DragOver="Workspace_DragOver" DragLeave="Workspace_DragLeave" Drop="Workspace_Drop">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="64"/>
+            </Grid.RowDefinitions>
+
+            <Grid Margin="32,28,32,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Source chip → target chip, title, description -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <local:DocChip x:Name="SourceChip" Width="40" Height="50"/>
+                        <Viewbox Width="22" Height="22" Margin="6,0" TextElement.Foreground="{DynamicResource Ink3Brush}">
+                            <Path Style="{StaticResource Icon}" Data="{StaticResource IconArrow}"/>
+                        </Viewbox>
+                        <Grid x:Name="TargetChipHost" Width="40" Height="50"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="18,0,0,0" VerticalAlignment="Center">
+                        <TextBlock x:Name="ToolTitle" FontSize="22" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="ToolDescription" Margin="0,2,0,0" Foreground="{DynamicResource Ink2Brush}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+
+                <Border x:Name="Notice" Grid.Row="1" Margin="0,18,0,0" Padding="14,10" CornerRadius="10"
+                        Background="{DynamicResource RaisedBrush}" Visibility="Collapsed">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Path Style="{StaticResource Icon}" Data="{StaticResource IconInfo}" VerticalAlignment="Top"
+                              TextElement.Foreground="{DynamicResource Ink2Brush}"/>
+                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                            <TextBlock x:Name="NoticeTitle" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                            <TextBlock x:Name="NoticeText" FontSize="12" Foreground="{DynamicResource Ink2Brush}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="2">
+                    <!-- No files yet: the drop zone takes the space -->
+                    <Grid x:Name="DropZone" Margin="0,22,0,0" MinHeight="190">
+                        <Rectangle x:Name="DropZoneBorder" RadiusX="14" RadiusY="14" StrokeThickness="1.5" StrokeDashArray="3 2.5"
+                                   Stroke="{DynamicResource RuleStrongBrush}" Fill="Transparent"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Border Width="44" Height="44" CornerRadius="22" Margin="0,0,0,12" HorizontalAlignment="Center"
+                                    Background="{DynamicResource SelSoftBrush}">
+                                <Viewbox Width="20" Height="20" TextElement.Foreground="{DynamicResource AccentHiBrush}">
+                                    <Path Style="{StaticResource Icon}" Data="{StaticResource IconUpload}"/>
+                                </Viewbox>
+                            </Border>
+                            <TextBlock x:Name="DropTitle" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="DropTypes" Style="{StaticResource Caption}" HorizontalAlignment="Center" Margin="0,2,0,14"/>
+                            <Button x:Name="BrowseButton" Content="Browse files" Style="{StaticResource SecondaryButton}"
+                                    HorizontalAlignment="Center" Click="Browse_Click"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- With files: a slim drop bar, then the list -->
+                    <Grid x:Name="FilesArea" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Height="52" Margin="0,20,0,0">
+                            <Rectangle x:Name="DropBarBorder" RadiusX="14" RadiusY="14" StrokeThickness="1.5" StrokeDashArray="3 2.5"
+                                       Stroke="{DynamicResource RuleStrongBrush}" Fill="Transparent"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Border Width="28" Height="28" CornerRadius="14" Background="{DynamicResource SelSoftBrush}">
+                                    <Viewbox Width="14" Height="14" TextElement.Foreground="{DynamicResource AccentHiBrush}">
+                                        <Path Style="{StaticResource Icon}" Data="{StaticResource IconUpload}"/>
+                                    </Viewbox>
+                                </Border>
+                                <TextBlock x:Name="DropBarText" Margin="10,0,4,0" VerticalAlignment="Center" Foreground="{DynamicResource Ink2Brush}"/>
+                                <Button x:Name="BrowseLink" Content="browse" Style="{StaticResource AccentTextButton}" FontSize="13" Click="Browse_Click"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <DockPanel Grid.Row="1" Margin="0,18,0,8" LastChildFill="False">
+                            <TextBlock Text="Files" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <Border Style="{StaticResource Pill}" Margin="8,0,0,0">
+                                <TextBlock x:Name="FileCount"/>
+                            </Border>
+                            <Button x:Name="ClearButton" DockPanel.Dock="Right" Content="Clear" Style="{StaticResource TextButton}"
+                                    Margin="16,0,0,0" Click="Clear_Click"/>
+                            <Button x:Name="OpenFolderButton" DockPanel.Dock="Right" Content="Open folder" Style="{StaticResource AccentTextButton}"
+                                    Margin="10,0,0,0" Visibility="Collapsed" Click="OpenFolder_Click"/>
+                            <TextBlock x:Name="RunSummary" DockPanel.Dock="Right" FontSize="12" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Ink2Brush}"/>
+                        </DockPanel>
+
+                        <Border Grid.Row="2" Background="{DynamicResource SheetBrush}" BorderBrush="{DynamicResource RuleBrush}"
+                                BorderThickness="1" CornerRadius="14">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+                                <!-- Rows draw a top hairline; the -1 margin tucks the first one under the frame. -->
+                                <ItemsControl x:Name="FileList" Margin="0,-1,0,0" Focusable="False" ItemTemplate="{StaticResource FileRow}"/>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!-- Activity log -->
+            <Border x:Name="LogPanel" Grid.Row="1" Height="176" Visibility="Collapsed"
+                    Background="{DynamicResource SheetBrush}" BorderBrush="{DynamicResource RuleBrush}" BorderThickness="0,1,0,0">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Margin="32,10,16,6">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource SmallIconButton}" Click="CloseLog_Click" ToolTip="Close"
+                                AutomationProperties.Name="Close the activity log">
+                            <Viewbox Width="14" Height="14">
+                                <Path Style="{StaticResource Icon}" Data="{StaticResource IconClose}"/>
+                            </Viewbox>
+                        </Button>
+                        <Button DockPanel.Dock="Right" Content="Copy" Style="{StaticResource TextButton}" Margin="0,0,12,0" Click="CopyLog_Click"/>
+                        <TextBlock Text="Activity" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <TextBox x:Name="LogText" Style="{StaticResource LogBox}" Margin="32,0,16,12"/>
+                </DockPanel>
+            </Border>
+
+            <!-- Output folder and the run button -->
+            <Border Grid.Row="2" BorderBrush="{DynamicResource RuleBrush}" BorderThickness="0,1,0,0" Padding="32,0">
+                <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="4*" MinWidth="90" MaxWidth="340"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" MinWidth="8"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Save to" Foreground="{DynamicResource Ink2Brush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Border x:Name="OutputField" Grid.Column="1" Height="32" Padding="10,0" CornerRadius="8" Cursor="Hand"
+                            AutomationProperties.Name="Output folder"
+                            Background="{DynamicResource SheetBrush}" BorderBrush="{DynamicResource RuleStrongBrush}" BorderThickness="1"
+                            MouseLeftButtonUp="OutputField_Click">
+                        <DockPanel>
+                            <Path Style="{StaticResource Icon}" Data="{StaticResource IconFolder}" TextElement.Foreground="{DynamicResource Ink3Brush}"/>
+                            <TextBlock x:Name="OutputPath" Margin="8,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        </DockPanel>
+                    </Border>
+                    <Button x:Name="ChangeButton" Grid.Column="2" Content="Change…" Style="{StaticResource SecondaryButton}" Margin="10,0,0,0"
+                            Click="ChangeOutput_Click"/>
+                    <ToggleButton x:Name="LogButton" Grid.Column="4" Style="{StaticResource IconToggle}" Margin="0,0,10,0"
+                                  ToolTip="Activity log" AutomationProperties.Name="Activity log" Click="LogButton_Click">
+                        <Path Style="{StaticResource Icon}" Data="{StaticResource IconLog}"/>
+                    </ToggleButton>
+                    <Button x:Name="ConvertButton" Grid.Column="5" Content="Convert" Style="{StaticResource PrimaryButton}" Click="Convert_Click"/>
+                    <Button x:Name="StopButton" Grid.Column="5" Style="{StaticResource SecondaryButton}" Height="36" Padding="16,0"
+                            Visibility="Collapsed" Click="Stop_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Width="14" Height="14">
+                                <Path Style="{StaticResource Icon}" Data="{StaticResource IconStop}"/>
+                            </Viewbox>
+                            <TextBlock Text="Stop" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ================= Options ================= -->
+        <Border Grid.Column="2" Background="{DynamicResource SheetBrush}" BorderBrush="{DynamicResource RuleBrush}" BorderThickness="1,0,0,0">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="20,26,20,4">
+                    <Button x:Name="ResetButton" DockPanel.Dock="Right" Content="Reset" Style="{StaticResource TextButton}"
+                            ToolTip="Put every option back to the SDK default" Click="ResetOptions_Click"/>
+                    <TextBlock Text="Options" FontSize="15" FontWeight="SemiBold"/>
+                </DockPanel>
+                <ScrollViewer x:Name="OptionsScroller" VerticalScrollBarVisibility="Auto" Focusable="False" Padding="20,0,20,24">
+                    <local:OptionsPanel x:Name="OptionsView"/>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
     </Grid>
 </Window>

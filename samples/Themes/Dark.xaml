@@ -1,0 +1,24 @@
+﻿<!--
+  Neutral palette, dark theme. Values are docs/demo_ui/design_spec.md §2.1; the macOS demo
+  uses the same numbers, so change both together. ThemeManager swaps this file for Light.xaml.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="Paper2Color">#1D2026</Color>
+    <Color x:Key="InkColor">#ECEFF4</Color>
+
+    <SolidColorBrush x:Key="PaperBrush" Color="#17191E"/>
+    <SolidColorBrush x:Key="Paper2Brush" Color="#1D2026"/>
+    <SolidColorBrush x:Key="SheetBrush" Color="#23262D"/>
+    <SolidColorBrush x:Key="RaisedBrush" Color="#2A2E36"/>
+    <SolidColorBrush x:Key="RuleBrush" Color="#30343D"/>
+    <SolidColorBrush x:Key="RuleStrongBrush" Color="#3D4350"/>
+    <SolidColorBrush x:Key="InkBrush" Color="#ECEFF4"/>
+    <SolidColorBrush x:Key="Ink2Brush" Color="#A3ABB9"/>
+    <SolidColorBrush x:Key="Ink3Brush" Color="#6F7786"/>
+    <SolidColorBrush x:Key="OkBrush" Color="#3DBE6B"/>
+    <SolidColorBrush x:Key="BadBrush" Color="#F0605A"/>
+    <SolidColorBrush x:Key="SegOnBrush" Color="#3A3F4A"/>
+    <!-- ink at 5%, laid over whatever is underneath -->
+    <SolidColorBrush x:Key="HoverBrush" Color="#0DECEFF4"/>
+</ResourceDictionary>

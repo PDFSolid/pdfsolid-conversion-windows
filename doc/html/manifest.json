@@ -1,5 +1,5 @@
 {
-  "source_base_path": "C:/Users/25449/AppData/Local/Temp/csdoc2",
+  "source_base_path": ".",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -23,20 +23,6 @@
       "IsMRef": true,
       "Title": "PDFSolid_Conversion.Common.ConvertCallback",
       "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.ConvertCallback.yml\" sourcestartlinenumber=\"1\">Contains handle and delegates for conversion callbacks.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/PDFSolid_Conversion.Common.DetectionResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/PDFSolid_Conversion.Common.DetectionResult.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "PDFSolid_Conversion.Common.DetectionResult",
-      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.DetectionResult.yml\" sourcestartlinenumber=\"1\">Detection result.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -176,7 +162,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "PDFSolid_Conversion.Common.LibraryManager",
-      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.LibraryManager.yml\" sourcestartlinenumber=\"1\">Manages all operations related to the SDK library.\nThe <code sourcefile=\"api/PDFSolid_Conversion.Common.LibraryManager.yml\" sourcestartlinenumber=\"2\">LibraryManager</code> class serves as a central hub for managing the lifecycle of an SDK library. It provides\nfunctionalities such as initializing the library with specified resources, verifying licenses, installing fonts,\nsetting up logging and progress callbacks, retrieving version information, and counting pages in documents.</p>\n"
+      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.LibraryManager.yml\" sourcestartlinenumber=\"1\">Manages all operations related to the SDK library.\nThe <code sourcefile=\"api/PDFSolid_Conversion.Common.LibraryManager.yml\" sourcestartlinenumber=\"2\">LibraryManager</code> class manages the lifecycle of the SDK library: loading the native library,\ninitializing it with resources, verifying licenses, loading and releasing DocumentAI models,\nsetting the number of DocumentAI models, counting pages in documents, querying the remaining\npage quota, retrieving version information, and releasing resources.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PDFSolid_Conversion.Common.LicenseType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PDFSolid_Conversion.Common.LicenseType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PDFSolid_Conversion.Common.LicenseType",
+      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.LicenseType.yml\" sourcestartlinenumber=\"1\">Type of the currently verified license.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -222,20 +222,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/PDFSolid_Conversion.Common.OCRResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/PDFSolid_Conversion.Common.OCRResult.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "PDFSolid_Conversion.Common.OCRResult",
-      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.OCRResult.yml\" sourcestartlinenumber=\"1\">OCR recognition result.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/PDFSolid_Conversion.Common.OfdOptions.yml",
       "output": {
         ".html": {
@@ -260,7 +246,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "PDFSolid_Conversion.Common.OnCancel",
-      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.OnCancel.yml\" sourcestartlinenumber=\"1\">The delegate for the LibraryManager object, called to determine whether a conversion operation should be canceled.</p>\n"
+      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.OnCancel.yml\" sourcestartlinenumber=\"1\">The cancel callback, set through <xref href=\"PDFSolid_Conversion.Common.ConvertCallback.cancel\" data-throw-if-not-resolved=\"false\"></xref>; called to determine whether a conversion operation should be canceled.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -344,7 +330,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "PDFSolid_Conversion.Common.OnProgress",
-      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.OnProgress.yml\" sourcestartlinenumber=\"1\">The delegate for the LibraryManager object,called when a conversion operation finishes working on a page in a document.</p>\n"
+      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.OnProgress.yml\" sourcestartlinenumber=\"1\">The progress callback, set through <xref href=\"PDFSolid_Conversion.Common.ConvertCallback.progress\" data-throw-if-not-resolved=\"false\"></xref>; called when a conversion operation finishes working on a page in a document.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -418,17 +404,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/PDFSolid_Conversion.Common.TableRecResult.yml",
+      "source_relative_path": "api/PDFSolid_Conversion.Common.TableRecognitionAccuracy.yml",
       "output": {
         ".html": {
-          "relative_path": "api/PDFSolid_Conversion.Common.TableRecResult.html"
+          "relative_path": "api/PDFSolid_Conversion.Common.TableRecognitionAccuracy.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "PDFSolid_Conversion.Common.TableRecResult",
-      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.TableRecResult.yml\" sourcestartlinenumber=\"1\">Table recognition result.</p>\n"
+      "Title": "PDFSolid_Conversion.Common.TableRecognitionAccuracy",
+      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.TableRecognitionAccuracy.yml\" sourcestartlinenumber=\"1\">DocumentAI table recognition accuracy.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -456,7 +442,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "PDFSolid_Conversion.Common.WordOptions",
-      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.WordOptions.yml\" sourcestartlinenumber=\"1\">PDF to Word conversion parameter object.</p>\n"
+      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.WordOptions.yml\" sourcestartlinenumber=\"1\">PDF to Word and Word to PDF conversion parameter object.\nWord to PDF uses only <xref href=\"PDFSolid_Conversion.Common.WordOptions.PageRanges\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"PDFSolid_Conversion.Common.WordOptions.WordPdfBookmarkMode\" data-throw-if-not-resolved=\"false\"></xref>;\nthe other settings do not apply to Word to PDF.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PDFSolid_Conversion.Common.WordPdfBookmarkMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PDFSolid_Conversion.Common.WordPdfBookmarkMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "PDFSolid_Conversion.Common.WordPdfBookmarkMode",
+      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Common.WordPdfBookmarkMode.yml\" sourcestartlinenumber=\"1\">How the PDF bookmarks (the outline shown in a reader's navigation panel) are generated\nwhen converting a Word document to PDF.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -484,7 +484,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "PDFSolid_Conversion.Conversion.CPDFConversion",
-      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Conversion.CPDFConversion.yml\" sourcestartlinenumber=\"1\">Provides functionalities to convert PDF files into various formats such as Word, Excel, PPT, HTML, etc.</p>\n"
+      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.Conversion.CPDFConversion.yml\" sourcestartlinenumber=\"1\">Provides functionalities to convert PDF files into various formats such as Word, Excel, PPT, HTML, etc.,\nand to convert Word documents to PDF.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -498,34 +498,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "PDFSolid_Conversion.Conversion",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI",
-      "Summary": "<p sourcefile=\"api/PDFSolid_Conversion.DocumentAI.PDFSolidDocumentAI.yml\" sourcestartlinenumber=\"1\">Provides AI functions such as OCR, layout analysis, table recognition, and seal detection.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/PDFSolid_Conversion.DocumentAI.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/PDFSolid_Conversion.DocumentAI.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "PDFSolid_Conversion.DocumentAI",
       "Summary": null
     },
     {

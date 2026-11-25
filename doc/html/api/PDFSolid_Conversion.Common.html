@@ -85,9 +85,6 @@
     <h3 id="classes">
 Classes
 </h3>
-      <h4><a class="xref" href="PDFSolid_Conversion.Common.DetectionResult.html">DetectionResult</a></h4>
-      <section><p>Detection result.</p>
-</section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.ExcelOptions.html">ExcelOptions</a></h4>
       <section><p>PDF to Excel conversion parameter object.</p>
 </section>
@@ -102,15 +99,13 @@ Classes
 </section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.LibraryManager.html">LibraryManager</a></h4>
       <section><p>Manages all operations related to the SDK library.
-The <code>LibraryManager</code> class serves as a central hub for managing the lifecycle of an SDK library. It provides
-functionalities such as initializing the library with specified resources, verifying licenses, installing fonts,
-setting up logging and progress callbacks, retrieving version information, and counting pages in documents.</p>
+The <code>LibraryManager</code> class manages the lifecycle of the SDK library: loading the native library,
+initializing it with resources, verifying licenses, loading and releasing DocumentAI models,
+setting the number of DocumentAI models, counting pages in documents, querying the remaining
+page quota, retrieving version information, and releasing resources.</p>
 </section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.MarkdownOptions.html">MarkdownOptions</a></h4>
       <section><p>PDF to Markdown conversion parameter object.</p>
-</section>
-      <h4><a class="xref" href="PDFSolid_Conversion.Common.OCRResult.html">OCRResult</a></h4>
-      <section><p>OCR recognition result.</p>
 </section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.OfdOptions.html">OfdOptions</a></h4>
       <section><p>PDF to Ofd conversion parameter object.</p>
@@ -124,14 +119,13 @@ setting up logging and progress callbacks, retrieving version information, and c
       <h4><a class="xref" href="PDFSolid_Conversion.Common.SearchablePdfOptions.html">SearchablePdfOptions</a></h4>
       <section><p>PDF to PDF conversion parameter object.</p>
 </section>
-      <h4><a class="xref" href="PDFSolid_Conversion.Common.TableRecResult.html">TableRecResult</a></h4>
-      <section><p>Table recognition result.</p>
-</section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.TxtOptions.html">TxtOptions</a></h4>
       <section><p>PDF to Txt conversion parameter object.</p>
 </section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.WordOptions.html">WordOptions</a></h4>
-      <section><p>PDF to Word conversion parameter object.</p>
+      <section><p>PDF to Word and Word to PDF conversion parameter object.
+Word to PDF uses only <a class="xref" href="PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_PageRanges">PageRanges</a> and <a class="xref" href="PDFSolid_Conversion.Common.WordOptions.html#PDFSolid_Conversion_Common_WordOptions_WordPdfBookmarkMode">WordPdfBookmarkMode</a>;
+the other settings do not apply to Word to PDF.</p>
 </section>
     <h3 id="structs">
 Structs
@@ -157,6 +151,9 @@ Enums
       <h4><a class="xref" href="PDFSolid_Conversion.Common.ImageType.html">ImageType</a></h4>
       <section><p>Image type.</p>
 </section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.LicenseType.html">LicenseType</a></h4>
+      <section><p>Type of the currently verified license.</p>
+</section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.OCRLanguage.html">OCRLanguage</a></h4>
       <section><p>OCR Language.</p>
 </section>
@@ -166,11 +163,18 @@ Enums
       <h4><a class="xref" href="PDFSolid_Conversion.Common.PageLayoutMode.html">PageLayoutMode</a></h4>
       <section><p>Page Layout Mode.</p>
 </section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.TableRecognitionAccuracy.html">TableRecognitionAccuracy</a></h4>
+      <section><p>DocumentAI table recognition accuracy.</p>
+</section>
+      <h4><a class="xref" href="PDFSolid_Conversion.Common.WordPdfBookmarkMode.html">WordPdfBookmarkMode</a></h4>
+      <section><p>How the PDF bookmarks (the outline shown in a reader's navigation panel) are generated
+when converting a Word document to PDF.</p>
+</section>
     <h3 id="delegates">
 Delegates
 </h3>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.OnCancel.html">OnCancel</a></h4>
-      <section><p>The delegate for the LibraryManager object, called to determine whether a conversion operation should be canceled.</p>
+      <section><p>The cancel callback, set through <a class="xref" href="PDFSolid_Conversion.Common.ConvertCallback.html#PDFSolid_Conversion_Common_ConvertCallback_cancel">cancel</a>; called to determine whether a conversion operation should be canceled.</p>
 </section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.OnGetLayoutResult.html">OnGetLayoutResult</a></h4>
       <section><p>The delegate for retrieving layout analysis result as a UTF-8 JSON string.
@@ -191,7 +195,7 @@ The returned pointer must remain valid until the next call to this callback.</p>
       <section><p>The delegate for external OCR recognition on a temporary image file.</p>
 </section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.OnProgress.html">OnProgress</a></h4>
-      <section><p>The delegate for the LibraryManager object,called when a conversion operation finishes working on a page in a document.</p>
+      <section><p>The progress callback, set through <a class="xref" href="PDFSolid_Conversion.Common.ConvertCallback.html#PDFSolid_Conversion_Common_ConvertCallback_progress">progress</a>; called when a conversion operation finishes working on a page in a document.</p>
 </section>
       <h4><a class="xref" href="PDFSolid_Conversion.Common.OnTable.html">OnTable</a></h4>
       <section><p>The delegate for external table recognition on a temporary image file.</p>

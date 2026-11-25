@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:PDFSolid_Conversion_Demo"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- ThemeManager inserts Themes/Light.xaml or Themes/Dark.xaml in front of these at startup. -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Controls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
